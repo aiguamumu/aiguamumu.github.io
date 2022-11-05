@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>环境配置 on Web_Security</title>
+    <link>https://aiguamumu.github.io/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE.html</link>
+    <description>Recent content in 环境配置 on Web_Security</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 05 Nov 2022 14:55:49 +0800</lastBuildDate><atom:link href="https://aiguamumu.github.io/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git&amp;Github笔记</title>
+      <link>https://aiguamumu.github.io/post/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/github%E7%AC%94%E8%AE%B0.html</link>
+      <pubDate>Sat, 05 Nov 2022 14:55:49 +0800</pubDate>
+      
+      <guid>https://aiguamumu.github.io/post/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/github%E7%AC%94%E8%AE%B0.html</guid>
+      <description>将本地项目推送到Repo 在本项目的根目录下建立git仓库
+git init 将项目中的所有文件添加到管道
+git add . 将管道中的文件提交到仓库
+git commit -m “注释语句” 去github网站中创建一个repo
+复制clone or download下SSH的地址，前提是在本地已经建立了SSH密钥和公钥
+将本地仓库关联到github上
+git remote add origin git@github.com:xxx/xxx.git 要先pull一下，获取当前github上的repo的他人的更新。（如果是刚建的仓库可有可无）
+git pull origin master 上传代码push
+git push -u origin master 分支 分支功能存在于，当我们的开发过程中接到一个或两个新的（不同的）功能需求时，我们需要同时开发这几个分支，最后可以merge到主分支上。
+github仓库中有一个默认的master分支 当然可以直接在github网页的仓库中创建一个新的分支，但其实在本地通过git here创建分支后再push上去会更加的方便 查看目前的分支
+git branch 创建一个新的分支
+git branch 新的分支名字 切换分支
+git checkout 要切换到的分支名字 合并分支
+git branch 要合并的分支名字 #此时位置处于另一个被合并的分支下 #或者 git merge gh-pages --allow-unrelated-histories </description>
+    </item>
+    
+  </channel>
+</rss>

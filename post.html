@@ -133,6 +133,38 @@
             <div class="mb3 pa4 mid-gray overflow-hidden">
     
       <div class="f6">
+        十一月 5, 2022
+      </div>
+    
+    <h1 class="f3 near-black">
+      <a href="/post/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/github%E7%AC%94%E8%AE%B0.html" class="link black dim">
+        Git&amp;Github笔记
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      将本地项目推送到Repo 在本项目的根目录下建立git仓库
+git init 将项目中的所有文件添加到管道
+git add . 将管道中的文件提交到仓库
+git commit -m “注释语句” 去github网站中创建一个repo
+复制clone or download下SSH的地址，前提是在本地已经建立了SSH密钥和公钥
+将本地仓库关联到github上
+git remote add origin git@github.com:xxx/xxx.git 要先pull一下，获取当前github上的repo的他人的更新。（如果是刚建的仓库可有可无）
+git pull origin master 上传代码push
+git push -u origin master 分支 分支功能存在于，当我们的开发过程中接到一个或两个新的（不同的）功能需求时，我们需要同时开发这几个分支，最后可以merge到主分支上。
+github仓库中有一个默认的master分支 当然可以直接在github网页的仓库中创建一个新的分支，但其实在本地通过git here创建分支后再push上去会更加的方便 查看目前的分支
+git branch 创建一个新的分支
+git branch 新的分支名字 切换分支
+git checkout 要切换到的分支名字 合并分支
+git branch 要合并的分支名字 #此时位置处于另一个被合并的分支下 #或者 git merge gh-pages --allow-unrelated-histories 
+    </div>
+  </div>
+
+        </div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white">
+            <div class="mb3 pa4 mid-gray overflow-hidden">
+    
+      <div class="f6">
         十月 30, 2022
       </div>
     
@@ -210,64 +242,6 @@ count()返回数组中元素的个数。
 用新的数组前，需要定义它
 $shuzuming=array()
 - `isset(x)`函数，如果x的变量存在，返回true。否则返回false。一般判断语句为 如果变量x设置了且不为空。- `is_mumeric()`检测一个变量是否为数字或者数字字符串。有的时候用empty()函数不理想会考虑能否用此函数。- `strtotime() `函数将任何英文文本的日期或时间描述解析为 Unix 时间戳- `time()`获取当前时间戳函数- `md5()` 把从前台用户输入获得的密码在php中（control.php中）进行md5的加密，再存进数据库中- `count()`计算数组中单元数目，或者对象中属性个数- `header()`函数向客户端发送一个http报头，用来告知客户端信息，也可用于跳转：![image-20221016215805247](images/image-20221016215805247.png)- 自己定义的函数`success(path&#39;?m=&#39;，[str])`若成功则跳转的路径`error((path&#39;&#39;，[str])`若失败则跳转的路径- `ceil(x)`向上取一个最近的整数（大于x的）- 如果要在同级函数中调用另一个同级函数的变量，可以把那个要调用的函数声明为全局函数，或者使用闭合函数的写法。- **HTML**语法：&gt; - `form`里的`input`标签的属性有：&gt;&gt; ![image-20221022172741241](images/image-20221022172741241.png)&gt;&gt; - `hidden`属性：一般用来传值而不被用户看到。&gt;&gt; - `select`标签&gt;&gt; 单选或多选菜单，里面有`option`标签,其中&gt;&gt; - `value`属性，这个option如果被选了，那么如果整个select封装成表单提交的话，传出的`$_POST`或者`$_GET`**数组的值就是这个value**&gt; - `checked`加了一个checked属性，可把此复选框/下拉栏设为选中状态。[详情](#checked)&gt;&gt; - `span`行级别，不自动换行。把标签中间的文字给一个特定的样式&gt;&gt; 等同于HTML5的`font`标签。&gt;&gt; - `div`块级别，自动换行。把这一块的东西给一个特定的样式&gt;&gt; - `script`标签里有`alert`弹框弹出，`location`属性表示跳转的位置。&gt;&gt; - `li`标签（表示单元格）可以在有序列表`ol`里，也可以在无序列表`ul`里&gt;&gt; !
-    </div>
-  </div>
-
-        </div>
-      
-        <div class="relative w-100 w-30-l mb4 bg-white">
-            <div class="mb3 pa4 mid-gray overflow-hidden">
-    
-      <div class="f6">
-        十月 15, 2022
-      </div>
-    
-    <h1 class="f3 near-black">
-      <a href="/post/PHP%E5%BC%80%E5%8F%91/03PHP%E9%93%BE%E6%8E%A5SQL%E4%B8%8E%E6%9E%B6%E6%9E%84%E7%8B%AC%E7%AB%8B.html" class="link black dim">
-        PHP链接MySQL
-      </a>
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      代码逻辑
-用PHP链接Mysql执行操作 MySQLI 可直接安装wamp，代表Windows、Apache、MySQL和PHP。这是一个软件堆栈。
-mysqli的扩展安装之后才可用php链接mysql
-&lt;?php phpinfo(); ?&gt; phpinfo()函数可以显示出PHP 所有相关信息。是排查php是否出错或漏配置模块的主要方式之一
-php基本语法D @ 错误控制操作符，当表达式加上@时，若该表达式错误，所产生的错误信息不会被爆出来，表达式生成的错误信息将保存在变量$ php_errormsg里，每个错误都会覆盖此变量
-'{php变量}'把变量用花括号括起来，并且用单引号包起来，表示把这个变量解析成字符串的形式,这样才能加入到sql语句里
-php文件里可以写html标签,echo 'html标签';
-html中写sql语句需要&lt;php? 变量名?&gt;
-php排错时要从sql语句开始排错。
-$sql=&#34;&#34;; echo $sql;exit; 然后把显示的sql语句赋值粘贴进mysql执行，看成不成功。
-die(message)在退出脚本前显示message信息
-php中，用.来实现字符串和变量的链接
-&#34;它的密码是&#34;.$key.&#34;值&#34; PHP中反引号的作用
-执行系统命令
-echo ipconfig；
-内涵SQL语句的关键字时
-$sql = &ldquo;select user,username from Content&rdquo;;
-匿名函数（闭包函数）
-实现php闭包既可以读取函数内部的变量，同时还可以将变量始终保存在内存中，使得即使函数执行完毕，变量也将一直存在。
-子函数可以使用父函数中的局部变量
-PHP中array（）
-只写array()说明新建了一个新的数组，php里有索引数组、关联数组、多维数组。
-使用PHP进行数据库插入操作 PHP中写sql语句，要把sql语句用双引号括起来并写入一个变量里
-mysqli_connect('数据库所在地址'，’用户名‘，’密码‘，’数据库名‘)&ndash;&gt;数据链接函数
-$link=函数1 or die（）来判断函数1的执行是否有错，有错则会爆出所有信息。加@不爆出。&ndash;&gt;出错怎么办
-mysqli_query（链接的数据库赋给的变量，sql语句的变量），发送一条SQL语句到数据库服务器。
-insert插入返回布尔值，执行成功为true，失败为false&ndash;&gt;发送sql语句函数
-mysqli_affected_rows(链接的数据库赋给的变量)&ndash;&gt;获取数据影响行函数
-mysqli_insert_id(链接的数据库赋给的变量)，返回的是添加的哪一行的id
-mysqli_close(链接的数据库赋给的变量)&ndash;&gt;关闭数据库
-使用PHP进行数据库查询操作 mysqli_num_rows(问答函数出来的对象)，返回值是对象的行数
-mysqli_query(链接的数据库的变量)，对于查询而言返回的是一个对象
-mysqli_fetch_assoc(问答函数出来的对象)
-获取一行作为关联数组返回。
-如果数据库里什么都没有，就会返回NULL
-使用PHP进行数据库修改 使用PHP进行数据库删除 把删除函数可以写到查询的那个文件（func.php）的表格里： delete.php中写入sql语句的传参也要改一下：
-这里能用$_GET变量是因为我们发现，这个网页是以get方式传参的。
-函数的封装（Model模块） 关联数据库的函数
-增删改功能的函数：
-这里有一个正则表达式，此函数是一个闭包函数，用来在这个函数里使用父函数的变量，注意格式变量=function(用户给的变量，这里是sql语句) use(传进来的父函数的变量)
     </div>
   </div>
 
