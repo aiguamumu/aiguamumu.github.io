@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>PHP开发 | Web_Security</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="月寒日暖，来煎人寿。">
+    <meta name="generator" content="Hugo 0.104.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+      <link href="/tags/PHP%E5%BC%80%E5%8F%91/index.xml" rel="alternate" type="application/rss+xml" title="Web_Security" />
+      <link href="/tags/PHP%E5%BC%80%E5%8F%91/index.xml" rel="feed" type="application/rss+xml" title="Web_Security" />
+      
+    
+    
+    <meta property="og:title" content="PHP开发" />
+<meta property="og:description" content="月寒日暖，来煎人寿。" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://aiguamumu.github.io/tags/PHP%E5%BC%80%E5%8F%91.html" /><meta property="og:site_name" content="Web_Security" />
+
+<meta itemprop="name" content="PHP开发">
+<meta itemprop="description" content="月寒日暖，来煎人寿。"><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PHP开发"/>
+<meta name="twitter:description" content="月寒日暖，来煎人寿。"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+
+  
+  <header class="cover bg-top" style="background-image: url('https://aiguamumu.github.io/images/background_1.jpg');">
+    <div class="bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Web_Security
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post.html" title="Articles 页">
+              Articles
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact.html" title="Contact 页">
+              Contact
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv4 pv6-l ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 white-90 mb0 lh-title">
+          PHP开发
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="cf pa3 pa4-m pa4-l">
+    <div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links mid-gray">
+      <p>标签为“PHP开发”的页面如下</p>
+    </div>
+  </article>
+  <div class="mw8 center">
+    <section class="flex-ns flex-wrap justify-around mt5">
+      
+        <div class="relative w-100  mb4 bg-white">
+            <div class="mb3 pa4 mid-gray overflow-hidden">
+    
+      <div class="f6">
+        十月 30, 2022
+      </div>
+    
+    <h1 class="f3 near-black">
+      <a href="/post/PHP%E5%BC%80%E5%8F%91/05CMS%E7%99%BB%E5%BD%95%E6%93%8D%E4%BD%9C%E5%92%8Ccookiesession%E7%9A%84%E4%BD%BF%E7%94%A8.html" class="link black dim">
+        CMS登录操作和cookie&amp;session的使用
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      PHP基础 php基本语法F 基本HTML之meta标签
+组成：
+http-equiv属性
+目的：相当于http文件头的作用。
+参数有：
+Expires（期限）、Pragma（让访问者无法脱机访问）、Refresh（刷新）、Set-Cookie（cookie设定，例如如果网页过期，cookie将删除）、Window-target（窗口显示设定）、content-Type（显示字符集设定）
+content属性（即http-equiv属性的值） name属性
+目的：告诉搜索引擎关于这个网站的信息的名字
+参数有：Keywords（关键字）、description（对网站内容的描述）、robots（机器人向导，用来告诉机器人哪些需要索引哪些不需要）、author（作者）、generator（信息参数，网站用什么软件制作的）、COPYRIGHT（版权信息）、revist-afte（网站重访）
+content属性（即name属性的值）
+目的：便于搜索引擎机器人查找信息和分类信息用
+参数有：
+robots中：
+all（文件将被检索，页面中的链接可被查询）、none（文件不被检索，页面中的链接不可被查询）、index（文件将被检索）、follow、noindex、nofloow。
+作用：
+SEO（搜索引擎优化）、定义页面使用的编码、自动刷新并指向新的页面、实现网页转换的动态效果、控制页面缓冲、网页定级评价、控制网页显示的窗口
+HTTP协议 一种超文本传输协议 无状态跟踪协议（老年痴呆型） 当你访问了服务器后，关闭网页，再次访问服务器，服务器不会意识到是你在访问（记不住人） 方法一：基本思路。如果客户端浏览器的应用程序需要和不支持cookie的服务器打交道，那么只能使用最原始的，用input标签读取用户输入到的信息，并传入php中，再与数据库中的用户名和密码做对比。（用户名和密码一般都会存储一份在服务器中） 方法二：实现不需要每次都输入用户名和密码。把用户名和密码存储到浏览器里，然后让每次HTTP请求都自动带数据给服务器。这个技术我们称为cookie。（存储用户信息的凭证） 方法三：比cookie更安全的方法，会话Session，即把Session-ID加入到cookie中，而Session-ID对用户名和密码做了加密，并存储在服务器中。 Cookie 是什么 cookie的工作原理：（即带着一张储存访问信息的卡片，只要set-cookie后，每一次请求都要带着）
+cookie都是存储在客户端的。
+即客户端可以查看cookie
+客户端也可以禁止cookie
+禁止后，如果有些网站是需要拿cookie登录的（即cookie中存储用户名和密码），则登录不进去了 通过PHP可以创建并取回cookie
+功能
+cookie解决的是http超文本链接协议属于无状态协议的问题 无状态协议：当你访问了服务器后，关闭网页，再次访问服务器，服务器不会意识到是你在访问 cookie可以存储用户名、密码、登录有效时长 弊端
+不安全。因为直接存储在客户端，所以依赖于客户端，所以如果你的客户端浏览器被黑了，那么所有存在cookie中的密码用户名将会泄露。改进：会话Session 使用方法 核心：setcookie()函数
+添加cookie值
+setcookie(&#39;下标&#39;,&#39;值&#39;,&#39;有效时间&#39;,&#39;有效作用域&#39;) 第四个值如果是/表示当前作用域下可以用
+修改cookie值
+setcookie(&#39;下标&#39;,&#39;新值&#39;,&#39;有效时间&#39;,&#39;有效作用域&#39;) 删除cookie值
+setcookie(&#39;下标&#39;,null,&#39;有效时间&#39;,&#39;有效作用域&#39;) 查看cookie值
+依赖系统所提供的$_COOKIE预定义数组变量，所有的对cookie设置的值都会成为该数组变量的一个元素。例如使用特定的COOKIE的值$_COOKEI['下标'] 查看用var_dump()和print_r()，但无法在添加/删除/修改的当前页面查看COOKIE值。 $_COOKIE()数组
+一个预定义数组变量 一个可以跨页面的变量 代码流程 在html页面中，写从用户获取用户名和密码的语句，利用form表单和post传值进一个php文件进行处理。
+创建cookie，在那个php文件里写处理传进来的值的操作，操作用setcookie()数组
+**登录（验证特定的cookie信息是否存在）**后的界面书写，一个php里：
+**退出登录（清除cookie信息）**操作，一个php里
+Session 是什么 工作原理
+Session_ID会存在cookie里
+Session_ID是一个经过服务器对原始的用户名和密码，加密后的一串数字，所以只有服务器存储了原始用户名和密码
+Session_ID服务器会存一份，客户端会存一份包含了Session_ID的cookie
+每一次会话的请求，客户端都会带着含有Session_ID的cookie向服务器发送请求
+所以如果在客户端浏览器中关闭cookie服务将登录不了
+如果黑客修改了Session_ID，服务器就将识别不了
+使用方法 session_start()开启session会话
+    </div>
+  </div>
+
+        </div>
+      
+        <div class="relative w-100  mb4 bg-white">
+            <div class="mb3 pa4 mid-gray overflow-hidden">
+    
+      <div class="f6">
+        十月 24, 2022
+      </div>
+    
+    <h1 class="f3 near-black">
+      <a href="/post/PHP%E5%BC%80%E5%8F%91/04CMS%E6%9E%B6%E6%9E%84%E5%92%8C%E5%89%8D%E5%90%8E%E5%8F%B0%E5%85%B3%E8%81%94B-%E8%BF%9B%E9%98%B6.html" class="link black dim">
+        CMS架构和前后台关联-进阶B
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      代码逻辑3	代码逻辑4	代码逻辑5
+cms架构B（PHP+html+mysql的model） PHP基本语法E 两种在HTNL中写php的写法：
+&lt;?=变量名?&gt;&lt;?phppass;?&gt; empty(x)函数。x为空或x为0，结果都返回true（注意这里有个坑）
+emplode(用什么分割，数组)函数，用来分割数组中的每一个元素。
+count()返回数组中元素的个数。
+用新的数组前，需要定义它
+$shuzuming=array()
+- `isset(x)`函数，如果x的变量存在，返回true。否则返回false。一般判断语句为 如果变量x设置了且不为空。- `is_mumeric()`检测一个变量是否为数字或者数字字符串。有的时候用empty()函数不理想会考虑能否用此函数。- `strtotime() `函数将任何英文文本的日期或时间描述解析为 Unix 时间戳- `time()`获取当前时间戳函数- `md5()` 把从前台用户输入获得的密码在php中（control.php中）进行md5的加密，再存进数据库中- `count()`计算数组中单元数目，或者对象中属性个数- `header()`函数向客户端发送一个http报头，用来告知客户端信息，也可用于跳转：![image-20221016215805247](images/image-20221016215805247.png)- 自己定义的函数`success(path&#39;?m=&#39;，[str])`若成功则跳转的路径`error((path&#39;&#39;，[str])`若失败则跳转的路径- `ceil(x)`向上取一个最近的整数（大于x的）- 如果要在同级函数中调用另一个同级函数的变量，可以把那个要调用的函数声明为全局函数，或者使用闭合函数的写法。- **HTML**语法：&gt; - `form`里的`input`标签的属性有：&gt;&gt; ![image-20221022172741241](images/image-20221022172741241.png)&gt;&gt; - `hidden`属性：一般用来传值而不被用户看到。&gt;&gt; - `select`标签&gt;&gt; 单选或多选菜单，里面有`option`标签,其中&gt;&gt; - `value`属性，这个option如果被选了，那么如果整个select封装成表单提交的话，传出的`$_POST`或者`$_GET`**数组的值就是这个value**&gt; - `checked`加了一个checked属性，可把此复选框/下拉栏设为选中状态。[详情](#checked)&gt;&gt; - `span`行级别，不自动换行。把标签中间的文字给一个特定的样式&gt;&gt; 等同于HTML5的`font`标签。&gt;&gt; - `div`块级别，自动换行。把这一块的东西给一个特定的样式&gt;&gt; - `script`标签里有`alert`弹框弹出，`location`属性表示跳转的位置。&gt;&gt; - `li`标签（表示单元格）可以在有序列表`ol`里，也可以在无序列表`ul`里&gt;&gt; !
+    </div>
+  </div>
+
+        </div>
+      
+        <div class="relative w-100  mb4 bg-white">
+            <div class="mb3 pa4 mid-gray overflow-hidden">
+    
+      <div class="f6">
+        十月 15, 2022
+      </div>
+    
+    <h1 class="f3 near-black">
+      <a href="/post/PHP%E5%BC%80%E5%8F%91/03PHP%E9%93%BE%E6%8E%A5SQL%E4%B8%8E%E6%9E%B6%E6%9E%84%E7%8B%AC%E7%AB%8B.html" class="link black dim">
+        PHP链接MySQL
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      代码逻辑
+用PHP链接Mysql执行操作 MySQLI 可直接安装wamp，代表Windows、Apache、MySQL和PHP。这是一个软件堆栈。
+mysqli的扩展安装之后才可用php链接mysql
+&lt;?php phpinfo(); ?&gt; phpinfo()函数可以显示出PHP 所有相关信息。是排查php是否出错或漏配置模块的主要方式之一
+php基本语法D @ 错误控制操作符，当表达式加上@时，若该表达式错误，所产生的错误信息不会被爆出来，表达式生成的错误信息将保存在变量$ php_errormsg里，每个错误都会覆盖此变量
+'{php变量}'把变量用花括号括起来，并且用单引号包起来，表示把这个变量解析成字符串的形式,这样才能加入到sql语句里
+php文件里可以写html标签,echo 'html标签';
+html中写sql语句需要&lt;php? 变量名?&gt;
+php排错时要从sql语句开始排错。
+$sql=&#34;&#34;; echo $sql;exit; 然后把显示的sql语句赋值粘贴进mysql执行，看成不成功。
+die(message)在退出脚本前显示message信息
+php中，用.来实现字符串和变量的链接
+&#34;它的密码是&#34;.$key.&#34;值&#34; PHP中反引号的作用
+执行系统命令
+echo ipconfig；
+内涵SQL语句的关键字时
+$sql = &ldquo;select user,username from Content&rdquo;;
+匿名函数（闭包函数）
+实现php闭包既可以读取函数内部的变量，同时还可以将变量始终保存在内存中，使得即使函数执行完毕，变量也将一直存在。
+子函数可以使用父函数中的局部变量
+PHP中array（）
+只写array()说明新建了一个新的数组，php里有索引数组、关联数组、多维数组。
+使用PHP进行数据库插入操作 PHP中写sql语句，要把sql语句用双引号括起来并写入一个变量里
+mysqli_connect('数据库所在地址'，’用户名‘，’密码‘，’数据库名‘)&ndash;&gt;数据链接函数
+$link=函数1 or die（）来判断函数1的执行是否有错，有错则会爆出所有信息。加@不爆出。&ndash;&gt;出错怎么办
+mysqli_query（链接的数据库赋给的变量，sql语句的变量），发送一条SQL语句到数据库服务器。
+insert插入返回布尔值，执行成功为true，失败为false&ndash;&gt;发送sql语句函数
+mysqli_affected_rows(链接的数据库赋给的变量)&ndash;&gt;获取数据影响行函数
+mysqli_insert_id(链接的数据库赋给的变量)，返回的是添加的哪一行的id
+mysqli_close(链接的数据库赋给的变量)&ndash;&gt;关闭数据库
+使用PHP进行数据库查询操作 mysqli_num_rows(问答函数出来的对象)，返回值是对象的行数
+mysqli_query(链接的数据库的变量)，对于查询而言返回的是一个对象
+mysqli_fetch_assoc(问答函数出来的对象)
+获取一行作为关联数组返回。
+如果数据库里什么都没有，就会返回NULL
+使用PHP进行数据库修改 使用PHP进行数据库删除 把删除函数可以写到查询的那个文件（func.php）的表格里： delete.php中写入sql语句的传参也要改一下：
+这里能用$_GET变量是因为我们发现，这个网页是以get方式传参的。
+函数的封装（Model模块） 关联数据库的函数
+增删改功能的函数：
+这里有一个正则表达式，此函数是一个闭包函数，用来在这个函数里使用父函数的变量，注意格式变量=function(用户给的变量，这里是sql语句) use(传进来的父函数的变量)
+    </div>
+  </div>
+
+        </div>
+      
+        <div class="relative w-100  mb4 bg-white">
+            <div class="mb3 pa4 mid-gray overflow-hidden">
+    
+      <div class="f6">
+        十月 5, 2022
+      </div>
+    
+    <h1 class="f3 near-black">
+      <a href="/post/PHP%E5%BC%80%E5%8F%91/02MySQL%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%8C%E5%85%A8%E7%8B%AC%E7%AB%8B.html" class="link black dim">
+        MySQL数据库
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      MySQL导论 MySQL是一个关系型数据库管理系统（RDBMS）,由Oracle企业支持，SQL是它的，开源免费。存储引擎多变，不支持查询取消。
+sqlserver和mysql区别有哪些-mysql教程-PHP中文网
+如何配置安装启动
+phpMyadmin
+phpMyAdmin是一个以PHP为基础,以Web-Base方式架构在网站主机上的MySQL的数据库管理工具,是免费的Web应用程序;为使用MySQL数据库管理系统提供了方便的GUI,让管理者可用Web接口管理MySQL数据库
+访问：localhost/admin
+CMD与MySQL 基础符号
+登录mysql：mysql[-h 数据库服务器地址（如果存在本机可不写）-u 用户名 -p 密码吗]
+退出mysql：\q
+​	exit
+​	quit
+用完整格式查看 \G
+命令执行符（一条语句的结束） ; 或者 \g
+清除信息 \c
+常见符号：-&gt; 当前命令没有命令执行符。
+​	'&gt; 前面写的SQL语句缺少单引号
+编码规范 关键字和函数要全部大写
+数据库名、表名、字段名 全部小写
+必须以**;结尾**（命令执行符确认）
+常见的中文字符集设置
+需要设置utf8-mb4,否则将乱码
+utf8	国际化标准，亚洲通用字符集，一个汉字占3个字节（1~4字节的编码）
+GBK 中期标准，一个汉字占2个字节
+GB2312 早期标准
+数据库字符集的依赖关系（逐层查找）
+内容字符集-&gt;字段字符集-&gt;表字符集-&gt;库字符集
+SQL语句 我们每输入一条命令，所跳出来的返回值很重要。命令要简洁，效率优先，能不麻烦就不麻烦。
+分类
+DDL 数据库定义语言（CREAT DROP SHOW ALTER）
+DML 数据库操作语言（INSERT DELETE UPDATE)
+DQL 数据库查询语言（SELECT WHERE）
+DCL 数据库控制语言（权限）
+系统默认数据库
+最好不要动。
+information_schema	保存列行表单对象信息
+mysql	保存服务器运行信息
+    </div>
+  </div>
+
+        </div>
+      
+        <div class="relative w-100  mb4 bg-white">
+            <div class="mb3 pa4 mid-gray overflow-hidden">
+    
+      <div class="f6">
+        十月 1, 2022
+      </div>
+    
+    <h1 class="f3 near-black">
+      <a href="/post/PHP%E5%BC%80%E5%8F%91/01CMS%E6%9E%B6%E6%9E%84%E5%92%8C%E5%90%8E%E5%8F%B0%E9%85%8D%E7%BD%AEA-%E5%88%9D%E8%AF%86.html" class="link black dim">
+        CMS架构和后台配置A-初识
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      代码逻辑 WEB工作原理架构 CMS系统架构 整个流程构架： 1.需求分析
+​	CMS
+​	后台：会员模块、分类模块、文章模块&hellip;
+​	前台：首页、列表页、文章列表、搜索、分页、注册、登录页&hellip;.
+2.数据库设计
+​	1.找实体
+​	2.为实体找属性
+​	3.找关系
+​	4.E-R图
+3.程序设计
+​	项目的目录结构（MVC设计模式）
+​	一、EW-cms（主目录）
+​	1.admin 网站后台目录（
+​	layout-后台公共模板文件-header.html/left.html；
+​	include-后台资源目录-css/js/img；
+​
+​	view-所有的目录user/type-index.html/index.php-访问后台的入口文件-所有后台函数的调用-所有路径的include的蛊王；；
+​	control控制器目录
+​	IndexControl.php显示后台主页文件-一些函数的具体编写/UserControl.php用户相	关操作/ORG扩展目录
+​	）
+​	2.web（home） 网站前台目录（
+​	index.html 首页
+​	layout 前台工作模板 header/footer
+​	model模块（存放php与mysql相连的增删改查操作的函数封装）
+​	view-每个页面都有单独的文件(index.php前台主入口文件)
+​	control-每个页面相关的操作写入到对应的control文件中）
+​	4.public 公共资源目录（图片上传和缩放/index.php 网站（项目）主入口文件）
+​	5.config 网站的配置（数据库相关的操作、数据库的配置文件、数据的验证、上图中的model-设置网站配置常量）
+5.项目测试
+6.验收完工 项目正式上线
+项目的以上在此下面两本书中会说明清楚：
+    </div>
+  </div>
+
+        </div>
+      
+    </section>
+  </div>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://aiguamumu.github.io/" >
+    &copy;  Web_Security 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

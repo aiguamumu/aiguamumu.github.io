@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>MySQL数据库 | Web_Security</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="MySQL导论 MySQL是一个关系型数据库管理系统（RDBMS）,由Oracle企业支持，SQL是它的，开源免费。存储引擎多变，不支持查询取消。
+sqlserver和mysql区别有哪些-mysql教程-PHP中文网
+如何配置安装启动
+phpMyadmin
+phpMyAdmin是一个以PHP为基础,以Web-Base方式架构在网站主机上的MySQL的数据库管理工具,是免费的Web应用程序;为使用MySQL数据库管理系统提供了方便的GUI,让管理者可用Web接口管理MySQL数据库
+访问：localhost/admin
+CMD与MySQL 基础符号
+登录mysql：mysql[-h 数据库服务器地址（如果存在本机可不写）-u 用户名 -p 密码吗]
+退出mysql：\q
+​	exit
+​	quit
+用完整格式查看 \G
+命令执行符（一条语句的结束） ; 或者 \g
+清除信息 \c
+常见符号：-&gt; 当前命令没有命令执行符。
+​	&#39;&gt; 前面写的SQL语句缺少单引号
+编码规范 关键字和函数要全部大写
+数据库名、表名、字段名 全部小写
+必须以**;结尾**（命令执行符确认）
+常见的中文字符集设置
+需要设置utf8-mb4,否则将乱码
+utf8	国际化标准，亚洲通用字符集，一个汉字占3个字节（1~4字节的编码）
+GBK 中期标准，一个汉字占2个字节
+GB2312 早期标准
+数据库字符集的依赖关系（逐层查找）
+内容字符集-&gt;字段字符集-&gt;表字符集-&gt;库字符集
+SQL语句 我们每输入一条命令，所跳出来的返回值很重要。命令要简洁，效率优先，能不麻烦就不麻烦。
+分类
+DDL 数据库定义语言（CREAT DROP SHOW ALTER）
+DML 数据库操作语言（INSERT DELETE UPDATE)
+DQL 数据库查询语言（SELECT WHERE）
+DCL 数据库控制语言（权限）
+系统默认数据库
+最好不要动。
+information_schema	保存列行表单对象信息
+mysql	保存服务器运行信息">
+    <meta name="generator" content="Hugo 0.104.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="MySQL数据库" />
+<meta property="og:description" content="MySQL导论 MySQL是一个关系型数据库管理系统（RDBMS）,由Oracle企业支持，SQL是它的，开源免费。存储引擎多变，不支持查询取消。
+sqlserver和mysql区别有哪些-mysql教程-PHP中文网
+如何配置安装启动
+phpMyadmin
+phpMyAdmin是一个以PHP为基础,以Web-Base方式架构在网站主机上的MySQL的数据库管理工具,是免费的Web应用程序;为使用MySQL数据库管理系统提供了方便的GUI,让管理者可用Web接口管理MySQL数据库
+访问：localhost/admin
+CMD与MySQL 基础符号
+登录mysql：mysql[-h 数据库服务器地址（如果存在本机可不写）-u 用户名 -p 密码吗]
+退出mysql：\q
+​	exit
+​	quit
+用完整格式查看 \G
+命令执行符（一条语句的结束） ; 或者 \g
+清除信息 \c
+常见符号：-&gt; 当前命令没有命令执行符。
+​	&#39;&gt; 前面写的SQL语句缺少单引号
+编码规范 关键字和函数要全部大写
+数据库名、表名、字段名 全部小写
+必须以**;结尾**（命令执行符确认）
+常见的中文字符集设置
+需要设置utf8-mb4,否则将乱码
+utf8	国际化标准，亚洲通用字符集，一个汉字占3个字节（1~4字节的编码）
+GBK 中期标准，一个汉字占2个字节
+GB2312 早期标准
+数据库字符集的依赖关系（逐层查找）
+内容字符集-&gt;字段字符集-&gt;表字符集-&gt;库字符集
+SQL语句 我们每输入一条命令，所跳出来的返回值很重要。命令要简洁，效率优先，能不麻烦就不麻烦。
+分类
+DDL 数据库定义语言（CREAT DROP SHOW ALTER）
+DML 数据库操作语言（INSERT DELETE UPDATE)
+DQL 数据库查询语言（SELECT WHERE）
+DCL 数据库控制语言（权限）
+系统默认数据库
+最好不要动。
+information_schema	保存列行表单对象信息
+mysql	保存服务器运行信息" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aiguamumu.github.io/post/PHP%E5%BC%80%E5%8F%91/02MySQL%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%8C%E5%85%A8%E7%8B%AC%E7%AB%8B.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-05T17:35:33+08:00" />
+<meta property="article:modified_time" content="2022-10-05T17:35:33+08:00" /><meta property="og:site_name" content="Web_Security" />
+
+<meta itemprop="name" content="MySQL数据库">
+<meta itemprop="description" content="MySQL导论 MySQL是一个关系型数据库管理系统（RDBMS）,由Oracle企业支持，SQL是它的，开源免费。存储引擎多变，不支持查询取消。
+sqlserver和mysql区别有哪些-mysql教程-PHP中文网
+如何配置安装启动
+phpMyadmin
+phpMyAdmin是一个以PHP为基础,以Web-Base方式架构在网站主机上的MySQL的数据库管理工具,是免费的Web应用程序;为使用MySQL数据库管理系统提供了方便的GUI,让管理者可用Web接口管理MySQL数据库
+访问：localhost/admin
+CMD与MySQL 基础符号
+登录mysql：mysql[-h 数据库服务器地址（如果存在本机可不写）-u 用户名 -p 密码吗]
+退出mysql：\q
+​	exit
+​	quit
+用完整格式查看 \G
+命令执行符（一条语句的结束） ; 或者 \g
+清除信息 \c
+常见符号：-&gt; 当前命令没有命令执行符。
+​	&#39;&gt; 前面写的SQL语句缺少单引号
+编码规范 关键字和函数要全部大写
+数据库名、表名、字段名 全部小写
+必须以**;结尾**（命令执行符确认）
+常见的中文字符集设置
+需要设置utf8-mb4,否则将乱码
+utf8	国际化标准，亚洲通用字符集，一个汉字占3个字节（1~4字节的编码）
+GBK 中期标准，一个汉字占2个字节
+GB2312 早期标准
+数据库字符集的依赖关系（逐层查找）
+内容字符集-&gt;字段字符集-&gt;表字符集-&gt;库字符集
+SQL语句 我们每输入一条命令，所跳出来的返回值很重要。命令要简洁，效率优先，能不麻烦就不麻烦。
+分类
+DDL 数据库定义语言（CREAT DROP SHOW ALTER）
+DML 数据库操作语言（INSERT DELETE UPDATE)
+DQL 数据库查询语言（SELECT WHERE）
+DCL 数据库控制语言（权限）
+系统默认数据库
+最好不要动。
+information_schema	保存列行表单对象信息
+mysql	保存服务器运行信息"><meta itemprop="datePublished" content="2022-10-05T17:35:33+08:00" />
+<meta itemprop="dateModified" content="2022-10-05T17:35:33+08:00" />
+<meta itemprop="wordCount" content="698">
+<meta itemprop="keywords" content="PHP开发," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MySQL数据库"/>
+<meta name="twitter:description" content="MySQL导论 MySQL是一个关系型数据库管理系统（RDBMS）,由Oracle企业支持，SQL是它的，开源免费。存储引擎多变，不支持查询取消。
+sqlserver和mysql区别有哪些-mysql教程-PHP中文网
+如何配置安装启动
+phpMyadmin
+phpMyAdmin是一个以PHP为基础,以Web-Base方式架构在网站主机上的MySQL的数据库管理工具,是免费的Web应用程序;为使用MySQL数据库管理系统提供了方便的GUI,让管理者可用Web接口管理MySQL数据库
+访问：localhost/admin
+CMD与MySQL 基础符号
+登录mysql：mysql[-h 数据库服务器地址（如果存在本机可不写）-u 用户名 -p 密码吗]
+退出mysql：\q
+​	exit
+​	quit
+用完整格式查看 \G
+命令执行符（一条语句的结束） ; 或者 \g
+清除信息 \c
+常见符号：-&gt; 当前命令没有命令执行符。
+​	&#39;&gt; 前面写的SQL语句缺少单引号
+编码规范 关键字和函数要全部大写
+数据库名、表名、字段名 全部小写
+必须以**;结尾**（命令执行符确认）
+常见的中文字符集设置
+需要设置utf8-mb4,否则将乱码
+utf8	国际化标准，亚洲通用字符集，一个汉字占3个字节（1~4字节的编码）
+GBK 中期标准，一个汉字占2个字节
+GB2312 早期标准
+数据库字符集的依赖关系（逐层查找）
+内容字符集-&gt;字段字符集-&gt;表字符集-&gt;库字符集
+SQL语句 我们每输入一条命令，所跳出来的返回值很重要。命令要简洁，效率优先，能不麻烦就不麻烦。
+分类
+DDL 数据库定义语言（CREAT DROP SHOW ALTER）
+DML 数据库操作语言（INSERT DELETE UPDATE)
+DQL 数据库查询语言（SELECT WHERE）
+DCL 数据库控制语言（权限）
+系统默认数据库
+最好不要动。
+information_schema	保存列行表单对象信息
+mysql	保存服务器运行信息"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://aiguamumu.github.io/images/Sailboat%20at%20Le%20Petit-Gennevilliers.jpg');">
+    <div class="bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Web_Security
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post.html" title="Articles 页">
+              Articles
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact.html" title="Contact 页">
+              Contact
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">MySQL数据库</h1>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        ARTICLES
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://twitter.com/share?url=https://aiguamumu.github.io/post/PHP%E5%BC%80%E5%8F%91/02MySQL%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%8C%E5%85%A8%E7%8B%AC%E7%AB%8B.html&amp;text=MySQL%e6%95%b0%e6%8d%ae%e5%ba%93" class="ananke-social-link twitter no-underline" aria-label="share on Twitter">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">MySQL数据库</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-10-05T17:35:33+08:00">十月 5, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id="mysql导论">MySQL导论</h1>
+<ul>
+<li>
+<p>MySQL是一个<strong>关系型数据库管理系统</strong>（RDBMS）,由Oracle企业支持，SQL是它的，开源免费。存储引擎多变，不支持查询取消。</p>
+<p><a href="https://m.php.cn/article/414005.html">sqlserver和mysql区别有哪些-mysql教程-PHP中文网</a></p>
+</li>
+<li>
+<p>如何配置安装启动</p>
+</li>
+<li>
+<p><strong>phpMyadmin</strong></p>
+<blockquote>
+<p>phpMyAdmin是一个以PHP为基础,以Web-Base方式架构在网站主机上的MySQL的<strong>数据库管理工具</strong>,是免费的Web应用程序;为使用MySQL数据库管理系统提供了方便的<strong>GUI</strong>,让管理者可用Web接口管理MySQL数据库</p>
+<blockquote>
+<p>访问：localhost/admin</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<h3 id="cmd与mysql">CMD与MySQL</h3>
+<blockquote>
+<p>基础符号</p>
+<blockquote>
+<p><strong>登录mysql</strong>：<code>mysql[-h 数据库服务器地址（如果存在本机可不写）-u 用户名 -p 密码吗]</code></p>
+<p>退出mysql：<code>\q</code></p>
+<p>​						<code>exit</code></p>
+<p>​						<code>quit</code></p>
+<p>用完整格式查看 <code>\G</code></p>
+<p>命令执行符（一条语句的结束） <code> ;</code> 或者 <code>\g</code></p>
+<p>清除信息                                         <code>\c</code></p>
+</blockquote>
+<blockquote>
+<p>常见符号：<code>-&gt;</code>    当前命令没有命令执行符。</p>
+<p>​					<code>'&gt;</code>    前面写的SQL语句缺少单引号</p>
+</blockquote>
+</blockquote>
+<h3 id="编码规范">编码规范</h3>
+<ul>
+<li>
+<p><strong>关键字和函数要全部大写</strong></p>
+</li>
+<li>
+<p>数据库名、表名、字段名 <strong>全部小写</strong></p>
+</li>
+<li>
+<p>必须以**<code>;</code>结尾**（命令执行符确认）</p>
+</li>
+<li>
+<p>常见的中文<strong>字符集</strong>设置</p>
+<ul>
+<li>
+<p>需要设置<code>utf8-mb4</code>,否则将乱码</p>
+<blockquote>
+<p><code>utf8</code>	国际化标准，亚洲通用字符集，一个汉字占3个字节（1~4字节的编码）</p>
+<p><code>GBK</code>     中期标准，一个汉字占2个字节</p>
+<p><code>GB2312</code>  早期标准</p>
+</blockquote>
+</li>
+<li>
+<p>数据库字符集的依赖关系（逐层查找）</p>
+<blockquote>
+<p>内容字符集-&gt;字段字符集-&gt;表字符集-&gt;库字符集</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="sql语句">SQL语句</h1>
+<p>我们每输入一条命令，所跳出来的返回值很重要。命令要简洁，效率优先，能不麻烦就不麻烦。</p>
+<ul>
+<li>
+<p>分类</p>
+<blockquote>
+<p>DDL 数据库定义语言（CREAT DROP SHOW ALTER）</p>
+<p>DML 数据库操作语言（INSERT DELETE UPDATE)</p>
+<p>DQL 数据库查询语言（SELECT WHERE）</p>
+<p>DCL 数据库控制语言（权限）</p>
+</blockquote>
+</li>
+<li>
+<p>系统默认数据库</p>
+<p>最好不要动。</p>
+<blockquote>
+<p>information_schema	保存列行表单对象信息</p>
+<p>mysql								保存服务器运行信息</p>
+<p>performance_schema	保存历史记录信息</p>
+<p>sys										类帮助文档</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="对库的操作">对库的操作</h3>
+<ul>
+<li>
+<p><strong>创建</strong>一个数据库<code>CREATE DATABASE 库名</code></p>
+<ul>
+<li>
+<p><code>CREATE DATABASE IF NOT EXISTS 库名 </code>	如果不存在此库，则执行创建操作</p>
+<blockquote>
+<p>最好不要在MySQL里写判断语句。<strong>判断等逻辑语句在PHP里写就好。</strong></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>修改</strong>一个数据库</p>
+<ul>
+<li>没有提供数据库名的修改命令，<strong>数据库名一旦创建不能修改</strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong>删除</strong>一个数据库<code>DROP DATABASE 库名</code></p>
+<ul>
+<li><code>DROP DATABASE IF NOT EXISTS 库名 </code></li>
+</ul>
+</li>
+<li>
+<p><strong>查询</strong>数据库</p>
+<ul>
+<li>
+<p>查询<strong>所有的</strong>库名<code>SHOW DATABASE</code></p>
+</li>
+<li>
+<p><strong>选择进入</strong>一个数据库<code>USE 库名</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>关于库的<strong>字符集的查看和修改</strong></p>
+<ul>
+<li>
+<p>查询新创建的库所用的字符集</p>
+<p><code>SHOW CREATE DATABASE 库名</code></p>
+</li>
+<li>
+<p><strong>修改一个库的字符集</strong></p>
+<p><code>ALTER DATABASE 库名 CHARSET 字符集名</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="对表的操作">对表的操作</h3>
+<ul>
+<li>
+<p>查看<strong>所有</strong>表 <code>SHOW TABLES</code>(需要进入到那一个数据库中)</p>
+</li>
+<li>
+<p>创建一个表</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>CREAT <span style="color:#66d9ef">TABLE</span> <span style="color:#960050;background-color:#1e0010">表名</span>(
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">字段名（行名）</span> <span style="color:#960050;background-color:#1e0010">数据类型</span> <span style="color:#960050;background-color:#1e0010">列的完整性约束</span>;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">-</span> <span style="color:#f92672">-</span> <span style="color:#f92672">-</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>)[ENGINE<span style="color:#f92672">=</span>MYISAM <span style="color:#66d9ef">DEFAULT</span> CHARSET<span style="color:#f92672">=</span>UTF8MB4]
+</span></span></code></pre></div><ul>
+<li>
+<p>实例</p>
+<p><img src="images/image-20221011212758543.png" alt="image-20221011212758543"></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>查询</strong>表</p>
+<ul>
+<li>
+<p>查询<strong>一个表</strong>内容</p>
+<p><code>DESC 表名</code>返回的是这个整张表的具体信息。</p>
+</li>
+<li>
+<p>查询一个表的<strong>创建信息</strong></p>
+<p><code>SHOW CREATE TABLE</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>备份</strong>表</p>
+<p><code>CREAT TABLE 要备份的表名 SELECT * FROM 原表名</code></p>
+</li>
+<li>
+<p><strong>修改</strong>一个表的<strong>表名</strong></p>
+<p><code>ALTER TABLE 表名 RENAME 新表名</code></p>
+</li>
+<li>
+<p><strong>删除表</strong></p>
+<ul>
+<li>删除一张表<code>DROP TABLE [IF EXISTS] 表名</code></li>
+<li>删除多张数据表<code>DROP TABLE 表名1，表名2</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="对字段的操作">对字段的操作</h3>
+<ul>
+<li>
+<p>添加一个数据字段</p>
+<p><code>ALTER TABLE 表名 ADD 新字段名 [列的完整性约束][位置参数]</code></p>
+<ul>
+<li>位置参数：
+<ul>
+<li>不写默认为在末尾插入</li>
+<li><code>FIRST</code>在表的第一行插入</li>
+<li><code>AFTER 字段列名</code> 在某一字段行的之后插入</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>修改一个数据字段</strong></p>
+<ul>
+<li>
+<p><code>ALTER TABLE 表名 MODIFY 字段名 字段类型 [列的完整性约束]</code></p>
+<p>注意：使用<code>MODIFY</code>关键字，<strong>只能修改此字段的内容</strong>。</p>
+</li>
+<li>
+<p><code>ALTER TABLE 表名 CHANGE 新字段名 新字段类型 [列的完整性约束]</code></p>
+<p>注意：使用<code>CHANGE</code>关键字，可以更改字段名，<strong>但必须连着后面的也要再写一遍</strong>。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>删除字段</p>
+<ul>
+<li>
+<p><code>ALTER TABLE 表名 DROP 字段名</code></p>
+</li>
+<li>
+<p><code>ALTER TABLE 表名 DROP 字段名1，DROP 字段名2；</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>查询字段</p>
+<p><code>DESC 表名</code></p>
+</li>
+</ul>
+<h4 id="字段约束">字段约束</h4>
+<ul>
+<li>
+<p><strong>只能用于数值类型</strong></p>
+<blockquote>
+<ul>
+<li><code>UNSIGNED</code>	更改为<strong>无符号</strong>类型。（默认为有符号）</li>
+<li><code>ZEROFILL</code>     在数值之前<strong>自动用0补充</strong>不足位。</li>
+<li><code>AUTO_INCREMENT</code>    设置<strong>自动增量</strong>（如每行递增加一），若设此量，则<strong>一定要把这个属性设为主键</strong></li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p><code>PRIMARY KEY</code>    主键约束</p>
+<p>每张表中只能存在一个主键，起着唯一标识的作用。</p>
+</li>
+<li>
+<p><code>NULL</code>和<code>NOT NULL </code></p>
+<p>若默认值为<code>NOT NULL</code>，则必须要在此字段中插入值。</p>
+</li>
+<li>
+<p><code>DEFAULT</code>     指定默认值</p>
+</li>
+</ul>
+<h4 id="基础数据类型约束">基础数据类型约束</h4>
+<p><img src="images/image-20221011204525297.png" alt="image-20221011204525297"></p>
+<blockquote>
+<p>跟钱相关的一般采用DESIMAL类型，这样会更精确</p>
+</blockquote>
+<p><img src="images/image-20221011205044912.png" alt="image-20221011205044912"></p>
+<blockquote>
+<p>非常也不常见。</p>
+</blockquote>
+<p><img src="images/image-20221011205136811.png" alt="image-20221011205136811"></p>
+<blockquote>
+<blockquote>
+<p>字符串：新版本，<strong>一个汉字占用一个字节</strong>。</p>
+<p><strong>定长</strong>字符串 ：空白的自动占位存储，好查询，占空间。</p>
+<p><strong>变长</strong>字符串：空白的不存储，查询可视困难，不占空间</p>
+</blockquote>
+<blockquote>
+<p><code>BLOB</code>:   此类型可以以二进制的数来存储图片。</p>
+</blockquote>
+</blockquote>
+<ul>
+<li>一些关于类型的常识语法
+<ul>
+<li>MySQL中<strong>默认存储带符号值类型的</strong>。（如果这个类型包含正负的话）</li>
+<li><code>float(6,2)</code>  表示最大输入6位，小数保留2位。</li>
+</ul>
+</li>
+</ul>
+<h3 id="最重要对内容进行操作">（最重要）对内容进行操作</h3>
+<ul>
+<li>
+<p><strong>添加</strong>数据内容</p>
+<ul>
+<li>
+<p><strong>添加一条（一行）数据</strong></p>
+</li>
+<li>
+<p>指定表中哪一些字段添加哪一些值</p>
+<p>字段名中使用的是反引号`,为了防止关键字报错</p>
+<p>value后面的值一一对应</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#960050;background-color:#1e0010">表名（</span><span style="color:#f92672">`</span><span style="color:#960050;background-color:#1e0010">字段名</span><span style="color:#ae81ff">1</span><span style="color:#f92672">`</span>,<span style="color:#f92672">`</span><span style="color:#960050;background-color:#1e0010">字段名</span><span style="color:#ae81ff">2</span><span style="color:#f92672">`</span>,_<span style="color:#960050;background-color:#1e0010">）</span><span style="color:#66d9ef">VALUES</span>(<span style="color:#f92672">`</span><span style="color:#960050;background-color:#1e0010">值</span><span style="color:#ae81ff">1</span><span style="color:#f92672">`</span>,<span style="color:#f92672">`</span><span style="color:#960050;background-color:#1e0010">值</span><span style="color:#ae81ff">2</span><span style="color:#f92672">`</span>);
+</span></span></code></pre></div></li>
+<li>
+<p>添加表中所有字段的值</p>
+<p>所有值必须按表中顺序一一对应</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#960050;background-color:#1e0010">表名</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#f92672">`</span><span style="color:#960050;background-color:#1e0010">值</span><span style="color:#ae81ff">1</span><span style="color:#f92672">`</span>,<span style="color:#f92672">`</span><span style="color:#960050;background-color:#1e0010">值</span><span style="color:#ae81ff">2</span><span style="color:#f92672">`</span>,<span style="color:#f92672">`</span><span style="color:#960050;background-color:#1e0010">值</span><span style="color:#ae81ff">3</span><span style="color:#f92672">`</span>)
+</span></span></code></pre></div></li>
+<li>
+<p>添加<strong>多条</strong>数据：</p>
+<p><img src="images/image-20221012101034573.png" alt="image-20221012101034573"></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>修改</strong>数据内容</p>
+<p><code>UPDATE 表名 SET 字段名 = 值，字段名=值[修改条件WHERE]</code></p>
+<p>所有的修改条件<code>DELETE</code>里能用的<code>UPDATE</code>里也可以用</p>
+</li>
+<li>
+<p><strong>删除</strong>数据内容</p>
+<p><code>DELETE FROM 表名 [删除条件]</code></p>
+<p>一定要写删除条件，不然整个数据都被删除了。</p>
+<blockquote>
+<p><strong>WHERE条件</strong></p>
+<p><code>OR</code>和<code>AND</code>的逻辑</p>
+<p><code>BETWEEN AND</code>在什么和什么数之间</p>
+<p><img src="images/image-20221012101645155.png" alt="image-20221012101645155"></p>
+</blockquote>
+</li>
+<li>
+<p><strong>查询</strong>内容（属于DQL）</p>
+<ul>
+<li><code>SELECT * FROM 表名</code></li>
+</ul>
+<p>​       <code>*</code>	表示匹配所有字段</p>
+<ul>
+<li>
+<p><code>SELECT  字段名1，字段名2，字段名3  FROM 表名</code></p>
+</li>
+<li>
+<p>使用<code>as</code>关键字起<strong>别名</strong>：
+<code>SELECT a.id,a.username,a.age as haha FROM user as a;</code></p>
+</li>
+<li>
+<p>使用<code>WHERE</code>进行约束</p>
+<p><code>IN</code>包含和<code>NOT IN</code>不包含</p>
+<p><img src="images/image-20221012130921941.png" alt="image-20221012130921941"></p>
+</li>
+<li>
+<p>正则匹配：（万不得已才考虑）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> <span style="color:#66d9ef">user</span> <span style="color:#66d9ef">WHERE</span> username REGEXP <span style="color:#e6db74">&#39;g$&#39;</span>;<span style="color:#75715e">--表示以g结尾
+</span></span></span></code></pre></div></li>
+</ul>
+<p>SELECT * FROM user WHERE username REGEXP ‘^X.+$';</p>
+<pre tabindex="0"><code>
+- **`LIKE`模糊匹配**
+
+`%`占位，为任意多个内容
+
+`_`占位，为任意一个内容
+
+![image-20221012131224026](images/image-20221012131224026.png)
+
+`_`表示任意的**一个**字符
+
+- `COUNT(字段)`查询个数
+
+`SELECT COUNT(*) FROM 表名`
+
+![image-20221012131802371](images/image-20221012131802371.png)
+
+- `ASC`（正序），`DESC`倒叙，排序查询
+
+`SELECT * FROM 表名 ORDER BY 字段 ASC(DESC);`
+
+![image-20221012132018975](images/image-20221012132018975.png)
+
+有顺序`WHERE-&gt;ORDER BY-&gt;ASC`
+</code></pre></li>
+<li>
+<p><code>LIMIT</code>限制查询数量</p>
+<p><code>SELECT 字段  FROM 表名 [WHERE] [ORDER BY] [LIMIT]</code></p>
+<ul>
+<li><code>LIMIT 查询数量</code></li>
+</ul>
+</li>
+<li>
+<p><code>LIMIT 越过几条，取出几条</code></p>
+</li>
+<li>
+<p><code>GROUP BY</code>分组查询</p>
+<p><img src="images/image-20221012164632242.png" alt="image-20221012164632242"></p>
+<p><code>SUM(字段名)</code>求此字段名的和</p>
+<p><code>COUNT(字段名)</code>求此字段名的数量</p>
+<ul>
+<li>
+<p><code>HAVING</code>效率较低</p>
+<p>一般只是使用在分组里面做二次过滤，使用方法和<code>WHERE</code>一样。</p>
+</li>
+<li>
+<p><strong>多表联合查询</strong></p>
+<p><code>SELECT 表1.字段，表2.字段 FROM 表1，表2 WHERE 表1.字段=表2.字段</code></p>
+<ul>
+<li>做连接查询、右连接查询</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="总结">总结</h4>
+<p><code>SELECT 语句 [WHERE条件] [GROUP BY条件][HAVING 条件] [ORDER BY 条件][LIMIT条件]</code></p>
+<p><strong>顺序</strong></p>
+<h3 id="对内容操作查询数据体系补充">对内容操作查询数据体系补充</h3>
+<ul>
+<li>
+<p><strong>限制语句总结</strong></p>
+<ul>
+<li>
+<p>这些语句可跟在<code>WHERE</code>后面，也可跟在<code>group by</code>后面</p>
+</li>
+<li>
+<p><code>BETWEEN AND</code>   之间</p>
+</li>
+<li>
+<p><code>比较运算符 = &gt; &lt; </code>   优先级最大</p>
+<p><code>NOT</code></p>
+<p><code>AND</code></p>
+<p><code>OR</code>  优先级最小</p>
+</li>
+<li>
+<p><code>IN</code>    <code>NOT IN</code>   枚举里面选</p>
+</li>
+<li>
+<p><code>LIKE</code>   <code>NOT LIKE</code>   模糊匹配</p>
+<p>占位符<code>%</code>   <code>_</code></p>
+<p>可加<code>ESCAPE '\'</code>表示定义转义字符（如果需要前面模糊匹配的内容里需要匹配的是转义后的关键字符）</p>
+</li>
+<li>
+<p><code>IS NULL</code>     <code>IS NOT NULL</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>GROUP BY</code>分组查询</p>
+<p>如果写了group by，那么group by</p>
+<blockquote>
+<p>前：只能用聚集函数,或者按什么列分组的那一列。（不能出现其他列）</p>
+<p>后：限制条件只能用<code>having</code>(不能用<code>where</code>)</p>
+</blockquote>
+<ul>
+<li>
+<p>聚集函数</p>
+<p><code>SUM()</code>  <code>AVG()</code>  <code>COUNT()</code>  <code>MAX()</code>  <code>MIN()</code></p>
+</li>
+<li>
+<p><code>having</code>和<code>where</code>的区别</p>
+<blockquote>
+<p>having 作用在group by 分组后，having后才可出现聚集函数</p>
+<p>where作用于整张表</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p><code>DISTINCT</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">DISTINCT</span> <span style="color:#960050;background-color:#1e0010">列名</span> <span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">表名</span>  <span style="color:#75715e">--把相同的行去掉了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">COUNT</span>(<span style="color:#66d9ef">DISTINCT</span> <span style="color:#960050;background-color:#1e0010">列名</span>) <span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">表名</span> <span style="color:#75715e">--把相同行去掉的统计数
+</span></span></span></code></pre></div></li>
+<li>
+<p><code>.</code>字符链接运算符</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">列名</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#39; &#39;</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#39;is a&#39;</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#39; &#39;</span><span style="color:#f92672">+</span>job
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="其他查询除上面单表查询外的">其他查询（除上面单表查询外的）</h3>
+<ul>
+<li>
+<p>嵌套查询</p>
+<ul>
+<li>
+<p><code>IN</code>一般用于不相关子查询这一分类</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">--查询选修了课程2的学生姓名
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> sname <span style="color:#75715e">--外层查询/父查询
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">FROM</span> studinfo
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> sno <span style="color:#66d9ef">IN</span> 
+</span></span><span style="display:flex;"><span>(<span style="color:#66d9ef">SELECT</span> sno <span style="color:#75715e">--内层查询/子查询
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">FROM</span> sc
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> cno<span style="color:#f92672">=</span><span style="color:#960050;background-color:#1e0010">‘</span><span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">’</span>)
+</span></span></code></pre></div></li>
+<li>
+<p><code>EXISTS</code>一般用于相关子查询这一分类</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">查询选修了课程</span><span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">的学生姓名</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> sname <span style="color:#960050;background-color:#1e0010">外层查询</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">父查询</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> studinfo
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">EXISTS</span> 
+</span></span><span style="display:flex;"><span>(<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#960050;background-color:#1e0010">内层查询</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">子查询</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> sc
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> cno<span style="color:#f92672">=</span><span style="color:#960050;background-color:#1e0010">‘</span><span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">’</span> <span style="color:#66d9ef">AND</span> sno <span style="color:#f92672">=</span> studinfo.sno)
+</span></span></code></pre></div></li>
+<li>
+<p>带有比较运算符的子查询</p>
+</li>
+<li>
+<p><code>ANY</code>（任意值）和<code>ALL</code> （所有值）的子查询</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">--查询其他系中比IS系某一学生年龄小的学生姓名、年龄（按年龄递减）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> sname,sage <span style="color:#66d9ef">FROM</span> studinfo
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> sage <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">ANY</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#66d9ef">SELECT</span> sage <span style="color:#66d9ef">FROM</span> studinfo
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> sdept <span style="color:#f92672">=</span><span style="color:#960050;background-color:#1e0010">‘</span><span style="color:#66d9ef">IS</span><span style="color:#960050;background-color:#1e0010">’</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">AND</span> sdept <span style="color:#f92672">&lt;&gt;</span><span style="color:#960050;background-color:#1e0010">‘</span><span style="color:#66d9ef">IS</span><span style="color:#960050;background-color:#1e0010">’</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> sage <span style="color:#66d9ef">DESC</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>连接查询</p>
+<ul>
+<li>等值连接和非等值连接</li>
+<li>自身连接（设<code>as</code>别名）</li>
+<li>（左、右）外连接和内连接</li>
+<li>复合条件连接</li>
+<li>多表连接后查询</li>
+</ul>
+</li>
+<li>
+<p>集合查询</p>
+<ul>
+<li>
+<p><code>UNION</code>并操作</p>
+<p>其两边都是select语句。</p>
+<p>注意：ORDER BY子句只能用于对最终查询结果排序，不能对中间 结果排序，只能出现在最后。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="编写数据设计说明书及数据表设计">编写数据设计说明书及数据表设计</h1>
+<h4 id="常识">常识</h4>
+<blockquote>
+<ul>
+<li>
+<p><strong>图片存储的数据类型</strong>：char（37）</p>
+<p>因为图片储存都是经过加密的，且返回的字符串永远是32个字节，再加上最长后缀“.jpeg”，就是37字节</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="流程和设计示例">流程和设计示例</h4>
+<ul>
+<li>
+<p>看项目需求报告</p>
+</li>
+<li>
+<p>找实体，找属性，找关系（画E-R图，局部E-R图 &ndash;&gt; 整体E-R图）</p>
+<p>全局实例：</p>
+<p><img src="images/image-20221013210420088.png" alt="image-20221013210420088"></p>
+<p>局部实例：</p>
+<p><img src="images/image-20221013211032294.png" alt="image-20221013211032294"></p>
+</li>
+<li>
+<p>确定关系模式（文字描述，标出主键外键）</p>
+</li>
+<li>
+<p>搭建库-做表（架构）</p>
+<p>实例1：</p>
+<p><img src="images/image-20221013210837755.png" alt="image-20221013210837755"></p>
+<p>实例2：</p>
+<p><img src="images/image-20221013211211773.png" alt="image-20221013211211773"></p>
+<p>实例3：
+<img src="images/image-20221013212715125.png" alt="image-20221013212715125"></p>
+<ul>
+<li>最后的代码行要指定引擎<code>ENGINE</code>和字符集<code>CHARSET</code></li>
+<li>设置字符串型的默认值为空字符串<code>DEFAULT ''</code></li>
+</ul>
+</li>
+<li>
+<p>向表中填充数据</p>
+</li>
+</ul>
+<h1 id="sql语句的网站应用">SQL语句的网站应用</h1>
+<h3 id="首页中的sql语句的应用">首页中的SQL语句的应用</h3>
+<ul>
+<li>
+<p><strong>SQL函数和其他一些基础语句</strong></p>
+<blockquote>
+<ul>
+<li><code>unix_timestamp()</code>获取当前时间戳</li>
+<li><code>md5()</code>密码加密函数</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li><code>SHOW WARNING</code>如果在cmd中报出警告</li>
+<li>一般在建表的时候都会<strong>给所有的字段一个默认值</strong>，因为后续填充数据的时候，不可能每条语句都用到，<strong>没有用到的语句会发出警告</strong>。</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p><strong>注册用户：</strong></p>
+<p>注册即在数据库里插入一条数据。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> EW_USERS(username,pwd,addtime) <span style="color:#66d9ef">VALUES</span>(<span style="color:#e6db74">&#39;xiaoming&#39;</span>,md5(<span style="color:#e6db74">&#39;xiaoming&#39;</span>),<span style="color:#960050;background-color:#1e0010">获取当前时间戳</span>)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>登录</strong></p>
+<p>登录即在数据库中查询那条数据</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> ew_user <span style="color:#66d9ef">WHERE</span> username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;xiaoming&#39;</span> <span style="color:#66d9ef">AND</span> pwd<span style="color:#f92672">=</span>md5(<span style="color:#e6db74">&#39;xiaoming&#39;</span>)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>栏目(层级)查询</strong></p>
+<ul>
+<li>
+<p>查询顶级栏目</p>
+<p>最顶层的栏目时pid是为0的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> ew_category <span style="color:#66d9ef">WHERE</span> pid <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span></code></pre></div></li>
+<li>
+<p>查询子栏目</p>
+<p>pid表示层级。</p>
+<p>下一层的pid为上一层（其父层）的id</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> ew_category <span style="color:#66d9ef">WHERE</span> pid<span style="color:#f92672">=</span>(<span style="color:#66d9ef">SELECT</span> id <span style="color:#66d9ef">FROM</span> ew_category <span style="color:#66d9ef">WHERE</span> pid<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>);
+</span></span></code></pre></div></li>
+<li>
+<p><strong>最新</strong>文章</p>
+<p>“最新”表示要按时间排序-&gt;转为按插入顺序逆序（插入最迟说明最新）;而在此种情况下，id的大小可以反映插入顺序</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> ew_article <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id <span style="color:#66d9ef">DESC</span> <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">15</span>
+</span></span></code></pre></div></li>
+<li>
+<p>技术要闻，查询技术栏目中最新的10篇文章</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> ew_article <span style="color:#66d9ef">WHERE</span> pid<span style="color:#f92672">=</span><span style="color:#960050;background-color:#1e0010">栏目表中技术要闻的</span>id <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id <span style="color:#66d9ef">DESC</span> <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">5</span>;
+</span></span></code></pre></div></li>
+<li>
+<p>一号广告位：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> ew_poster <span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">position</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id <span style="color:#66d9ef">DESC</span> <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span>;
+</span></span></code></pre></div></li>
+<li>
+<p>公告：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> ew_notice <span style="color:#66d9ef">WHERE</span> display<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">AND</span> <span style="color:#960050;background-color:#1e0010">当前时间戳</span><span style="color:#f92672">&gt;</span>starttime <span style="color:#66d9ef">AND</span> <span style="color:#960050;background-color:#1e0010">当前时间</span><span style="color:#f92672">&lt;</span>endtime <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id <span style="color:#66d9ef">DESC</span> <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">5</span>;                                                                                 
+</span></span></code></pre></div></li>
+<li>
+<p>查询栏目对应的文章列表(子子文章)</p>
+<p><strong>两个查询语句的嵌套</strong></p>
+<p><img src="images/image-20221014193332652.png" alt="image-20221014193332652"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"></code></pre></div></li>
+</ul>
+<p>SELECT * FROM ew_artical WHERE pid=(SELECT id FROM ew_category WHERE pid!=0);</p>
+<pre tabindex="0"><code>
+- 友情链接
+
+```sql
+SELECT * FROM ew_link WHERE status=1 ORDER BY ord DESC LIMIT 10;
+</code></pre></li>
+</ul>
+<h3 id="后台功能模块业务编写sql">后台功能模块业务编写SQL</h3>
+<ul>
+<li>
+<p>用户管理</p>
+<ul>
+<li>
+<p>添加、查询（分页）用户</p>
+<p>分页用<code>LIMIT</code>跳段</p>
+<p>查询用<code>LIKE</code>模糊匹配</p>
+<p><img src="images/image-20221014195705268.png" alt="image-20221014195705268"></p>
+</li>
+<li>
+<p>用户权限和编辑用户</p>
+<p><img src="images/image-20221014203340974.png" alt="image-20221014203340974"></p>
+</li>
+</ul>
+</li>
+<li>
+<p>栏目管理</p>
+<p><strong><code>CONCAT(a，b)</code>将两个链接起来，形成一个单一的字符串</strong></p>
+<p><img src="images/image-20221014204532487.png" alt="image-20221014204532487"></p>
+</li>
+<li>
+<p>内容管理</p>
+<p><img src="images/image-20221015174317522.png" alt="image-20221015174317522"></p>
+</li>
+<li>
+<p>评论管理</p>
+<p>注意联合查询的使用方法</p>
+<p><img src="images/image-20221015175228790.png" alt="image-20221015175228790"></p>
+</li>
+<li>
+<p>广告管理</p>
+<p><img src="images/image-20221015175540733.png" alt="image-20221015175540733"></p>
+</li>
+<li>
+<p>友情链接</p>
+<p><img src="images/image-20221015175747249.png" alt="image-20221015175747249"></p>
+</li>
+</ul>
+<h1 id="总结-1">总结</h1>
+<p>重点掌握：</p>
+<ul>
+<li>对库、对表、对字段、<strong>对内容进行的增删改查</strong>四种操作</li>
+<li>在php操作是传入的是“xxxxsql语句xxxx{php变量}”这样的写法</li>
+<li>系统的sql语法</li>
+</ul>
+<ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/PHP%E5%BC%80%E5%8F%91.html" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">PHP开发</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关內容</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/PHP%E5%BC%80%E5%8F%91/01CMS%E6%9E%B6%E6%9E%84%E5%92%8C%E5%90%8E%E5%8F%B0%E9%85%8D%E7%BD%AEA-%E5%88%9D%E8%AF%86.html">CMS架构和后台配置A-初识</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://aiguamumu.github.io/" >
+    &copy;  Web_Security 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

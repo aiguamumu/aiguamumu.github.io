@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>CMS架构和后台配置A-初识 | Web_Security</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="代码逻辑 WEB工作原理架构 CMS系统架构 整个流程构架： 1.需求分析
+​	CMS
+​	后台：会员模块、分类模块、文章模块&hellip;
+​	前台：首页、列表页、文章列表、搜索、分页、注册、登录页&hellip;.
+2.数据库设计
+​	1.找实体
+​	2.为实体找属性
+​	3.找关系
+​	4.E-R图
+3.程序设计
+​	项目的目录结构（MVC设计模式）
+​	一、EW-cms（主目录）
+​	1.admin 网站后台目录（
+​	layout-后台公共模板文件-header.html/left.html；
+​	include-后台资源目录-css/js/img；
+​
+​	view-所有的目录user/type-index.html/index.php-访问后台的入口文件-所有后台函数的调用-所有路径的include的蛊王；；
+​	control控制器目录
+​	IndexControl.php显示后台主页文件-一些函数的具体编写/UserControl.php用户相	关操作/ORG扩展目录
+​	）
+​	2.web（home） 网站前台目录（
+​	index.html 首页
+​	layout 前台工作模板 header/footer
+​	model模块（存放php与mysql相连的增删改查操作的函数封装）
+​	view-每个页面都有单独的文件(index.php前台主入口文件)
+​	control-每个页面相关的操作写入到对应的control文件中）
+​	4.public 公共资源目录（图片上传和缩放/index.php 网站（项目）主入口文件）
+​	5.config 网站的配置（数据库相关的操作、数据库的配置文件、数据的验证、上图中的model-设置网站配置常量）
+5.项目测试
+6.验收完工 项目正式上线
+项目的以上在此下面两本书中会说明清楚：">
+    <meta name="generator" content="Hugo 0.104.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="CMS架构和后台配置A-初识" />
+<meta property="og:description" content="代码逻辑 WEB工作原理架构 CMS系统架构 整个流程构架： 1.需求分析
+​	CMS
+​	后台：会员模块、分类模块、文章模块&hellip;
+​	前台：首页、列表页、文章列表、搜索、分页、注册、登录页&hellip;.
+2.数据库设计
+​	1.找实体
+​	2.为实体找属性
+​	3.找关系
+​	4.E-R图
+3.程序设计
+​	项目的目录结构（MVC设计模式）
+​	一、EW-cms（主目录）
+​	1.admin 网站后台目录（
+​	layout-后台公共模板文件-header.html/left.html；
+​	include-后台资源目录-css/js/img；
+​
+​	view-所有的目录user/type-index.html/index.php-访问后台的入口文件-所有后台函数的调用-所有路径的include的蛊王；；
+​	control控制器目录
+​	IndexControl.php显示后台主页文件-一些函数的具体编写/UserControl.php用户相	关操作/ORG扩展目录
+​	）
+​	2.web（home） 网站前台目录（
+​	index.html 首页
+​	layout 前台工作模板 header/footer
+​	model模块（存放php与mysql相连的增删改查操作的函数封装）
+​	view-每个页面都有单独的文件(index.php前台主入口文件)
+​	control-每个页面相关的操作写入到对应的control文件中）
+​	4.public 公共资源目录（图片上传和缩放/index.php 网站（项目）主入口文件）
+​	5.config 网站的配置（数据库相关的操作、数据库的配置文件、数据的验证、上图中的model-设置网站配置常量）
+5.项目测试
+6.验收完工 项目正式上线
+项目的以上在此下面两本书中会说明清楚：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aiguamumu.github.io/post/PHP%E5%BC%80%E5%8F%91/01CMS%E6%9E%B6%E6%9E%84%E5%92%8C%E5%90%8E%E5%8F%B0%E9%85%8D%E7%BD%AEA-%E5%88%9D%E8%AF%86.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-01T17:35:33+08:00" />
+<meta property="article:modified_time" content="2022-10-01T17:35:33+08:00" /><meta property="og:site_name" content="Web_Security" />
+
+<meta itemprop="name" content="CMS架构和后台配置A-初识">
+<meta itemprop="description" content="代码逻辑 WEB工作原理架构 CMS系统架构 整个流程构架： 1.需求分析
+​	CMS
+​	后台：会员模块、分类模块、文章模块&hellip;
+​	前台：首页、列表页、文章列表、搜索、分页、注册、登录页&hellip;.
+2.数据库设计
+​	1.找实体
+​	2.为实体找属性
+​	3.找关系
+​	4.E-R图
+3.程序设计
+​	项目的目录结构（MVC设计模式）
+​	一、EW-cms（主目录）
+​	1.admin 网站后台目录（
+​	layout-后台公共模板文件-header.html/left.html；
+​	include-后台资源目录-css/js/img；
+​
+​	view-所有的目录user/type-index.html/index.php-访问后台的入口文件-所有后台函数的调用-所有路径的include的蛊王；；
+​	control控制器目录
+​	IndexControl.php显示后台主页文件-一些函数的具体编写/UserControl.php用户相	关操作/ORG扩展目录
+​	）
+​	2.web（home） 网站前台目录（
+​	index.html 首页
+​	layout 前台工作模板 header/footer
+​	model模块（存放php与mysql相连的增删改查操作的函数封装）
+​	view-每个页面都有单独的文件(index.php前台主入口文件)
+​	control-每个页面相关的操作写入到对应的control文件中）
+​	4.public 公共资源目录（图片上传和缩放/index.php 网站（项目）主入口文件）
+​	5.config 网站的配置（数据库相关的操作、数据库的配置文件、数据的验证、上图中的model-设置网站配置常量）
+5.项目测试
+6.验收完工 项目正式上线
+项目的以上在此下面两本书中会说明清楚："><meta itemprop="datePublished" content="2022-10-01T17:35:33+08:00" />
+<meta itemprop="dateModified" content="2022-10-01T17:35:33+08:00" />
+<meta itemprop="wordCount" content="494">
+<meta itemprop="keywords" content="PHP开发," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CMS架构和后台配置A-初识"/>
+<meta name="twitter:description" content="代码逻辑 WEB工作原理架构 CMS系统架构 整个流程构架： 1.需求分析
+​	CMS
+​	后台：会员模块、分类模块、文章模块&hellip;
+​	前台：首页、列表页、文章列表、搜索、分页、注册、登录页&hellip;.
+2.数据库设计
+​	1.找实体
+​	2.为实体找属性
+​	3.找关系
+​	4.E-R图
+3.程序设计
+​	项目的目录结构（MVC设计模式）
+​	一、EW-cms（主目录）
+​	1.admin 网站后台目录（
+​	layout-后台公共模板文件-header.html/left.html；
+​	include-后台资源目录-css/js/img；
+​
+​	view-所有的目录user/type-index.html/index.php-访问后台的入口文件-所有后台函数的调用-所有路径的include的蛊王；；
+​	control控制器目录
+​	IndexControl.php显示后台主页文件-一些函数的具体编写/UserControl.php用户相	关操作/ORG扩展目录
+​	）
+​	2.web（home） 网站前台目录（
+​	index.html 首页
+​	layout 前台工作模板 header/footer
+​	model模块（存放php与mysql相连的增删改查操作的函数封装）
+​	view-每个页面都有单独的文件(index.php前台主入口文件)
+​	control-每个页面相关的操作写入到对应的control文件中）
+​	4.public 公共资源目录（图片上传和缩放/index.php 网站（项目）主入口文件）
+​	5.config 网站的配置（数据库相关的操作、数据库的配置文件、数据的验证、上图中的model-设置网站配置常量）
+5.项目测试
+6.验收完工 项目正式上线
+项目的以上在此下面两本书中会说明清楚："/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://aiguamumu.github.io/images/Sailboat%20at%20Le%20Petit-Gennevilliers.jpg');">
+    <div class="bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Web_Security
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post.html" title="Articles 页">
+              Articles
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact.html" title="Contact 页">
+              Contact
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">CMS架构和后台配置A-初识</h1>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        ARTICLES
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://twitter.com/share?url=https://aiguamumu.github.io/post/PHP%E5%BC%80%E5%8F%91/01CMS%E6%9E%B6%E6%9E%84%E5%92%8C%E5%90%8E%E5%8F%B0%E9%85%8D%E7%BD%AEA-%E5%88%9D%E8%AF%86.html&amp;text=CMS%e6%9e%b6%e6%9e%84%e5%92%8c%e5%90%8e%e5%8f%b0%e9%85%8d%e7%bd%aeA-%e5%88%9d%e8%af%86" class="ananke-social-link twitter no-underline" aria-label="share on Twitter">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">CMS架构和后台配置A-初识</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-10-01T17:35:33+08:00">十月 1, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%911">代码逻辑</a></li>
+</ul>
+<h1 id="web工作原理架构">WEB工作原理架构</h1>
+<p><img src="images/image-20221013215307355-1667624010034.png" alt="image-20221013215307355"></p>
+<h1 id="cms系统架构">CMS系统架构</h1>
+<h3 id="整个流程构架">整个流程构架：</h3>
+<blockquote>
+<p>1.需求分析</p>
+<p>​	CMS</p>
+<p>​			后台：会员模块、分类模块、文章模块&hellip;</p>
+<p>​			前台：首页、列表页、文章列表、搜索、分页、注册、登录页&hellip;.</p>
+<p>2.数据库设计</p>
+<p>​			1.找实体</p>
+<p>​			2.为实体找属性</p>
+<p>​			3.找关系</p>
+<p>​			4.E-R图</p>
+<p>3.程序设计</p>
+<p>​		项目的目录结构（MVC设计模式）</p>
+<p>​					一、EW-cms（主目录）</p>
+<p>​							1.admin 网站后台目录（</p>
+<p>​								layout-后台公共模板文件-header.html/left.html；</p>
+<p>​								include-后台资源目录-css/js/img；</p>
+<p>​</p>
+<p>​								view-所有的目录user/type-index.html/index.php-访问后台的入口文件-所有后台函数的调用-所有路径的include的蛊王；；</p>
+<p>​								control控制器目录</p>
+<p>​										IndexControl.php显示后台主页文件-一些函数的具体编写/UserControl.php用户相										关操作/ORG扩展目录</p>
+<p>​								）</p>
+<p>​							2.web（home）  网站前台目录（</p>
+<p>​								index.html 首页</p>
+<p>​								layout 前台工作模板 header/footer</p>
+<p>​								model模块（存放php与mysql相连的增删改查操作的函数封装）</p>
+<p>​								view-每个页面都有单独的文件(index.php前台主入口文件)</p>
+<p>​								control-每个页面相关的操作写入到对应的control文件中）</p>
+<p><img src="images/image-20221004234225247.png" alt="image-20221004234225247"></p>
+<p>​							4.public 公共资源目录（图片上传和缩放/index.php 网站（项目）主入口文件）</p>
+<p>​							5.config 网站的配置（数据库相关的操作、数据库的配置文件、数据的验证、上图中的model-设置网站配置常量）</p>
+<p>5.项目测试</p>
+<p>6.验收完工 项目正式上线</p>
+</blockquote>
+<p>项目的以上在此下面两本书中会说明清楚：</p>
+<ul>
+<li>
+<p>程序设计说明书</p>
+<blockquote>
+<p>一、引言（编写目的、背景、定义、参考资料）</p>
+<p>二、外部设计（标识符和状态、使用它的程序、约定、支持软件）</p>
+<p>三、结构设计（概念结构设计（实体、属性、E-R图绘制）、逻辑结构设计（E-R图转向关系模型、确定关系模型）物理结构设计（数据表的设计、创建数据表、数据库的设计和其他问题））</p>
+</blockquote>
+</li>
+<li>
+<p>项目需求分析说明书</p>
+<blockquote>
+<p>一、文档介绍（编写说明、项目背景、适用人员、参考资料、术语的缩写与解释）</p>
+<p>二、任务概述（产品描述、系统目标（前后台）、系统功能结构、系统流程图）</p>
+<p>三、业务描述（后台登录管理（功能构成、描述、预览）、文章管理、图片管理、栏目管理、用户组管理）</p>
+<p>最多</p>
+<p>四、系统运行环境（硬件环境、软件环境）</p>
+<p>五、需求设计评审</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="项目目录搭建和后台模板调用">项目目录搭建和后台模板调用</h1>
+<ul>
+<li>
+<p>目录路径</p>
+<blockquote>
+<p><code>../include/css/header.css</code>   在上级目录下找css</p>
+<p><code>css/header.css</code>   在当前目录下找css</p>
+<p><code>./include/css/header.css</code>   在同级目录下找css</p>
+</blockquote>
+</li>
+<li>
+<h3 id="php基本语法查询a">php基本语法查询A</h3>
+<blockquote>
+<p><a href="https://www.runoob.com/php/php-syntax.html">PHP 语法 | 菜鸟教程 (runoob.com)</a></p>
+<blockquote>
+<ul>
+<li>变量以<code>$</code>开头</li>
+<li>输出为<code>echo</code></li>
+<li>预定义变量<code>$_</code>开头</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>双问号（??）运算符：称为Null合并运算符。若为null则返回&quot;??&ldquo;后面的值，否则返回原值</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<p>问号（？）：传参</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./index.php?m=sys&amp;a=show</span>&gt;网站配置&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span></code></pre></div></li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<p>html语法之嵌入css样式</p>
+<pre tabindex="0"><code class="language-php+HTML" data-lang="php+HTML">//html中的head里
+&lt;link rel=“  ” href=&#34;css文件的目录路径&#34;&gt;
+</code></pre></li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<p><strong>$_GET变量用法</strong></p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><a href="#$_POST">$_POST变量笔记详情见上个大标题下php基本语法查询B中</a></p>
+<p><img src="images/image-20221006143524785.png" alt="image-20221006143524785"></p>
+<pre tabindex="0"><code class="language-php+HTML" data-lang="php+HTML">//welcome.php 文件里
+&lt;form action=&#34;hello.php&#34;method=&#34;get&#34;&gt;// form 标签提交表单  ；  action表示向什么文件提交（此处也可填提交对象文件的路径并传参赋值）； method表示提交的方法
+Name:&lt;input type=&#34;text&#34;name=&#34;name&#34;&gt;
+Age:&lt;input type=&#34;text&#34;name=&#34;age&#34;&gt;
+&lt;input type=&#34;submit&#34;&gt;
+&lt;/form&gt;
+
+//当用户点击提交按钮时，发送的 URL 会类似这样：http://www.w3school.com.cn/welcome.php?name=Peter&amp;age=37
+
+//“hello.php” 文件现在可以通过 $_GET 变量来获取表单数据了（请注意，表单域的名称会自动成为 $_GET 数组中的 ID 键）
+
+//hello.php 文件里
+Welcome &lt;!--?php echo GET[&#34;name&#34;];?--&gt;.&lt;br&gt; 
+You are &lt;!--?php echo $_GET[&#34;age&#34;];?--years old!
+</code></pre></li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<h3 id="php作用概览">php作用概览</h3>
+<ul>
+<li>
+<p>html和php关系。</p>
+<p><strong>php是脚本语言</strong>，生成动态html。html收集数据提交给php处理，然后php再把数据返回给html显示</p>
+</li>
+<li>
+<p><strong>JS和php的区别</strong></p>
+<p>1、php是一个服务端语言，而JavaScript是一个客户端语言；</p>
+<p>2、<strong>php的字符串连接符是“.”，而JS的是“+”；</strong></p>
+<p>3、数组相加，php用“+”，JS用concat()函数；</p>
+<p>4、php只有变量名区分大小写，而JS全部区分大小写。</p>
+<p>5、<strong>php核心功能通过函数方法实现</strong>，而js通过对象实现</p>
+</li>
+<li>
+<p>php和mysql的关系</p>
+<p><em>php是服务器端脚本语言 mysql是服务器端常见的数据库管理程序.</em> 一般用<strong>apache+php+mysql</strong>一起使用, 可以实现很多常见操作数据库的网页网站应用。php语言支持对mysql数据库中的数据，进行连接，增，册，查，改，和关闭的操作。</p>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="admin网站后台目录下文件和模板的调用">admin（网站后台目录下）文件和模板的调用</h3>
+<blockquote>
+<ul>
+<li>
+<p>注意 改动时 若a1文件下有写     <strong>include “a2的路径”</strong>，且</p>
+<p>若a2文件还要再include “文件路径”，则</p>
+<blockquote>
+<p>此文件路径的查找按照a1文件层次级别的位置查找，</p>
+</blockquote>
+<blockquote>
+<p>此文件路径所指的文件（html）中的css关联的路径也要按a1的文件层次级别查找</p>
+</blockquote>
+<blockquote>
+<p>include 包含 即 所有的代码都被赋值粘贴过去。</p>
+<blockquote>
+<p>可因此实现html中写php代码（此html文件一定被包含进某一个php文件）</p>
+<p>三个header、left、right的html文件的合并（把多余的head和body标签及内容去掉）</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>大体文件目录</p>
+<p><img src="images/image-20221006154220152.png" alt="image-20221006154220152"></p>
+<p>admin下的文件目录</p>
+<p><img src="images/image-20221006154354562.png" alt="image-20221006154354562"></p>
+</li>
+<li>
+<p>admin下，<strong>index.php(后台主入口文件)</strong></p>
+<p>&ndash;&gt;在此例中明显可见，所有的路径包含都是以index.php的级别标准查找的。</p>
+<p>&ndash;&gt;浏览器中，admin下，默认打开的文件，实现函数调用</p>
+<p><img src="images/image-20221006155222162.png" alt="image-20221006155222162"></p>
+<ul>
+<li>
+<p>可调用时<strong>传参</strong>进去（<a href="#%E5%90%8E%E5%8F%B0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><strong>此处配置文件的内容编写见下一个大标题</strong></a>）</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>  &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./index.php?m=sys&amp;a=show</span>&gt;网站配置&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>           //此例中，sys和show都是函数
+</span></span></code></pre></div><p>再在control下新建一个“sysControl.php”写sys和show函数，函数里包含新写的sysControl.html文件</p>
+<p>在index.php里把“sysControl.php”包含进去，且<strong>index.php其他参数不用改</strong>，便可实现传参的调用。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>admin下，contrl下，<strong>indexcontrol.php文件</strong></p>
+<p>&ndash;&gt;写所有将被用到的函数和方法的具体“定义”</p>
+<p><img src="images/image-20221006154635545.png" alt="image-20221006154635545"></p>
+</li>
+<li>
+<p>admin下，view下，<strong>index.html文件</strong></p>
+<p>&ndash;&gt;写具体要呈现的内容</p>
+<p><img src="images/image-20221006154316975.png" alt="image-20221006154316975"></p>
+</li>
+<li>
+<p>layout文件夹包含：header.html和left.html文件</p>
+</li>
+</ul>
+<h1 id="后台网站配置功能的实现">后台网站配置功能的实现</h1>
+<ul>
+<li>
+<h3 id="php基本语法查询b">php基本语法查询B</h3>
+<blockquote>
+<p>pass</p>
+<blockquote>
+<ul>
+<li>
+<p>PHP的变量在HTML的<code>input</code>表情里的<code>value</code>属性里面写时的写法：<code>&lt;?=变量名?&gt;</code></p>
+</li>
+<li>
+<p>数组的写入</p>
+<p><img src="images/image-20221010190139010.png" alt="image-20221010190139010"></p>
+<p><img src="images/image-20221010185120850.png" alt="image-20221010185120850"></p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>php中退出执行代码为<code>exit</code></li>
+<li>php中<code>变量不需要定义</code>，直接写名字直接用就行了&ndash;&gt;弱类型语言</li>
+<li>php中<strong>字符串的连接与分割</strong><code>.</code>和<code>'</code>。即<code>'.'</code>的使用</li>
+<li>php中，输出为<code>echo</code></li>
+<li>php中，<strong>变量名以美元符号开头</strong></li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<p><code>var_dump(x)</code>函数:用于输出变量x的相关信息。</p>
+<p>x经常是一个<strong>预定义的数组变量或者对象</strong>。</p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<p><code>define(name,value,case_insensitive)</code>函数：定义一个常量值，常用在配置文件中。</p>
+<p>名字、值、对名字的大小写是否敏感（true为不敏感，false反之）</p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<p>html语法之<code>form</code>标签</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>能让用户输入内容都在form表单范围内。</p>
+<p>特别说明属性method。method=&ldquo;post&rdquo; 或者 method=“get”两种请求方法</p>
+<p><code>input</code>标签（<code>type</code> 和<code>name</code>属性）必须存在于<code>form</code>里</p>
+<p><code>textarea</code>(<code>name</code>属性、行和列)标签必须存在于<code>form</code>里，表示多行文本的输入。</p>
+<p><code>span</code> <strong>用于对文档中的行内元素进行组合</strong>。(用于提示、文本样式需要有特殊变化时)</p>
+<p><code>td</code>（单元格中）的属性<code>colspan</code>表示可限定单元格所占的列数，即跨列合并</p>
+<p>此处<code>form</code>标签包含了<code>table</code>标签包含了<code>tr</code>标签包含了<code>td</code>标签</p>
+<p>以下为图片文件上传的例子（adimin下view下sysConfig.html中）:</p>
+<!-- raw HTML omitted -->
+<p>只要有图片上传，就要改变form的编码格式<code>enctype</code>（sysConfig.html中）：</p>
+<p>enctype属性指定将数据发回到服务器时浏览器使用的编码类型。</p>
+<p><img src="images/image-20221006174005523.png" alt="image-20221006174005523"></p>
+<p>以下为普通文本输入的例子（sysConfig.html中）：</p>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<p><strong><code>$_POST</code>变量</strong></p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>（<a href="#$_GET%E5%8F%98%E9%87%8F%E7%AC%94%E8%AE%B0"><strong>$_GET变量笔记详情见上个大标题下php基本语法查询A中的</strong></a>）</p>
+<p>由于变量不显示在 URL 中，所以无法把页面加入书签。</p>
+<p><img src="images/image-20221006172803451.png" alt="image-20221006172803451"></p>
+<pre tabindex="0"><code class="language-php+HTML" data-lang="php+HTML">//form.html中
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&#34;utf-8&#34;&gt;
+&lt;title&gt;菜鸟教程(runoob.com)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;form action=&#34;welcome.php&#34; method=&#34;post&#34;&gt;
+名字: &lt;input type=&#34;text&#34; name=&#34;fname&#34;&gt;
+年龄: &lt;input type=&#34;text&#34; name=&#34;age&#34;&gt;
+&lt;input type=&#34;submit&#34; value=&#34;提交&#34;&gt;
+&lt;/form&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+
+//welcome.php中：
+//&#34;welcome.php&#34; 文件现在可以通过 $_POST 变量来收集表单数据了（请注意，表单域的名称会动成为 $_POST 数组中的键）
+欢迎 &lt;?php echo $_POST[&#34;fname&#34;]; ?&gt;!&lt;br&gt;
+你的年龄是 &lt;?php echo $_POST[&#34;age&#34;]; ?&gt;  岁。
+
+//此时，显示收集结果的URL：http://www.runoob.com/welcome.php
+</code></pre></li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<p><strong><code>$_FILES</code>变量</strong></p>
+<p>在php中，<code>$_FILES</code>是一个预定义的数组变量，用来获取通过POST方式上传到服务器的文件数据。如果为单个文件上传，那么<code>$_FILES</code>为二维数组；如果为多个文件上传，那么<code>$_FILES</code>为二维数组。</p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<p><code>file_get_contents(filename:&quot;xxxx&quot;)</code>函数</p>
+<p>作用是将整个文件读入一个字符串。括号里填写所要读取文件的路径。&ldquo;filename:&ldquo;可写可不写。</p>
+<p>该函数是二进制安全的。（意思是二进制数据（如图像）和字符数据都可以使用此函数写入。）</p>
+</li>
+<li>
+<p><code>file_put_contents(filename:&quot;xxxx&quot;,字符串变量)</code>函数</p>
+<p>作用是把字符串变量传到filename文件里，传入成功返回1，否则返回0。</p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<p><code>foreach()</code>数组的历遍函数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$b <span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>(<span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;Tom&#39;</span>,<span style="color:#e6db74">&#39;b&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;Mary&#39;</span>,<span style="color:#e6db74">&#39;c&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;Peter&#39;</span>,<span style="color:#e6db74">&#39;d&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;Jack&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">foreach</span> ($b <span style="color:#66d9ef">as</span> $value) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">echo</span> $value<span style="color:#f92672">.</span><span style="color:#e6db74">&#34;&lt;br/&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//结果：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">Tom</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Mary</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Peter</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Jack</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">foreach</span> ($b <span style="color:#66d9ef">as</span> $key <span style="color:#f92672">=&gt;</span> $value) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">echo</span> $key<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;,&#39;</span><span style="color:#f92672">.</span>$value<span style="color:#f92672">.</span><span style="color:#e6db74">&#34;&lt;br/&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//结果：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">a</span>,<span style="color:#a6e22e">Tom</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">b</span>,<span style="color:#a6e22e">Mary</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">c</span>,<span style="color:#a6e22e">Peter</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">d</span>,<span style="color:#a6e22e">Jack</span>
+</span></span></code></pre></div></li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<h3 id="正则表达式">正则表达式</h3>
+<blockquote>
+<p><a href="https://regex101.com/">正则表达式匹配网站</a></p>
+<blockquote>
+<ul>
+<li>
+<p>限定符</p>
+<blockquote>
+<p><code>?</code>     例如<code>used?</code>表示 前一个字符d可由可无</p>
+<p>​		匹配结果 use  used；</p>
+<p><code>*</code>		例如<code>ab*c</code>表示前一个字符b出现次数不定</p>
+<p>​		匹配结果 abbbbc ，  abc  ， ac；</p>
+<p><code>+</code>        例如<code>ab+c</code>表示前一个字符匹配次数1此或者多次</p>
+<p>​			匹配结果 abbbbc ， abc；</p>
+<p><code>{n,m}</code>	限定匹配次数表示最少匹配n个，最多匹配m个</p>
+<ul>
+<li>如果要匹配的是一个字符串,用括号括起来：<code>（ab）+</code></li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>运算符</p>
+<blockquote>
+<p><code>|</code>       或者or运算符，例如<code>a (cat|dog)</code>（注意一定要有括号）</p>
+<p>​			匹配结果：a cat，a dog</p>
+</blockquote>
+</li>
+<li>
+<p>字符类**(<code>+</code>符号是因为匹配时加上去的，不属于字符本身)**</p>
+<blockquote>
+<p><code>[abc]+ </code>    方括号内的字符串表示只要包含这几个字符就匹配</p>
+<p><code>[a-zA-Z]+</code>  表示匹配所有的大写字符和小写字符</p>
+<p><code>[^0-9]+  </code> 表示除了所有的数字字符其他的都匹配</p>
+</blockquote>
+</li>
+<li>
+<p>元字符(<strong>(<code>+</code>符号是因为匹配时加上去的，不属于字符本身</strong>)</p>
+<blockquote>
+<p><code>\d+</code>  匹配所有的数字字符</p>
+<p><code>\D+</code>    与上面小写d相反</p>
+<p><code>\w+</code>  匹配所有的单词字符（英文、数字、下划线）</p>
+<p><code>\W+</code>  与上面小写的相反</p>
+<p><code>\s+</code>  匹配所有的空白字符（tab键和换行符）</p>
+<p><code>.*</code>    匹配任意字符（除了换行符）</p>
+<p><code>^a</code>	匹配所有行首的a</p>
+<p><code>a$</code>	匹配所有行尾的a</p>
+<p><code>\b</code>   表示单词字符的边界结束了（末尾）</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<p><strong>贪婪与懒惰匹配</strong></p>
+<ul>
+<li>
+<p>加一个<code>?</code>让<strong>默认的贪婪匹配</strong>&ndash;&gt;(转为)懒惰匹配</p>
+<p><img src="images/image-20221010175454946.png" alt="image-20221010175454946"></p>
+<p><img src="images/image-20221010175415025.png" alt="image-20221010175415025"></p>
+</li>
+<li>
+<p>实例1（颜色值十六进制的匹配）</p>
+<p><img src="images/image-20221010175825200.png" alt="image-20221010175825200"></p>
+</li>
+<li>
+<p>实例2（ipv4地址的匹配）</p>
+<p><img src="images/image-20221010180752840.png" alt="image-20221010180752840"></p>
+</li>
+<li>
+<p>fore-learning</p>
+<ul>
+<li>正则表达式30分钟入门教程作者：deerchao
+<a href="https://deerchao.cn/tutorials/regex/regex.htm">https://deerchao.cn/tutorials/regex/regex.htm</a></li>
+<li>Regex tutorial一A quick cheatsheet by examples（英文）作者：Jonny Fox
+<a href="https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285">https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285</a></li>
+<li>Regular Expressions Tutorial（英文）
+<a href="https://www.regular-expressions.info/tutorial.html">https://www.regular-expressions.info/tutorial.html</a></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h3 id="php中用正则表达式">php中用正则表达式</h3>
+<blockquote>
+<p><a href="https://blog.csdn.net/weixin_46601374/article/details/122310702">(71条消息) PHP正则表达式_正在过坎的博客-CSDN博客_php正则表达式</a></p>
+<ul>
+<li>
+<p><strong>实例:要实现接受到的内容实现替换</strong></p>
+<p><code>(</code>要进行转义;</p>
+<p>变量和字符串之间的分割与拼接用<code>'.'</code>;</p>
+<p>修饰符写在末尾。<code>i</code>代表不区分大小写<code>S</code>代表匹配一切字符；</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>我们都使用正斜线<code> //</code> 作为正则表达式的定界符号;</p>
+<p><img src="images/image-20221010190231505.png" alt="image-20221010190231505"></p>
+<p><img src="images/image-20221010190425917.png" alt="image-20221010190425917"></p>
+<blockquote>
+<ul>
+<li>关键字（概览）</li>
+</ul>
+<blockquote>
+<p><code>()</code>     表示一个整体</p>
+<p><code>^</code>      表示输入字符串的开始位置</p>
+<p><code>$ </code>    表示输入字符串的结束位置</p>
+<p><code>. </code>       通配符，代表任意字符,但不匹配换行</p>
+<p><code>\ </code>         转义字符</p>
+<p><code>|</code>		两项之间的一个选择</p>
+</blockquote>
+<ul>
+<li>修饰符</li>
+</ul>
+<blockquote>
+<p><code>i</code>     表示不区分大小写</p>
+<p><code>s</code>     s 表示.将匹配一切字符</p>
+<p><code>x</code>     表示匹配到空白字符会忽略</p>
+<p><code>A</code>     表示匹配规则要从头开始匹配</p>
+</blockquote>
+<ul>
+<li>常用函数</li>
+</ul>
+<blockquote>
+<p><strong>Preg_match_all(正则表达式、匹配字符串、匹配到的东西放入数组)</strong></p>
+<p>该函数会返回匹配到的次数（可能是0），	或者如果发生错误返回FALSE</p>
+</blockquote>
+<blockquote>
+<p><strong>preg_replace(正则表达式、替换成什么、匹配字符串)</strong></p>
+<p>该函数会返回替换后的结果</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<h3 id="后台网站配置文件的内容编写">后台网站配置文件的内容编写：</h3>
+<p>(<a href="#%E5%90%8E%E5%8F%B0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%B0%83%E7%94%A8%E6%80%BB%E8%A7%88">后台配置文件调用总览详情见前一大标题</a>)</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><strong>目的：</strong></p>
+<p>传入保存操作，实现用户输入的东西变为整个网站的名字、logo、关键字等等。即更新（更改）配置文件中的常量。</p>
+<p><strong>流程概览：</strong></p>
+<p><strong>sysControl.html</strong>写实现修改这个操作的<strong>前端页面和获取用户输入</strong>；<strong>sysConto.php</strong>写<strong>实现修改这个操作</strong>的具体代码。（把从sysControl.html中接受到的用户输入的数据进行操作）。</p>
+<p><strong>sysConfig.php</strong>中写配置的键值对，由于用户输入的这些东西（<strong>指文本形式的内容保存</strong>）是需要保存并在后续应用的，所以需要一个配置文件来保存。</p>
+<p><strong>upload_func.php</strong>是<strong>图片（文件）上传函数</strong>，因为在sysControl.html中<code>POST</code>方法只能传<code>“text”</code>类型，<code>“file”</code>类型直接传不了。用此传过以后，拿<strong>upload文件</strong>来保存（<strong>指文件形式的内容保存</strong>）</p>
+<ul>
+<li><strong>sysControl.html</strong>中写完基本要实现的页面内容，直接展示：(部分代码见前面的php基本语法查询B)</li>
+</ul>
+<p><img src="images/image-20221006175746659.png" alt="image-20221006175746659"></p>
+<p>​       此处<code>form</code>提交表单中，<strong>用<code>post</code>方法</strong>，提交进去的目             	   标文件在<code>action</code>属性里写，并传参。</p>
+<p>​      <code>sys</code>和<code>action_data</code>都是函数名。</p>
+<p>​      <strong>此处用的post只能接受到所有填入文本的信息而上载     	  的图片信息接受不到。故图片的上载只能再通`$_FILES   		预定变量来显示。</strong>（因为图片上传时用的type=“file”）</p>
+<p>​        <a href="#%E5%9B%BE%E7%89%87%E5%92%8C%E6%96%87%E6%9C%AC%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81">图片和文本上传代码</a></p>
+<p>​        <!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><img src="images/image-20221010210510627.png" alt="image-20221010210510627"></p>
+<ul>
+<li>
+<p><strong>sysControl.php里</strong>：</p>
+<p><img src="images/image-20221006195540459.png" alt="image-20221006195540459"></p>
+<p>更新：</p>
+<p><img src="images/image-20221010212316620.png" alt="image-20221010212316620"></p>
+<p>包含进来就可以改value了：</p>
+<p><img src="images/image-20221010212551966.png" alt="image-20221010212551966"></p>
+<p>由于有没有文件上传(为不为空)能影响后台表单接受到的数据要三行还是四行，所以用以下<strong>代码逻辑</strong>来消除此两种情况的影响：</p>
+<p>上载的图片在upload_func.php里已永久保存至文件夹。</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><img src="images/image-20221006202317957.png" alt="image-20221006202317957"></p>
+<p>此时的post下已经包含图片信息（原本3个，现在变成4个了）：</p>
+<p><img src="images/image-20221006202545643.png" alt="image-20221006202545643"></p>
+<p>用正则表达式进行替换。把用户写入的需要永久保存的文字信息写入<strong>sysConfig.php文件</strong>。并反馈出结果是否保存成功。PHP里写HTML直接开始写标签，<code>script</code>标签里的<code>location</code>属性表示在页面中</p>
+<p><img src="images/image-20221010210846897.png" alt="image-20221010210846897"></p>
+</li>
+<li>
+<p>admin下，org下（其实也可放在public里），图片上传函数文件<strong>upload_func.php</strong>，把上传的图片放入<strong>upload文件夹</strong>下。</p>
+<p>此函数表示只需要传入表单的名称+需要上传的目的路径。返回的是一个字符串。</p>
+<p><img src="images/image-20221006194502782.png" alt="image-20221006194502782"></p>
+</li>
+<li>
+<p>config下，<strong>sysConfig.php</strong>文件</p>
+<p>里面写需要用户传入保存的几个常量。</p>
+<p><img src="images/image-20221006195249903.png" alt="image-20221006195249903"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="前台关联后台与配置文件">前台关联后台与配置文件</h1>
+<p><strong>目的：让我们后台所更改的配置文件的内容在前台中显示出来。设置系统的配置文件内容自由添加</strong></p>
+<ul>
+<li>
+<p>目录搭建（后台怎么写 前台就则怎么写）</p>
+<p>一样的文件目录、一样的home下的indexControl.php（写函数,包含main.html、<strong>包含配置文件sysConfig.php</strong>）、index.php（前台主入口文件，包含indexControl.php）、main.html（用php实现包含进header.html、foot.html）</p>
+<p>注意：<strong>包含了配置文件之后就可以在html标签中把值替换成配置文件中的常量了</strong>。</p>
+</li>
+<li>
+<p>遗忘回顾链接</p>
+<p><a href="https://www.bilibili.com/video/BV1f64y1Z71f?p=3&amp;vd_source=95bb0747454a6847ca940e34f9be508c">3.后台网站配置功能实现_哔哩哔哩_bilibili</a></p>
+</li>
+</ul>
+<p>​       p3   48分开始，前台配置写的方法和整体流程回顾</p>
+<h3 id="php和html基本语法查询c">PHP（和HTML)基本语法查询C</h3>
+<blockquote>
+<ul>
+<li>
+<p><code>meta</code>标签（写在<code>head</code>标签里，表示显示网页的一些信息）</p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;keywords&#34;</span><span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;HTML,ASP,PHP,SQL&#34;</span>&gt;
+</span></span></code></pre></div></li>
+</ul>
+</blockquote>
+<h1 id="总结">总结</h1>
+<ul>
+<li>
+<p>为什么要这么复杂的写这个CMS系统和配置文件？</p>
+<p>&ndash;看起来更加简单，我们作为<strong>管理员管理网站的时候</strong>就可以在后台的可视化的html界面中改，<strong>不用去找源代码才能实现网站配置内容的更改。</strong></p>
+<p>&ndash;更改起来更加方便，因为是单独把配置保存到一个配置文件里的，所以我们不仅可以手动修改这个文件，也可以在后台的html页面中改。</p>
+</li>
+<li>
+<p>重点掌握的内容</p>
+<ul>
+<li>文件目录的架构（admin下、home下、view下、config下、public下）</li>
+<li>正则表达式的匹配和替换</li>
+<li>php写在html中的作用。include包含，php传参与函数、html基本标签。</li>
+<li>具体cms配置功能的写法（前后台）</li>
+</ul>
+<p><img src="images/image-20221023134602990.png" alt="image-20221023134602990"></p>
+</li>
+</ul>
+<h1 id="疑问">疑问</h1>
+<p><a href="#Q1">【1】</a>POST方法，不能接受到用户进行图片上载的图片信息？？</p>
+<p>猜测是因为上传的图片一个（名字自定义）就带有多个属性名字；而普通的文本信息只有一个属性即自定义的名字。</p>
+<p><a href="#Q2">【2】</a>php中写正则的时候，修饰符<code>s</code>(匹配一切字符)和关键字<code>.</code>(代表任意字符的区别)？？</p>
+<p>猜测虽然表达的意思差不多。但一个时修饰作用（形容词），一个是代表作用（名词）</p>
+<ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/PHP%E5%BC%80%E5%8F%91.html" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">PHP开发</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://aiguamumu.github.io/" >
+    &copy;  Web_Security 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

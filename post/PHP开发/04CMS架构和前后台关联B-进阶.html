@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>CMS架构和前后台关联-进阶B | Web_Security</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="代码逻辑3	代码逻辑4	代码逻辑5
+cms架构B（PHP&#43;html&#43;mysql的model） PHP基本语法E 两种在HTNL中写php的写法：
+&lt;?=变量名?&gt;&lt;?phppass;?&gt; empty(x)函数。x为空或x为0，结果都返回true（注意这里有个坑）
+emplode(用什么分割，数组)函数，用来分割数组中的每一个元素。
+count()返回数组中元素的个数。
+用新的数组前，需要定义它
+$shuzuming=array()
+- `isset(x)`函数，如果x的变量存在，返回true。否则返回false。一般判断语句为 如果变量x设置了且不为空。- `is_mumeric()`检测一个变量是否为数字或者数字字符串。有的时候用empty()函数不理想会考虑能否用此函数。- `strtotime() `函数将任何英文文本的日期或时间描述解析为 Unix 时间戳- `time()`获取当前时间戳函数- `md5()` 把从前台用户输入获得的密码在php中（control.php中）进行md5的加密，再存进数据库中- `count()`计算数组中单元数目，或者对象中属性个数- `header()`函数向客户端发送一个http报头，用来告知客户端信息，也可用于跳转：![image-20221016215805247](images/image-20221016215805247.png)- 自己定义的函数`success(path&#39;?m=&#39;，[str])`若成功则跳转的路径`error((path&#39;&#39;，[str])`若失败则跳转的路径- `ceil(x)`向上取一个最近的整数（大于x的）- 如果要在同级函数中调用另一个同级函数的变量，可以把那个要调用的函数声明为全局函数，或者使用闭合函数的写法。- **HTML**语法：&gt; - `form`里的`input`标签的属性有：&gt;&gt; ![image-20221022172741241](images/image-20221022172741241.png)&gt;&gt; - `hidden`属性：一般用来传值而不被用户看到。&gt;&gt; - `select`标签&gt;&gt; 单选或多选菜单，里面有`option`标签,其中&gt;&gt; - `value`属性，这个option如果被选了，那么如果整个select封装成表单提交的话，传出的`$_POST`或者`$_GET`**数组的值就是这个value**&gt; - `checked`加了一个checked属性，可把此复选框/下拉栏设为选中状态。[详情](#checked)&gt;&gt; - `span`行级别，不自动换行。把标签中间的文字给一个特定的样式&gt;&gt; 等同于HTML5的`font`标签。&gt;&gt; - `div`块级别，自动换行。把这一块的东西给一个特定的样式&gt;&gt; - `script`标签里有`alert`弹框弹出，`location`属性表示跳转的位置。&gt;&gt; - `li`标签（表示单元格）可以在有序列表`ol`里，也可以在无序列表`ul`里&gt;&gt; !">
+    <meta name="generator" content="Hugo 0.104.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="CMS架构和前后台关联-进阶B" />
+<meta property="og:description" content="代码逻辑3	代码逻辑4	代码逻辑5
+cms架构B（PHP&#43;html&#43;mysql的model） PHP基本语法E 两种在HTNL中写php的写法：
+&lt;?=变量名?&gt;&lt;?phppass;?&gt; empty(x)函数。x为空或x为0，结果都返回true（注意这里有个坑）
+emplode(用什么分割，数组)函数，用来分割数组中的每一个元素。
+count()返回数组中元素的个数。
+用新的数组前，需要定义它
+$shuzuming=array()
+- `isset(x)`函数，如果x的变量存在，返回true。否则返回false。一般判断语句为 如果变量x设置了且不为空。- `is_mumeric()`检测一个变量是否为数字或者数字字符串。有的时候用empty()函数不理想会考虑能否用此函数。- `strtotime() `函数将任何英文文本的日期或时间描述解析为 Unix 时间戳- `time()`获取当前时间戳函数- `md5()` 把从前台用户输入获得的密码在php中（control.php中）进行md5的加密，再存进数据库中- `count()`计算数组中单元数目，或者对象中属性个数- `header()`函数向客户端发送一个http报头，用来告知客户端信息，也可用于跳转：![image-20221016215805247](images/image-20221016215805247.png)- 自己定义的函数`success(path&#39;?m=&#39;，[str])`若成功则跳转的路径`error((path&#39;&#39;，[str])`若失败则跳转的路径- `ceil(x)`向上取一个最近的整数（大于x的）- 如果要在同级函数中调用另一个同级函数的变量，可以把那个要调用的函数声明为全局函数，或者使用闭合函数的写法。- **HTML**语法：&gt; - `form`里的`input`标签的属性有：&gt;&gt; ![image-20221022172741241](images/image-20221022172741241.png)&gt;&gt; - `hidden`属性：一般用来传值而不被用户看到。&gt;&gt; - `select`标签&gt;&gt; 单选或多选菜单，里面有`option`标签,其中&gt;&gt; - `value`属性，这个option如果被选了，那么如果整个select封装成表单提交的话，传出的`$_POST`或者`$_GET`**数组的值就是这个value**&gt; - `checked`加了一个checked属性，可把此复选框/下拉栏设为选中状态。[详情](#checked)&gt;&gt; - `span`行级别，不自动换行。把标签中间的文字给一个特定的样式&gt;&gt; 等同于HTML5的`font`标签。&gt;&gt; - `div`块级别，自动换行。把这一块的东西给一个特定的样式&gt;&gt; - `script`标签里有`alert`弹框弹出，`location`属性表示跳转的位置。&gt;&gt; - `li`标签（表示单元格）可以在有序列表`ol`里，也可以在无序列表`ul`里&gt;&gt; !" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aiguamumu.github.io/post/PHP%E5%BC%80%E5%8F%91/04CMS%E6%9E%B6%E6%9E%84%E5%92%8C%E5%89%8D%E5%90%8E%E5%8F%B0%E5%85%B3%E8%81%94B-%E8%BF%9B%E9%98%B6.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-24T17:35:33+08:00" />
+<meta property="article:modified_time" content="2022-10-24T17:35:33+08:00" /><meta property="og:site_name" content="Web_Security" />
+
+<meta itemprop="name" content="CMS架构和前后台关联-进阶B">
+<meta itemprop="description" content="代码逻辑3	代码逻辑4	代码逻辑5
+cms架构B（PHP&#43;html&#43;mysql的model） PHP基本语法E 两种在HTNL中写php的写法：
+&lt;?=变量名?&gt;&lt;?phppass;?&gt; empty(x)函数。x为空或x为0，结果都返回true（注意这里有个坑）
+emplode(用什么分割，数组)函数，用来分割数组中的每一个元素。
+count()返回数组中元素的个数。
+用新的数组前，需要定义它
+$shuzuming=array()
+- `isset(x)`函数，如果x的变量存在，返回true。否则返回false。一般判断语句为 如果变量x设置了且不为空。- `is_mumeric()`检测一个变量是否为数字或者数字字符串。有的时候用empty()函数不理想会考虑能否用此函数。- `strtotime() `函数将任何英文文本的日期或时间描述解析为 Unix 时间戳- `time()`获取当前时间戳函数- `md5()` 把从前台用户输入获得的密码在php中（control.php中）进行md5的加密，再存进数据库中- `count()`计算数组中单元数目，或者对象中属性个数- `header()`函数向客户端发送一个http报头，用来告知客户端信息，也可用于跳转：![image-20221016215805247](images/image-20221016215805247.png)- 自己定义的函数`success(path&#39;?m=&#39;，[str])`若成功则跳转的路径`error((path&#39;&#39;，[str])`若失败则跳转的路径- `ceil(x)`向上取一个最近的整数（大于x的）- 如果要在同级函数中调用另一个同级函数的变量，可以把那个要调用的函数声明为全局函数，或者使用闭合函数的写法。- **HTML**语法：&gt; - `form`里的`input`标签的属性有：&gt;&gt; ![image-20221022172741241](images/image-20221022172741241.png)&gt;&gt; - `hidden`属性：一般用来传值而不被用户看到。&gt;&gt; - `select`标签&gt;&gt; 单选或多选菜单，里面有`option`标签,其中&gt;&gt; - `value`属性，这个option如果被选了，那么如果整个select封装成表单提交的话，传出的`$_POST`或者`$_GET`**数组的值就是这个value**&gt; - `checked`加了一个checked属性，可把此复选框/下拉栏设为选中状态。[详情](#checked)&gt;&gt; - `span`行级别，不自动换行。把标签中间的文字给一个特定的样式&gt;&gt; 等同于HTML5的`font`标签。&gt;&gt; - `div`块级别，自动换行。把这一块的东西给一个特定的样式&gt;&gt; - `script`标签里有`alert`弹框弹出，`location`属性表示跳转的位置。&gt;&gt; - `li`标签（表示单元格）可以在有序列表`ol`里，也可以在无序列表`ul`里&gt;&gt; !"><meta itemprop="datePublished" content="2022-10-24T17:35:33+08:00" />
+<meta itemprop="dateModified" content="2022-10-24T17:35:33+08:00" />
+<meta itemprop="wordCount" content="300">
+<meta itemprop="keywords" content="PHP开发," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CMS架构和前后台关联-进阶B"/>
+<meta name="twitter:description" content="代码逻辑3	代码逻辑4	代码逻辑5
+cms架构B（PHP&#43;html&#43;mysql的model） PHP基本语法E 两种在HTNL中写php的写法：
+&lt;?=变量名?&gt;&lt;?phppass;?&gt; empty(x)函数。x为空或x为0，结果都返回true（注意这里有个坑）
+emplode(用什么分割，数组)函数，用来分割数组中的每一个元素。
+count()返回数组中元素的个数。
+用新的数组前，需要定义它
+$shuzuming=array()
+- `isset(x)`函数，如果x的变量存在，返回true。否则返回false。一般判断语句为 如果变量x设置了且不为空。- `is_mumeric()`检测一个变量是否为数字或者数字字符串。有的时候用empty()函数不理想会考虑能否用此函数。- `strtotime() `函数将任何英文文本的日期或时间描述解析为 Unix 时间戳- `time()`获取当前时间戳函数- `md5()` 把从前台用户输入获得的密码在php中（control.php中）进行md5的加密，再存进数据库中- `count()`计算数组中单元数目，或者对象中属性个数- `header()`函数向客户端发送一个http报头，用来告知客户端信息，也可用于跳转：![image-20221016215805247](images/image-20221016215805247.png)- 自己定义的函数`success(path&#39;?m=&#39;，[str])`若成功则跳转的路径`error((path&#39;&#39;，[str])`若失败则跳转的路径- `ceil(x)`向上取一个最近的整数（大于x的）- 如果要在同级函数中调用另一个同级函数的变量，可以把那个要调用的函数声明为全局函数，或者使用闭合函数的写法。- **HTML**语法：&gt; - `form`里的`input`标签的属性有：&gt;&gt; ![image-20221022172741241](images/image-20221022172741241.png)&gt;&gt; - `hidden`属性：一般用来传值而不被用户看到。&gt;&gt; - `select`标签&gt;&gt; 单选或多选菜单，里面有`option`标签,其中&gt;&gt; - `value`属性，这个option如果被选了，那么如果整个select封装成表单提交的话，传出的`$_POST`或者`$_GET`**数组的值就是这个value**&gt; - `checked`加了一个checked属性，可把此复选框/下拉栏设为选中状态。[详情](#checked)&gt;&gt; - `span`行级别，不自动换行。把标签中间的文字给一个特定的样式&gt;&gt; 等同于HTML5的`font`标签。&gt;&gt; - `div`块级别，自动换行。把这一块的东西给一个特定的样式&gt;&gt; - `script`标签里有`alert`弹框弹出，`location`属性表示跳转的位置。&gt;&gt; - `li`标签（表示单元格）可以在有序列表`ol`里，也可以在无序列表`ul`里&gt;&gt; !"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://aiguamumu.github.io/images/Sailboat%20at%20Le%20Petit-Gennevilliers.jpg');">
+    <div class="bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Web_Security
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post.html" title="Articles 页">
+              Articles
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact.html" title="Contact 页">
+              Contact
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">CMS架构和前后台关联-进阶B</h1>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        ARTICLES
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://twitter.com/share?url=https://aiguamumu.github.io/post/PHP%E5%BC%80%E5%8F%91/04CMS%E6%9E%B6%E6%9E%84%E5%92%8C%E5%89%8D%E5%90%8E%E5%8F%B0%E5%85%B3%E8%81%94B-%E8%BF%9B%E9%98%B6.html&amp;text=CMS%e6%9e%b6%e6%9e%84%e5%92%8c%e5%89%8d%e5%90%8e%e5%8f%b0%e5%85%b3%e8%81%94-%e8%bf%9b%e9%98%b6B" class="ananke-social-link twitter no-underline" aria-label="share on Twitter">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">CMS架构和前后台关联-进阶B</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-10-24T17:35:33+08:00">十月 24, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p><a href="#%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%913">代码逻辑3</a>	<a href="#%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%914">代码逻辑4</a>	<a href="#%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%915">代码逻辑5</a></p>
+<h1 id="cms架构bphphtmlmysql的model">cms架构B（PHP+html+mysql的model）</h1>
+<h3 id="php基本语法e">PHP基本语法E</h3>
+<blockquote>
+<ul>
+<li>
+<p>两种在HTNL中写php的写法：</p>
+<pre tabindex="0"><code class="language-php+HTML" data-lang="php+HTML">&lt;?=变量名?&gt;
+&lt;?php
+    pass;
+?&gt;
+</code></pre></li>
+<li>
+<p><code>empty(x)</code>函数。x为空或x<strong>为0</strong>，结果都返回true（注意这里有个坑）</p>
+</li>
+<li>
+<p><code>emplode(用什么分割，数组)</code>函数，用来分割数组中的每一个元素。</p>
+</li>
+<li>
+<p><code>count()</code>返回数组中元素的个数。</p>
+</li>
+<li>
+<p>用新的数组前，需要定义它</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"></code></pre></div></li>
+</ul>
+<p>$shuzuming=array()</p>
+<pre tabindex="0"><code>
+- `isset(x)`函数，如果x的变量存在，返回true。否则返回false。
+
+一般判断语句为 如果变量x设置了且不为空。
+
+- `is_mumeric()`检测一个变量是否为数字或者数字字符串。
+
+有的时候用empty()函数不理想会考虑能否用此函数。
+
+- `strtotime() `函数将任何英文文本的日期或时间描述解析为 Unix 时间戳
+
+- `time()`获取当前时间戳函数
+
+- `md5()`  把从前台用户输入获得的密码在php中（control.php中）进行md5的加密，再存进数据库中
+
+- `count()`计算数组中单元数目，或者对象中属性个数
+
+- `header()`函数
+
+向客户端发送一个http报头，用来告知客户端信息，也可用于跳转：
+
+![image-20221016215805247](images/image-20221016215805247.png)
+
+- 自己定义的函数
+
+`success(path&#39;?m=&#39;，[str])`若成功则跳转的路径
+
+`error((path&#39;&#39;，[str])`若失败则跳转的路径
+
+- `ceil(x)`向上取一个最近的整数（大于x的）
+
+- 如果要在同级函数中调用另一个同级函数的变量，可以把那个要调用的函数声明为全局函数，或者使用闭合函数的写法。
+
+- **HTML**语法：
+
+&gt; - `form`里的`input`标签的属性有：
+&gt;
+&gt;   ![image-20221022172741241](images/image-20221022172741241.png)
+&gt;
+&gt;   - `hidden`属性：一般用来传值而不被用户看到。
+&gt;
+&gt; - `select`标签
+&gt;
+&gt;   单选或多选菜单，里面有`option`标签,其中
+&gt;
+&gt;   - `value`属性，这个option如果被选了，那么如果整个select封装成表单提交的话，传出的`$_POST`或者`$_GET`**数组的值就是这个value**
+&gt;   - `checked`加了一个checked属性，可把此复选框/下拉栏设为选中状态。[详情](#checked)
+&gt;
+&gt; - `span`行级别，不自动换行。把标签中间的文字给一个特定的样式
+&gt;
+&gt;   等同于HTML5的`font`标签。
+&gt;
+&gt; - `div`块级别，自动换行。把这一块的东西给一个特定的样式
+&gt;
+&gt; - `script`标签里有`alert`弹框弹出，`location`属性表示跳转的位置。
+&gt;
+&gt; - `li`标签（表示单元格）可以在有序列表`ol`里，也可以在无序列表`ul`里
+&gt;
+&gt;   ![image-20221018202835668](images/image-20221018202835668.png)
+&gt;
+&gt; - `form`标签（`action`属性表示提交到哪个页面、`method`方法表示是**post提交还是get提交**）
+&gt;
+&gt;   表单标签，内涵`input`标签，提交表单的意思
+&gt;
+&gt; - `font`标签，指定大小、文本颜色
+&gt;
+&gt; - `td`标签，表示表格的一行，其中，
+&gt;
+&gt;   - `class`属性，定义标签的名字
+&gt;   - `colspan`属性，指明列宽
+&gt;   - `style`属性，指明是左对齐还是右对齐
+&gt;
+&gt; - **css样式和html相连**
+&gt;
+&gt;   ![image-20221017183915128](images/image-20221017183915128.png)
+&gt;
+&gt;   ![image-20221017183955475](images/image-20221017183955475.png)
+
+- 当用post方法传参进php文件里，此**php文件里写入的是sql语句**（已经有sql模块时）
+
+![image-20221017175036746](images/image-20221017175036746.png)
+
+- **php中变量和字符串怎么链接**
+
+![image-20221017180009538](images/image-20221017180009538.png)
+
+- **一个函数里声明的全局变量不可直接在另一个函数里写这个变量。**
+
+如果非要写，则在另一个函数里这个变量要加上全局变量。
+
+- **闭合函数的调用**（下面有写）
+
+- `is_array(变量)`，这个变量是不是数组，返回布尔值
+
+- 在php里进行读取数据库的数据并把数据包到html的表格形式里：**在php中写HTML语法始终被允许**
+![image-20221017182658179](images/image-20221017182658179.png)
+
+- php里的`switch语句`
+
+![image-20221017185656817](images/image-20221017185656817.png)
+</code></pre></blockquote>
+<h3 id="以友情链接为例的流程">以友情链接为例的流程</h3>
+<p><strong>注意control与前台HOME初次关联的流程</strong>。（其实跟前面所学的control与后台admin关联的流程一样）</p>
+<p>注意<strong>闭合函数的调用</strong>格式。注意<strong>封装的跳转路径</strong>(success、error)怎么写。注意<strong>所需的所有文件名</strong>。</p>
+<ul>
+<li>
+<p>每次添加或删除或修改完数据都需要一个跳转&ndash;&gt;想到<strong>封装</strong>：</p>
+<p><strong>org文件</strong>下（<strong>helper.php</strong>文件里写）</p>
+<p><img src="images/image-20221017175822754.png" alt="image-20221017175822754"></p>
+</li>
+<li>
+<p>当我们的<strong>contrl.php</strong>与后台数据库关联时</p>
+<p>linkControl.php里调用mysql模块（php链接mysql）。</p>
+<p><strong>注意这里的<code>$selectModel</code>是一个函数下声明的全局变量，要在这个函数里调用，需要再声明一个<code>global</code>。</strong></p>
+<p>且这里的<code>$selectModel</code>是一个闭合函数的函数名。</p>
+<p>这里调用的sql语句的函数<strong>返回的东西存储在<code>$_arr</code>数组中，在包含的html中只要写关于数组<code>$_arr</code>的遍历就可以了</strong></p>
+<p><img src="images/image-20221017181435895.png" alt="image-20221017181435895"></p>
+<p><strong>linkControl.php</strong>里所有的定义的函数：</p>
+<p><img src="images/image-20221017184954194.png" alt="image-20221017184954194"></p>
+</li>
+<li>
+<p>home下，<strong>index.php</strong>即 前端主入口文件</p>
+<p><img src="images/image-20221017192213238.png" alt="image-20221017192213238"></p>
+</li>
+<li>
+<p>Control模块下，<strong>indexControl.php文件</strong>：</p>
+<p>用于显示首页的html，至于为什么要在php文件里调用显示html，当然是因为要显示的变量是经过php操作的。</p>
+<p><img src="images/image-20221017192655393.png" alt="image-20221017192655393"></p>
+</li>
+<li>
+<p>Admin下，<strong>index.php，后台主入口文件</strong></p>
+<p><img src="images/image-20221017193121418.png" alt="image-20221017193121418"></p>
+</li>
+</ul>
+<h3 id="以广告模块为例的流程">以广告模块为例的流程</h3>
+<p>注意<strong>图片的上载</strong>，和在前台<strong>以幻灯片播放的形式显示</strong>。<strong>注意小圆点的个数动态改变的函数。</strong></p>
+<ul>
+<li>
+<p>图片<strong>上载的数据存进mysql</strong>。contrl.php文件下</p>
+<p><img src="images/image-20221018200029746.png" alt="image-20221018200029746"></p>
+</li>
+<li>
+<p>在前台的main.html中<strong>循环广告图片</strong></p>
+<p><img src="images/image-20221018202230135.png" alt="image-20221018202230135"></p>
+</li>
+<li>
+<p><strong>前台幻灯片圆点个数</strong>根据图片的数量显示</p>
+<p>如果需要不管上传了多少张图片，都只取前四张。则在写sql语句的时候加order by 和limit 4 限制就可以了。</p>
+<p><img src="images/image-20221018203317412.png" alt="image-20221018203317412"></p>
+<p><img src="images/image-20221018203334683.png" alt="image-20221018203334683"></p>
+</li>
+</ul>
+<h3 id="以后台会员模块为例的流程">以后台会员模块为例的流程</h3>
+<p><strong>注意下拉框。注意添加会员板块的具体书写。注意显示会员列表的具体书写，其中的遍历很重要，注意分页操作的代码逻辑和php书写，注意搜索的html书写</strong>。注意<strong>代码块</strong>中是自己跟着写一遍对整个流程和代码逻辑和架构和语法更加清晰。html向control.php<strong>传值的两种方法</strong>。注意搜索<strong>操作的逻辑</strong>，注意<strong>数组中元素的拼接</strong>，注意前台<strong>html页面怎么通过url传参跳转改变</strong>。<strong>修改操作的大概逻辑。</strong></p>
+<ul>
+<li>
+<p><strong>写url拼接数组和sql语句拼接数组很重要</strong>。<a href="#%E9%87%8D%E8%A6%81">详解</a></p>
+</li>
+<li>
+<p>在add.html中，即添加会员的网站前台页面中，加入<strong>下拉框选项的添加</strong></p>
+<p><img src="images/image-20221018204119315.png" alt="image-20221018204119315"></p>
+</li>
+<li>
+<p><strong>添加会员功能</strong></p>
+<p>注意看考虑的<strong>多种情况</strong>，先进行多种情况的判断，再执行SQL语句插入进mysql数据库中</p>
+<p>此处<code>thump（）</code>是自己写在org文件下的图片压缩函数。如果传图片一定能拿到一个<code>$_FILE</code>变量存储的是图片信息。而<code>$_POST</code>里一定不会接收<strong>图片信息</strong>，所以<strong>最后要赋值进<code>$_POST</code>的数组</strong>里。</p>
+<p><img src="images/image-20221018204745481.png" alt="image-20221018204745481"></p>
+<p><img src="images/image-20221018204856860.png" alt="image-20221018204856860"></p>
+</li>
+<li>
+<p><strong>显示会员列表</strong></p>
+<ul>
+<li>
+<p>注意<strong>代码逻辑</strong><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><img src="images/image-20221018213044956.png" alt="image-20221018213044956"></p>
+<p>外层的$level存储的是级别，而内层的$v存储的是用户给的数字，正<strong>好可看成下标</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$level<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;高级&#34;</span>,<span style="color:#e6db74">&#34;中级&#34;</span>,<span style="color:#e6db74">&#34;低级&#34;</span>];<span style="color:#f92672">--</span><span style="color:#a6e22e">在control</span><span style="color:#f92672">.</span><span style="color:#a6e22e">php里面的show函数里面写</span>
+</span></span><span style="display:flex;"><span>$v[<span style="color:#e6db74">&#39;level&#39;</span>]<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>]; <span style="color:#f92672">--</span><span style="color:#a6e22e">用户在input标签里通过select里的option属性传值时，value标签给的是“0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span><span style="color:#a6e22e">”</span>
+</span></span></code></pre></div><p><strong>value属性给的是数字值</strong>的示例：</p>
+<p><img src="images/image-20221018214729554.png" alt="image-20221018214729554"></p>
+</li>
+<li>
+<p>下图为<strong>show函数</strong>（在contrl.php中调用的）中include的前台html，（<strong>在显示会员的前台html中,遍历<a href="#$_arr%E6%95%B0%E7%BB%84"><code>$_arr数组</code></a></strong>）</p>
+<p><img src="images/image-20221018212947282.png" alt="image-20221018212947282"></p>
+<p>下图为<strong>show函数的写法</strong>（写＋调用了sql的model的封装函数）</p>
+<p><img src="images/image-20221018214303351.png" alt="image-20221018214303351"></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>将显示的内容分页（代码）+调用搜索函数（代码）</strong></p>
+<p>写在show.html里：注意tr、td里面套a标签。</p>
+<p><img src="images/image-20221019210620499.png" alt="image-20221019210620499"></p>
+<p>注意此<strong>分页操作的代码逻辑</strong>，在control.php的show函数里面写。</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">user</span>(){
+</span></span><span style="display:flex;"><span>    	<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">show</span>(){
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">MySQLModel</span>();<span style="color:#75715e">//调用的用php写sql语句操作的封装的模块
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">global</span> $selectModel;
+</span></span><span style="display:flex;"><span>            $search<span style="color:#f92672">=</span><span style="color:#a6e22e">search</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//然后进行数组的拼接（见下）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#a6e22e">var_dump</span>($search); <span style="color:#75715e">//调用下面的搜索操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">//1.确定分页的显示数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            $page<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//2.获取MySQL里的数据的总条数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			$sql<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;select * from ew_users&#34;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">global</span> $totalModel;<span style="color:#75715e">//也是另一个闭合函数名
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            $total <span style="color:#f92672">=</span> $totalModel($sql);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//3.得到总页数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            $pageAll<span style="color:#f92672">=</span><span style="color:#a6e22e">ceil</span>($total)<span style="color:#f92672">/</span>$page
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//4.获得当前页
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            $dpage<span style="color:#f92672">=</span>$_GET[<span style="color:#e6db74">&#39;page&#39;</span>]<span style="color:#f92672">??</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//5.处理上一页
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            $prePage<span style="color:#f92672">=</span>$dpage<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">?</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>($dpage<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//6.处理下一页
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>          $nextPage<span style="color:#f92672">=</span>$dpage<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#f92672">&gt;</span>$pageAll<span style="color:#f92672">?</span>$pageAll<span style="color:#f92672">:</span>($dpage<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//7.设置limit跳步的数值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            $num<span style="color:#f92672">=</span>($dpage<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>$page;
+</span></span><span style="display:flex;"><span>            $limit<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;LIMIT </span><span style="color:#e6db74">{</span>$num<span style="color:#e6db74">}</span><span style="color:#e6db74">,</span><span style="color:#e6db74">{</span>$page<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>            $sql<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SELECT * FROM ew_user&#34;</span><span style="color:#f92672">.</span>$limit;<span style="color:#75715e">//这个函数实现的功能。输如要查询的sql语句
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            $sex<span style="color:#f92672">=</span><span style="color:#66d9ef">array</span>(<span style="color:#e6db74">&#39;女&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span>,<span style="color:#e6db74">&#39;保密&#39;</span>);<span style="color:#75715e">//为下面include的show.html中写的php代码的数组遍历铺垫
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            $level<span style="color:#f92672">=</span><span style="color:#66d9ef">array</span>(<span style="color:#e6db74">&#39;&lt;font size=&#34;5&#34; color=&#34;green&#34;&gt;超级管理员&lt;/font&gt;&#39;</span>,<span style="color:#e6db74">&#39;普通管理员&#39;</span>)<span style="color:#75715e">//这里把管理员加了一个显眼的字体样式
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">global</span> $selectModel;<span style="color:#75715e">//闭合函数名$selectModel，此函数存储的是有关SELECT的对于数据库的全部操作。原本在MySQLModel()内是全局函数，所以在其他外面调用时，也要声明一个global
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            $arr<span style="color:#f92672">=</span>$selectModel($sql);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">include</span> <span style="color:#e6db74">&#39;./view/user/show.html&#39;</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+<li>
+<p><strong>搜索操作的函数</strong></p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<ul>
+<li>
+<p><strong>代码逻辑-数组元素的拼接</strong></p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>以下代码表示把sql的所有条件性质的字符串进行拼接。</p>
+<p><img src="images/image-20221022195105824.png" alt="image-20221022195105824"></p>
+<p>以下为拼接“&amp;xxxx”的url</p>
+<p><img src="images/image-20221022195358056.png" alt="image-20221022195358056"></p>
+</li>
+<li>
+<p>搜索操作是如何<strong>让前台的html页面只显示搜索出来的东西</strong>的</p>
+<p>通过<strong>改变url</strong>（传入html中的input中的value值）</p>
+<p><img src="images/image-20221022201017556.png" alt="image-20221022201017556"></p>
+</li>
+<li>
+<p><strong>搜索操作的大概逻辑</strong></p>
+<p>通过<strong>多个if语句实现</strong>，每一个if语句查找有没有这个条件限制，<strong>如果有就给一个这个条件限制的SQL语句一部分和url一部分</strong>。最后在show中调用完了之后进行数组（字符串）的拼接。</p>
+<p>以年龄查找和时间戳查找为例：</p>
+<p><img src="images/image-20221022201659423.png" alt="image-20221022201659423"></p>
+<p><img src="images/image-20221022201724483.png" alt="image-20221022201724483"></p>
+</li>
+<li>
+<p>删除操作</p>
+<p>调用modul中的删除函数的sql模块</p>
+<p>删除成功后页面的跳转为show（）这样才能显示删除后的前台页面。</p>
+<p><img src="images/image-20221022210603298.png" alt="image-20221022210603298"></p>
+</li>
+<li>
+<p><strong>修改操作</strong></p>
+<p>点修改的<strong>超链接应该跳转</strong>到的是仅有要修改的那个id的一个专门属于修改操作的页面：</p>
+<p><img src="images/image-20221022214040135.png" alt="image-20221022214040135"></p>
+<p>在edit（）函数里写<strong>拿出那一条要修改的数据</strong>的操作和<strong>修改本身的操作</strong>和<strong>include进修改操作的专门页面edict.html</strong>。</p>
+<p><img src="images/image-20221022214356345.png" alt="image-20221022214356345"></p>
+<p>在edict.html首先<strong>显示未修改前的这条数据的内容</strong>（通过在edict.html写value属性的值为$data[]），然后进行在control.php中写各个数据的修改。<strong>复选框或下拉栏用checked，图片输入和文本（密码）的输入用另外写的函数</strong>，并<strong>写入sql语句</strong>。</p>
+<p><img src="images/image-20221022215055594.png" alt="image-20221022215055594"></p>
+<p>sql<strong>语句的发送</strong>（用预先写好的sql封装函数）：<strong>不用担心修改后的页面怎么显示，mysql中修改了之后，再调用show函数就能显示更新后的结果。</strong></p>
+<p><img src="images/image-20221022215242446.png" alt="image-20221022215242446"></p>
+<ul>
+<li>
+<p><strong><code>checked</code>属性</strong>实现下拉栏、复选框的修改：</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>仅设置checked属性不赋值，可以将复选框/下拉栏设置为选中状态。</p>
+<p>将checked属性值设置为&quot;checked&quot;或者“true”也可以将复选框/下拉栏设置为选中状态。</p>
+<p>例如：html中</p>
+<p><img src="images/image-20221022213755420.png" alt="image-20221022213755420"></p>
+<p>control.php中：</p>
+<p><img src="images/image-20221022213846496.png" alt="image-20221022213846496"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>两种把HTML中页面获取到的值给php文件的方法，</strong></p>
+<ul>
+<li>
+<p>第一个<strong>show函数</strong>的调用已经通过action传参，传入的是给<code>user（）</code>和<code>show（）</code>函数。</p>
+</li>
+<li>
+<p>第二个search函数的调用如果继续用此方法，那么只会传入<code>user（）</code>和<code>search（）</code>，不会保留原来<code>show（）</code>函数的传入值，但我们想在同一页面下，既显示<code>show </code>的内容，又显示<code>search</code>的内容，所以不用<code>form</code>的<code>action</code>属性进行传值，而<strong>用<code>input</code>标签的<code>hidden</code>属性进行传值</strong>。</p>
+</li>
+<li>
+<p>本质是让<code>$_GET数组</code><strong>的值不是serch的参数覆盖show 的参数，而是serch的参数跟在show参数的后面。</strong></p>
+</li>
+</ul>
+<p><img src="images/image-20221022173516955.png" alt="image-20221022173516955"></p>
+</li>
+</ul>
+<h3 id="html与sql与php相连的语句总结">html与sql与php相连的语句总结</h3>
+<ol>
+<li>
+<p><strong>SQL+PHP</strong>（在php里写sql语句，此语句后面要经过sql模块）</p>
+<p>功能是把Mysql数据库中的数据拿出来进行操作，<strong>在封装操作的sql语句时用</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#e6db74">&#34;sql语句&#34;</span>.<span style="color:#960050;background-color:#1e0010">$</span>_GET[<span style="color:#e6db74">&#39;id&#39;</span>] <span style="color:#75715e">--利用字符串的拼接，$_GET里为用户输入
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--字符串与变量链接：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#e6db74">&#39;sdsds&#39;</span>.<span style="color:#960050;background-color:#1e0010">$</span>_变量名.<span style="color:#e6db74">&#39;dsd&#39;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>SQL+PHP</strong>（在php中写sql语句，在sql语句即双引号的内部）</p>
+<p>功能是把用户写的东西(用户在前台输入的东西)以php变量的方式传入（预定义变量）sql语句，从而存入Mysql。<strong>调用封装的sql语句时用。</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span>_sql<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...SET webname=&#39;{$_POST[&#39;webname&#39;]}&#39;&#34;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>PHP+HTML</strong>（在html的标签里写php变量）</p>
+<p><strong>用于把php处理过的变量显示出来</strong>（可能存储的是mysql查出来的数据，也可能存储本来前台用户输入的但经过php操作的变量）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ord&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&lt;?=$data[&#39;ord&#39;]?&gt;&#34;</span>&gt;
+</span></span></code></pre></div></li>
+</ol>
+<h1 id="总结">总结</h1>
+<ul>
+<li>
+<p>HTML与PHP</p>
+<blockquote>
+<p>HTML:超文本标记语言</p>
+<p>PHP：服务器脚本语言</p>
+</blockquote>
+</li>
+<li>
+<p>CMS抽象架构（PHP环境）</p>
+<p><img src="images/image-20221018212142942.png" alt="image-20221018212142942"></p>
+</li>
+<li>
+<p>CMS具体架构</p>
+</li>
+</ul>
+<p><img src="images/image-20221018212154592.png" alt="image-20221018212154592"></p>
+<ul>
+<li>
+<p>细节补充（针对上面具体架构写不下的地方进行细节补充）、</p>
+<ul>
+<li>
+<p>MySQL与前台页面显示关联的具体数据传送细节（modul中封装函数的具体用法）</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><img src="images/image-20221018212313673.png" alt="image-20221018212313673"></p>
+</li>
+<li>
+<p>关于url和前台html的显示</p>
+<p><img src="images/image-20221022205405212.png" alt="image-20221022205405212"></p>
+</li>
+<li>
+<p><strong>执行删除或修改（用checked改&quot;选项&quot;的type，用单独函数改文本或&quot;图片&quot;的type）操作后，只要已经对数据库Mysql进行了修改，就不用担心前台显示的数据能不能更新了，再次调用show（）函数一下就更新了。</strong></p>
+<p>执行添加add或者显示show操作，怎么把后台的数据返回给前台的：add是通过给post数组赋值，让post数组变得完整（主要是原来的post数组没有图片名），然后传入sql的封装函数中，这个封装函数查询出来的结果会返回一个数组arr[]，再把这个数组arr[]在html中遍历。</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/PHP%E5%BC%80%E5%8F%91.html" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">PHP开发</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关內容</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/PHP%E5%BC%80%E5%8F%91/03PHP%E9%93%BE%E6%8E%A5SQL%E4%B8%8E%E6%9E%B6%E6%9E%84%E7%8B%AC%E7%AB%8B.html">PHP链接MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/PHP%E5%BC%80%E5%8F%91/02MySQL%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%8C%E5%85%A8%E7%8B%AC%E7%AB%8B.html">MySQL数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/PHP%E5%BC%80%E5%8F%91/01CMS%E6%9E%B6%E6%9E%84%E5%92%8C%E5%90%8E%E5%8F%B0%E9%85%8D%E7%BD%AEA-%E5%88%9D%E8%AF%86.html">CMS架构和后台配置A-初识</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://aiguamumu.github.io/" >
+    &copy;  Web_Security 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

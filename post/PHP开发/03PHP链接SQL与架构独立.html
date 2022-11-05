@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>PHP链接MySQL | Web_Security</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="代码逻辑
+用PHP链接Mysql执行操作 MySQLI 可直接安装wamp，代表Windows、Apache、MySQL和PHP。这是一个软件堆栈。
+mysqli的扩展安装之后才可用php链接mysql
+&lt;?php phpinfo(); ?&gt; phpinfo()函数可以显示出PHP 所有相关信息。是排查php是否出错或漏配置模块的主要方式之一
+php基本语法D @ 错误控制操作符，当表达式加上@时，若该表达式错误，所产生的错误信息不会被爆出来，表达式生成的错误信息将保存在变量$ php_errormsg里，每个错误都会覆盖此变量
+&#39;{php变量}&#39;把变量用花括号括起来，并且用单引号包起来，表示把这个变量解析成字符串的形式,这样才能加入到sql语句里
+php文件里可以写html标签,echo &#39;html标签&#39;;
+html中写sql语句需要&lt;php? 变量名?&gt;
+php排错时要从sql语句开始排错。
+$sql=&#34;&#34;; echo $sql;exit; 然后把显示的sql语句赋值粘贴进mysql执行，看成不成功。
+die(message)在退出脚本前显示message信息
+php中，用.来实现字符串和变量的链接
+&#34;它的密码是&#34;.$key.&#34;值&#34; PHP中反引号的作用
+执行系统命令
+echo ipconfig；
+内涵SQL语句的关键字时
+$sql = &ldquo;select user,username from Content&rdquo;;
+匿名函数（闭包函数）
+实现php闭包既可以读取函数内部的变量，同时还可以将变量始终保存在内存中，使得即使函数执行完毕，变量也将一直存在。
+子函数可以使用父函数中的局部变量
+PHP中array（）
+只写array()说明新建了一个新的数组，php里有索引数组、关联数组、多维数组。
+使用PHP进行数据库插入操作 PHP中写sql语句，要把sql语句用双引号括起来并写入一个变量里
+mysqli_connect(&#39;数据库所在地址&#39;，’用户名‘，’密码‘，’数据库名‘)&ndash;&gt;数据链接函数
+$link=函数1 or die（）来判断函数1的执行是否有错，有错则会爆出所有信息。加@不爆出。&ndash;&gt;出错怎么办
+mysqli_query（链接的数据库赋给的变量，sql语句的变量），发送一条SQL语句到数据库服务器。
+insert插入返回布尔值，执行成功为true，失败为false&ndash;&gt;发送sql语句函数
+mysqli_affected_rows(链接的数据库赋给的变量)&ndash;&gt;获取数据影响行函数
+mysqli_insert_id(链接的数据库赋给的变量)，返回的是添加的哪一行的id
+mysqli_close(链接的数据库赋给的变量)&ndash;&gt;关闭数据库
+使用PHP进行数据库查询操作 mysqli_num_rows(问答函数出来的对象)，返回值是对象的行数
+mysqli_query(链接的数据库的变量)，对于查询而言返回的是一个对象
+mysqli_fetch_assoc(问答函数出来的对象)
+获取一行作为关联数组返回。
+如果数据库里什么都没有，就会返回NULL
+使用PHP进行数据库修改 使用PHP进行数据库删除 把删除函数可以写到查询的那个文件（func.php）的表格里： delete.php中写入sql语句的传参也要改一下：
+这里能用$_GET变量是因为我们发现，这个网页是以get方式传参的。
+函数的封装（Model模块） 关联数据库的函数
+增删改功能的函数：
+这里有一个正则表达式，此函数是一个闭包函数，用来在这个函数里使用父函数的变量，注意格式变量=function(用户给的变量，这里是sql语句) use(传进来的父函数的变量)">
+    <meta name="generator" content="Hugo 0.104.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="PHP链接MySQL" />
+<meta property="og:description" content="代码逻辑
+用PHP链接Mysql执行操作 MySQLI 可直接安装wamp，代表Windows、Apache、MySQL和PHP。这是一个软件堆栈。
+mysqli的扩展安装之后才可用php链接mysql
+&lt;?php phpinfo(); ?&gt; phpinfo()函数可以显示出PHP 所有相关信息。是排查php是否出错或漏配置模块的主要方式之一
+php基本语法D @ 错误控制操作符，当表达式加上@时，若该表达式错误，所产生的错误信息不会被爆出来，表达式生成的错误信息将保存在变量$ php_errormsg里，每个错误都会覆盖此变量
+&#39;{php变量}&#39;把变量用花括号括起来，并且用单引号包起来，表示把这个变量解析成字符串的形式,这样才能加入到sql语句里
+php文件里可以写html标签,echo &#39;html标签&#39;;
+html中写sql语句需要&lt;php? 变量名?&gt;
+php排错时要从sql语句开始排错。
+$sql=&#34;&#34;; echo $sql;exit; 然后把显示的sql语句赋值粘贴进mysql执行，看成不成功。
+die(message)在退出脚本前显示message信息
+php中，用.来实现字符串和变量的链接
+&#34;它的密码是&#34;.$key.&#34;值&#34; PHP中反引号的作用
+执行系统命令
+echo ipconfig；
+内涵SQL语句的关键字时
+$sql = &ldquo;select user,username from Content&rdquo;;
+匿名函数（闭包函数）
+实现php闭包既可以读取函数内部的变量，同时还可以将变量始终保存在内存中，使得即使函数执行完毕，变量也将一直存在。
+子函数可以使用父函数中的局部变量
+PHP中array（）
+只写array()说明新建了一个新的数组，php里有索引数组、关联数组、多维数组。
+使用PHP进行数据库插入操作 PHP中写sql语句，要把sql语句用双引号括起来并写入一个变量里
+mysqli_connect(&#39;数据库所在地址&#39;，’用户名‘，’密码‘，’数据库名‘)&ndash;&gt;数据链接函数
+$link=函数1 or die（）来判断函数1的执行是否有错，有错则会爆出所有信息。加@不爆出。&ndash;&gt;出错怎么办
+mysqli_query（链接的数据库赋给的变量，sql语句的变量），发送一条SQL语句到数据库服务器。
+insert插入返回布尔值，执行成功为true，失败为false&ndash;&gt;发送sql语句函数
+mysqli_affected_rows(链接的数据库赋给的变量)&ndash;&gt;获取数据影响行函数
+mysqli_insert_id(链接的数据库赋给的变量)，返回的是添加的哪一行的id
+mysqli_close(链接的数据库赋给的变量)&ndash;&gt;关闭数据库
+使用PHP进行数据库查询操作 mysqli_num_rows(问答函数出来的对象)，返回值是对象的行数
+mysqli_query(链接的数据库的变量)，对于查询而言返回的是一个对象
+mysqli_fetch_assoc(问答函数出来的对象)
+获取一行作为关联数组返回。
+如果数据库里什么都没有，就会返回NULL
+使用PHP进行数据库修改 使用PHP进行数据库删除 把删除函数可以写到查询的那个文件（func.php）的表格里： delete.php中写入sql语句的传参也要改一下：
+这里能用$_GET变量是因为我们发现，这个网页是以get方式传参的。
+函数的封装（Model模块） 关联数据库的函数
+增删改功能的函数：
+这里有一个正则表达式，此函数是一个闭包函数，用来在这个函数里使用父函数的变量，注意格式变量=function(用户给的变量，这里是sql语句) use(传进来的父函数的变量)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aiguamumu.github.io/post/PHP%E5%BC%80%E5%8F%91/03PHP%E9%93%BE%E6%8E%A5SQL%E4%B8%8E%E6%9E%B6%E6%9E%84%E7%8B%AC%E7%AB%8B.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-15T17:35:33+08:00" />
+<meta property="article:modified_time" content="2022-10-15T17:35:33+08:00" /><meta property="og:site_name" content="Web_Security" />
+
+<meta itemprop="name" content="PHP链接MySQL">
+<meta itemprop="description" content="代码逻辑
+用PHP链接Mysql执行操作 MySQLI 可直接安装wamp，代表Windows、Apache、MySQL和PHP。这是一个软件堆栈。
+mysqli的扩展安装之后才可用php链接mysql
+&lt;?php phpinfo(); ?&gt; phpinfo()函数可以显示出PHP 所有相关信息。是排查php是否出错或漏配置模块的主要方式之一
+php基本语法D @ 错误控制操作符，当表达式加上@时，若该表达式错误，所产生的错误信息不会被爆出来，表达式生成的错误信息将保存在变量$ php_errormsg里，每个错误都会覆盖此变量
+&#39;{php变量}&#39;把变量用花括号括起来，并且用单引号包起来，表示把这个变量解析成字符串的形式,这样才能加入到sql语句里
+php文件里可以写html标签,echo &#39;html标签&#39;;
+html中写sql语句需要&lt;php? 变量名?&gt;
+php排错时要从sql语句开始排错。
+$sql=&#34;&#34;; echo $sql;exit; 然后把显示的sql语句赋值粘贴进mysql执行，看成不成功。
+die(message)在退出脚本前显示message信息
+php中，用.来实现字符串和变量的链接
+&#34;它的密码是&#34;.$key.&#34;值&#34; PHP中反引号的作用
+执行系统命令
+echo ipconfig；
+内涵SQL语句的关键字时
+$sql = &ldquo;select user,username from Content&rdquo;;
+匿名函数（闭包函数）
+实现php闭包既可以读取函数内部的变量，同时还可以将变量始终保存在内存中，使得即使函数执行完毕，变量也将一直存在。
+子函数可以使用父函数中的局部变量
+PHP中array（）
+只写array()说明新建了一个新的数组，php里有索引数组、关联数组、多维数组。
+使用PHP进行数据库插入操作 PHP中写sql语句，要把sql语句用双引号括起来并写入一个变量里
+mysqli_connect(&#39;数据库所在地址&#39;，’用户名‘，’密码‘，’数据库名‘)&ndash;&gt;数据链接函数
+$link=函数1 or die（）来判断函数1的执行是否有错，有错则会爆出所有信息。加@不爆出。&ndash;&gt;出错怎么办
+mysqli_query（链接的数据库赋给的变量，sql语句的变量），发送一条SQL语句到数据库服务器。
+insert插入返回布尔值，执行成功为true，失败为false&ndash;&gt;发送sql语句函数
+mysqli_affected_rows(链接的数据库赋给的变量)&ndash;&gt;获取数据影响行函数
+mysqli_insert_id(链接的数据库赋给的变量)，返回的是添加的哪一行的id
+mysqli_close(链接的数据库赋给的变量)&ndash;&gt;关闭数据库
+使用PHP进行数据库查询操作 mysqli_num_rows(问答函数出来的对象)，返回值是对象的行数
+mysqli_query(链接的数据库的变量)，对于查询而言返回的是一个对象
+mysqli_fetch_assoc(问答函数出来的对象)
+获取一行作为关联数组返回。
+如果数据库里什么都没有，就会返回NULL
+使用PHP进行数据库修改 使用PHP进行数据库删除 把删除函数可以写到查询的那个文件（func.php）的表格里： delete.php中写入sql语句的传参也要改一下：
+这里能用$_GET变量是因为我们发现，这个网页是以get方式传参的。
+函数的封装（Model模块） 关联数据库的函数
+增删改功能的函数：
+这里有一个正则表达式，此函数是一个闭包函数，用来在这个函数里使用父函数的变量，注意格式变量=function(用户给的变量，这里是sql语句) use(传进来的父函数的变量)"><meta itemprop="datePublished" content="2022-10-15T17:35:33+08:00" />
+<meta itemprop="dateModified" content="2022-10-15T17:35:33+08:00" />
+<meta itemprop="wordCount" content="87">
+<meta itemprop="keywords" content="PHP开发," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PHP链接MySQL"/>
+<meta name="twitter:description" content="代码逻辑
+用PHP链接Mysql执行操作 MySQLI 可直接安装wamp，代表Windows、Apache、MySQL和PHP。这是一个软件堆栈。
+mysqli的扩展安装之后才可用php链接mysql
+&lt;?php phpinfo(); ?&gt; phpinfo()函数可以显示出PHP 所有相关信息。是排查php是否出错或漏配置模块的主要方式之一
+php基本语法D @ 错误控制操作符，当表达式加上@时，若该表达式错误，所产生的错误信息不会被爆出来，表达式生成的错误信息将保存在变量$ php_errormsg里，每个错误都会覆盖此变量
+&#39;{php变量}&#39;把变量用花括号括起来，并且用单引号包起来，表示把这个变量解析成字符串的形式,这样才能加入到sql语句里
+php文件里可以写html标签,echo &#39;html标签&#39;;
+html中写sql语句需要&lt;php? 变量名?&gt;
+php排错时要从sql语句开始排错。
+$sql=&#34;&#34;; echo $sql;exit; 然后把显示的sql语句赋值粘贴进mysql执行，看成不成功。
+die(message)在退出脚本前显示message信息
+php中，用.来实现字符串和变量的链接
+&#34;它的密码是&#34;.$key.&#34;值&#34; PHP中反引号的作用
+执行系统命令
+echo ipconfig；
+内涵SQL语句的关键字时
+$sql = &ldquo;select user,username from Content&rdquo;;
+匿名函数（闭包函数）
+实现php闭包既可以读取函数内部的变量，同时还可以将变量始终保存在内存中，使得即使函数执行完毕，变量也将一直存在。
+子函数可以使用父函数中的局部变量
+PHP中array（）
+只写array()说明新建了一个新的数组，php里有索引数组、关联数组、多维数组。
+使用PHP进行数据库插入操作 PHP中写sql语句，要把sql语句用双引号括起来并写入一个变量里
+mysqli_connect(&#39;数据库所在地址&#39;，’用户名‘，’密码‘，’数据库名‘)&ndash;&gt;数据链接函数
+$link=函数1 or die（）来判断函数1的执行是否有错，有错则会爆出所有信息。加@不爆出。&ndash;&gt;出错怎么办
+mysqli_query（链接的数据库赋给的变量，sql语句的变量），发送一条SQL语句到数据库服务器。
+insert插入返回布尔值，执行成功为true，失败为false&ndash;&gt;发送sql语句函数
+mysqli_affected_rows(链接的数据库赋给的变量)&ndash;&gt;获取数据影响行函数
+mysqli_insert_id(链接的数据库赋给的变量)，返回的是添加的哪一行的id
+mysqli_close(链接的数据库赋给的变量)&ndash;&gt;关闭数据库
+使用PHP进行数据库查询操作 mysqli_num_rows(问答函数出来的对象)，返回值是对象的行数
+mysqli_query(链接的数据库的变量)，对于查询而言返回的是一个对象
+mysqli_fetch_assoc(问答函数出来的对象)
+获取一行作为关联数组返回。
+如果数据库里什么都没有，就会返回NULL
+使用PHP进行数据库修改 使用PHP进行数据库删除 把删除函数可以写到查询的那个文件（func.php）的表格里： delete.php中写入sql语句的传参也要改一下：
+这里能用$_GET变量是因为我们发现，这个网页是以get方式传参的。
+函数的封装（Model模块） 关联数据库的函数
+增删改功能的函数：
+这里有一个正则表达式，此函数是一个闭包函数，用来在这个函数里使用父函数的变量，注意格式变量=function(用户给的变量，这里是sql语句) use(传进来的父函数的变量)"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://aiguamumu.github.io/images/Sailboat%20at%20Le%20Petit-Gennevilliers.jpg');">
+    <div class="bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Web_Security
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post.html" title="Articles 页">
+              Articles
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact.html" title="Contact 页">
+              Contact
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">PHP链接MySQL</h1>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        ARTICLES
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://twitter.com/share?url=https://aiguamumu.github.io/post/PHP%E5%BC%80%E5%8F%91/03PHP%E9%93%BE%E6%8E%A5SQL%E4%B8%8E%E6%9E%B6%E6%9E%84%E7%8B%AC%E7%AB%8B.html&amp;text=PHP%e9%93%be%e6%8e%a5MySQL" class="ananke-social-link twitter no-underline" aria-label="share on Twitter">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">PHP链接MySQL</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-10-15T17:35:33+08:00">十月 15, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p><a href="#%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%912">代码逻辑</a></p>
+<h1 id="用php链接mysql执行操作">用PHP链接Mysql执行操作</h1>
+<h3 id="mysqli">MySQLI</h3>
+<ul>
+<li>
+<p>可直接安装<code>wamp</code>，代表Windows、Apache、MySQL和PHP。这是一个<strong>软件堆栈</strong>。</p>
+</li>
+<li>
+<p><code>mysqli的扩展</code>安装之后<strong>才可用php链接mysql</strong></p>
+</li>
+<li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span>                 <span style="color:#a6e22e">phpinfo</span>();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p><code>phpinfo()</code>函数可以显示出PHP 所有相关信息。是<strong>排查php</strong>是否出错或漏<strong>配置模块</strong>的主要方式之一</p>
+</li>
+</ul>
+<h3 id="php基本语法d">php基本语法D</h3>
+<blockquote>
+<ul>
+<li>
+<p><code>@</code> 错误控制操作符，当表达式加上<code>@</code>时，若该表达式错误，所产生的错误信息不会被爆出来，表达式生成的错误信息将保存在变量<code>$ php_errormsg</code>里，每个错误都会覆盖此变量</p>
+</li>
+<li>
+<p><code>'{php变量}'</code>把变量用花括号括起来，并且用单引号包起来，表示把这个变量解析成字符串的形式,这样才能加入到sql语句里</p>
+</li>
+<li>
+<p>php文件里可以写html标签,<code>echo 'html标签';</code></p>
+<blockquote>
+<p><img src="images/image-20221016185629403.png" alt="image-20221016185629403"></p>
+</blockquote>
+</li>
+<li>
+<p>html中写sql语句需要&lt;php? 变量名?&gt;</p>
+</li>
+<li>
+<p>php<strong>排错时要从sql语句开始排错</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$sql<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> $sql;<span style="color:#66d9ef">exit</span>;
+</span></span></code></pre></div><p><strong>然后把显示的sql语句赋值粘贴进mysql执行，看成不成功。</strong></p>
+</li>
+<li>
+<p><code>die(message)</code>在退出脚本前显示message信息</p>
+</li>
+<li>
+<p>php中，用<code>.</code>来实现字符串和变量的链接</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#e6db74">&#34;它的密码是&#34;</span><span style="color:#f92672">.</span>$key<span style="color:#f92672">.</span><span style="color:#e6db74">&#34;值&#34;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>PHP中<strong>反引号</strong>的作用</p>
+<ul>
+<li>
+<p>执行系统命令</p>
+<p>echo <code>ipconfig</code>；</p>
+</li>
+<li>
+<p>内涵SQL语句的关键字时</p>
+<p>$sql = &ldquo;select <code>user</code>,username from <code>Content</code>&rdquo;;</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>匿名函数</strong>（闭包函数）</p>
+<p>实现php闭包既可以读取函数内部的变量，同时还可以将变量始终保存在内存中，使得即使函数执行完毕，变量也将一直存在。</p>
+<p><strong>子函数可以使用父函数中的局部变量</strong></p>
+</li>
+<li>
+<p>PHP中<code>array（）</code></p>
+<p>只写array()说明新建了一个新的数组，php里有索引数组、关联数组、多维数组。</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="使用php进行数据库插入操作">使用PHP进行数据库插入操作</h3>
+<p>PHP中写sql语句，要把sql语句用双引号括起来并写入一个变量里</p>
+<blockquote>
+<ul>
+<li>
+<p><code>mysqli_connect('数据库所在地址'，’用户名‘，’密码‘，’数据库名‘)</code>&ndash;&gt;数据链接函数</p>
+</li>
+<li>
+<p><code>$link=函数1 or die（）</code>来判断函数1的执行是否有错，有错则会爆出所有信息。加<code>@</code>不爆出。&ndash;&gt;出错怎么办</p>
+</li>
+<li>
+<p><code>mysqli_query（链接的数据库赋给的变量，sql语句的变量）</code>，发送一条SQL语句到数据库服务器。</p>
+<p>insert插入返回布尔值，执行成功为true，失败为false&ndash;&gt;发送sql语句函数</p>
+</li>
+<li>
+<p><code>mysqli_affected_rows(链接的数据库赋给的变量)</code>&ndash;&gt;获取数据影响行函数</p>
+</li>
+<li>
+<p><code>mysqli_insert_id(链接的数据库赋给的变量)</code>，返回的是添加的哪一行的id</p>
+</li>
+<li>
+<p><code> mysqli_close(链接的数据库赋给的变量)</code>&ndash;&gt;关闭数据库</p>
+</li>
+</ul>
+</blockquote>
+<p><img src="images/image-20221016101939270.png" alt="image-20221016101939270"></p>
+<p><img src="images/image-20221016102453031.png" alt="image-20221016102453031"></p>
+<p><img src="images/image-20221016103436470.png" alt="image-20221016103436470"></p>
+<h3 id="使用php进行数据库查询操作">使用PHP进行数据库查询操作</h3>
+<blockquote>
+<ul>
+<li>
+<p><code>mysqli_num_rows(问答函数出来的对象)</code>，返回值是对象的行数</p>
+</li>
+<li>
+<p><code>mysqli_query(链接的数据库的变量)</code>，对于查询而言返回的是一个对象</p>
+<p><img src="images/image-20221016184730354.png" alt="image-20221016184730354"></p>
+</li>
+<li>
+<p><code>mysqli_fetch_assoc(问答函数出来的对象)</code></p>
+</li>
+</ul>
+<p>获取一行作为关联数组返回。</p>
+<p>如果数据库里什么都没有，就会返回NULL</p>
+</blockquote>
+<p><img src="images/image-20221016190050034.png" alt="image-20221016190050034"></p>
+<p><img src="images/image-20221016190228155.png" alt="image-20221016190228155"></p>
+<p><img src="images/image-20221016190409805.png" alt="image-20221016190409805"></p>
+<h3 id="使用php进行数据库修改">使用PHP进行数据库修改</h3>
+<p><img src="images/image-20221016191640062.png" alt="image-20221016191640062"></p>
+<h3 id="使用php进行数据库删除">使用PHP进行数据库删除</h3>
+<p><img src="images/image-20221016191933716.png" alt="image-20221016191933716"></p>
+<p>把删除函数可以写到查询的那个文件（<strong>func.php</strong>）的表格里：
+<img src="images/image-20221016192113579.png" alt="image-20221016192113579"></p>
+<p><strong>delete.php</strong>中写入sql语句的传参也要改一下：</p>
+<p><strong>这里能用$_GET变量是因为我们发现，这个网页是以get方式传参的。</strong></p>
+<p><img src="images/image-20221016192309559.png" alt="image-20221016192309559"></p>
+<h3 id="函数的封装model模块">函数的封装（Model模块）</h3>
+<p><strong>关联数据库</strong>的函数</p>
+<p><img src="images/image-20221016203458376.png" alt="image-20221016203458376"></p>
+<p><strong>增删改功能的函数：</strong></p>
+<p>这里有一个正则表达式，此函数是一个<strong>闭包函数</strong>，用来在这个函数里使用父函数的变量，注意格式<code>变量=function(用户给的变量，这里是sql语句) use(传进来的父函数的变量)</code></p>
+<p><img src="images/image-20221016205924914.png" alt="image-20221016205924914"></p>
+<p><strong>查找</strong>的函数：
+<img src="images/image-20221016210213924.png" alt="image-20221016210213924"></p>
+<p><strong>统计行数</strong>的函数：
+<img src="images/image-20221016211258554.png" alt="image-20221016211258554"></p>
+<p><strong>查询单条</strong>数据功能：</p>
+<p><img src="images/image-20221016212255047.png" alt="image-20221016212255047"></p>
+<p><strong>关闭数据库</strong>的添加语句：</p>
+<p>注意代码逻辑。</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><img src="images/image-20221016212142352.png" alt="image-20221016212142352"></p>
+<h3 id="预处理">预处理</h3>
+<ul>
+<li>
+<p>目的：<strong>防止SQL注入</strong>，且执行效率快</p>
+<blockquote>
+<p>就是把自己的sql语句<strong>拼接</strong>进后台所写的SQL语句里</p>
+</blockquote>
+<p>而预处理就不是字符串拼接的方式</p>
+</li>
+<li>
+<p>基本原理：SQL语句不是一条一条的发送，而是直接存储在SQL数据库中（最后程序结束还是要释放），等待那个值的传入。</p>
+<p><img src="images/image-20221016213225858.png" alt="image-20221016213225858"></p>
+</li>
+<li>
+<p>具体实现</p>
+<p>type中<code>i</code>代表int，<code>s</code>代表string。</p>
+<p>需要<strong>准备预处理</strong>和<strong>释放预处理</strong>。</p>
+<p>用<code>?</code>占位。</p>
+<p><img src="images/image-20221016213717489.png" alt="image-20221016213717489"></p>
+</li>
+</ul>
+<p><img src="images/image-20221016214110561.png" alt="image-20221016214110561"></p>
+<p>推广：（若查询的东西变多以后）</p>
+<p><img src="images/image-20221016214558895.png" alt="image-20221016214558895"></p>
+<h1 id="总结">总结：</h1>
+<p>重点掌握：</p>
+<p><img src="images/image-20221023140459585.png" alt="image-20221023140459585"></p>
+<ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/PHP%E5%BC%80%E5%8F%91.html" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">PHP开发</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关內容</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/PHP%E5%BC%80%E5%8F%91/02MySQL%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%8C%E5%85%A8%E7%8B%AC%E7%AB%8B.html">MySQL数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/PHP%E5%BC%80%E5%8F%91/01CMS%E6%9E%B6%E6%9E%84%E5%92%8C%E5%90%8E%E5%8F%B0%E9%85%8D%E7%BD%AEA-%E5%88%9D%E8%AF%86.html">CMS架构和后台配置A-初识</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://aiguamumu.github.io/" >
+    &copy;  Web_Security 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
