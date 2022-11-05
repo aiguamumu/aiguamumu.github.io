@@ -2,23 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://aiguamumu.github.io/myself_explore/</loc>
-    <lastmod>2017-03-02T12:00:00-05:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://aiguamumu.github.io/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="myself_explore"
-                href="https://aiguamumu.github.io/myself_explore/"
-                />
-  </url><url>
     <loc>https://aiguamumu.github.io/myself_explore/post.html</loc>
-    <lastmod>2017-03-02T12:00:00-05:00</lastmod>
+    <lastmod>2022-10-29T12:00:00-05:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link
@@ -30,6 +15,21 @@
                 rel="alternate"
                 hreflang="myself_explore"
                 href="https://aiguamumu.github.io/myself_explore/post.html"
+                />
+  </url><url>
+    <loc>https://aiguamumu.github.io/myself_explore/</loc>
+    <lastmod>2022-10-29T12:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://aiguamumu.github.io/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="myself_explore"
+                href="https://aiguamumu.github.io/myself_explore/"
                 />
   </url><url>
     <loc>https://aiguamumu.github.io/myself_explore/about.html</loc>
