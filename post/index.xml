@@ -8,6 +8,171 @@
     <language>zh-cn</language>
     <lastBuildDate>Sat, 29 Oct 2022 12:00:00 -0500</lastBuildDate><atom:link href="https://aiguamumu.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>MySQL实操</title>
+      <link>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/MySQL%E5%AE%9E%E6%93%8D.html</link>
+      <pubDate>Sun, 18 Dec 2022 17:35:33 +0800</pubDate>
+      
+      <guid>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/MySQL%E5%AE%9E%E6%93%8D.html</guid>
+      <description>导读 本来没想实操的，但是由于在学SQL注入的时候遇见了很多问题，不理解那样的SQL语句的执行会产生什么结果。一开始花费了很多时间上网查，查到最后发现还是自己创建一个库写一遍比较方便。
+安装MySQL 记住软件安装目录和数据保存目录 记下账户和密码，都是root 记下设置的MySQL名字：MySQL57 配置环境变量 原因：本来只有在安装目录下启动MySQL.exe文件才能有效，但是配置了环境变量后，可以直接在cmd中执行mysql就可运行启动。 环境变量也可看做是全局变量 几个重要安装目录 DATA目录下
+存放错误日志文件
+存放三个目录（系统默认的数据库）
+information_schema
+mysql
+performance_schema
+sys
+自定义每创建一个数据库，都会在data目录下生成一个文件夹
+.FRM后缀，存放表的结构信息 .MYD后缀，存放数据信息 总览的几个目录
+数据库系统管理软件安装目录
+“database manage server”
+数据库存放目录
+“Data目录”
+数据库链接目录
+“connector/J”（java链接mysql需要的安装包）
+客户端工具目录
+“workhench”（mysql客户端管理工具）
+忘记MySQL登录密码 设置无需密码登录 执行语句，–skip-grant-tables 会让 MySQL 服务器跳过验证步骤，允许所有用户以匿名的方式，无需做密码验证就可以直接登录 MySQL 服务器，并且拥有所有的操作权限。
+mysqld --console --skip-grant-tables --shared-memory 接着不关闭当前的cmd，重新打开一个powershell，直接输入命令mysql就可进入到mysql中
+坑：Can‘t change dir to报错 根本原因值下面的配置与电脑上的实际配置不一致问题。（或者说缺少data文件问题）
+My.ini文件夹中此处配置改为以下，同时为了路径一致我们在那个文件夹下新建了一个data文件
+进入MySQL 坑：提示系统访问权限不够
+未使用管理员权限打开。
+开启MySQL和关闭MySQL net start MySQL57 net stop MySQL57 MySQL57是通过电脑-服务-所查到的本机安装的MySQL的名字
+链接MySQL mysql -hlocalhost -uroot -proot -h为服务器名，这里指本地服务区
+-u为数据库的用户名，默认root
+-p为密码
+SQL注入在MySQL中的真实查询结果 example student库里的stu表格</description>
+    </item>
+    
+    <item>
+      <title>SQL注入</title>
+      <link>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5.html</link>
+      <pubDate>Sun, 18 Dec 2022 17:35:33 +0800</pubDate>
+      
+      <guid>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5.html</guid>
+      <description>前言 第二遍学SQL注入了，第一遍学的云里雾里，不知道很多做法的根本原理，所以写下这一篇，弥补之前学的不足，并且回顾之前学的知识。
+更深的SQL语句逻辑理解和实操结果见笔记“MySQL实操”
+本篇以MySQL数据库为例。（当然实战中会遇见Oracle或者SQL-server，见文章刷题版）
+大多数SQL注入如何检测：除了下面所提到的手工方法，实战中我们一般用Burp suite的Web漏洞扫描程序来快速找到。
+不同的SQL注入部分：大部分注入点都在SELECT...WHERE...后面的语句中，但也有在UPDATE...WHERE或者INSERT或者SELECT 列或者SELECT ORDER BY
+版本 MySQL 5.0以后 有information_schema关键字，可以直接查表、查库。 为多用户模式 原理 SQL注入的本质：是字符串的拼接。让用户写入的东西插入到web表单提交或输入域名或页面请求的查询字符串，使服务器误以为是SQL语句而去执行。
+举个例子 在这个注入点中，后台的封装的SQL语句时这样的：
+“SELECT password FROM student WHERE name=&amp;rsquo; ” + 用户要输入的语句 (一个变量)+&amp;quot; &amp;rsquo; &amp;lsquo;&amp;quot;
+所以我们输入的语句，默认查的表是它给的student表，所以需要不全列用null补上，null也可以爆出列的数量
+1&amp;rsquo; union select null,null,null&amp;ndash;
+除非后面利用union+保留字爆出库名表名列名后，在不同的表查询数据，则不用NULL
+步骤 判断注入点是否可注，且判断sql注入的类型 有回显型：
+字符注入+联合/堆叠注入 数字注入+联合/堆叠注入 无回显型（盲注）：
+布尔盲注
+报错盲注
+延时盲注
+先考虑语句错误（正误都200但有welcom，正误为200和500），最后再考虑语法错误
+如果是有回显型 万能密码/数字型注入（选取哪个看这个网页对哪个有反应）
+目的：爆出默认当前表中的隐藏数据、绕过登录界面的密码。
+看个大概，能爆出多少数据。
+从原理上来说，爆出的应该是这个注入点开发者写的代码中的where=注入内容的东西。
+用联合注入去查默认当前表
+目的：为了查找本表之外的其他表的信息
+误区：
+其实联合注入不光可以与其他表联合求并，也可以与自身联合求并，下面求证：
+有两种基本情况，其中需要使用组合查询： 1.在单个查询中从不同的表中返回类似结构的数据。 2.对单个表执行从相同的表自身联合查询，多用于确定列数/查询所在表的更多信息。 **而其实自身联合查询出的结果可以等同于有多个WHERE子句查询出的结果。**微小区别是，对于太过复杂的查询用UNION可能比用WHERE更好。
+方法：见下。
+查询真实结果：见笔记“MySQL实操”
+用联合/堆叠注入去查其他表
+方法一：联合注入。
+首先，UNION注入的前提：
+查找当前默认表中的，列的数量（直接ORDER BY/UNION+NULL占位/UNION+select 1,2,3,4#）
+union查询中，union前后两张表的，列的数量要相同
+查找有用的列（一般在注入中有用的都是字符串形式的列）UNION+‘A’+NULL。</description>
+    </item>
+    
+    <item>
+      <title>SQL注入-刷题A</title>
+      <link>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5-%E5%88%B7%E9%A2%98A.html</link>
+      <pubDate>Sun, 18 Dec 2022 17:35:33 +0800</pubDate>
+      
+      <guid>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5-%E5%88%B7%E9%A2%98A.html</guid>
+      <description>针对不同数据库的备忘录可在链接中找。
+大体分类：
+T0~T1 字符/数字型注入
+T2~T5 union注入
+T6~T10 数据库的版本问题+union注入和数据库本身保留字
+T11~T13盲注
+T14带外
+T0允许检索隐藏数据的注入 知道注入点以后，判断属于字符型注入还是数字型注入
+whatever&amp;#39; or 1=1-- url中用加号链接，加号就代表空格
+https://insecure-website.com/products?category=Gifts&amp;#39;+OR+1=1-- T1允许绕过登录的注入 已知我需要拿用户名administrator登录
+administrator&amp;#39;-- UNION从其他表中检索数据 T2测试列数 &amp;#39; UNION SELECT NULL-- &amp;#39; UNION SELECT NULL,NULL-- &amp;#39; UNION SELECT NULL,NULL,NULL-- 或者 &amp;#39; ORDER BY 1-- &amp;#39; ORDER BY 2-- &amp;#39; ORDER BY 3-- T3查找具有有用数据类型的列 通常对我们有用的数据类型都是字符串的形式。
+Accessories&amp;#39; UNION SELECT &amp;#39;nEsVgZ&amp;#39;,NULL,NULL-- Accessories&amp;#39; UNION SELECT NULL,&amp;#39;nEsVgZ&amp;#39;,NULL-- Accessories&amp;#39; UNION SELECT NULL,NULL,&amp;#39;nEsVgZ&amp;#39;-- 用第二行测试的时候能返回出数据，说明字符串变量在中间。
+T4union攻击检索相关数据 Accessories&amp;#39; union select username,password from users-- 获取其他有用的表名以及某些列名在 SQL 注入攻击中检查数据库 |网络安全学院 (portswigger.</description>
+    </item>
+    
+    <item>
+      <title>SSH认识和配置</title>
+      <link>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SSH%E8%AE%A4%E8%AF%86%E5%92%8C%E9%85%8D%E7%BD%AE.html</link>
+      <pubDate>Sun, 18 Dec 2022 17:35:33 +0800</pubDate>
+      
+      <guid>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SSH%E8%AE%A4%E8%AF%86%E5%92%8C%E9%85%8D%E7%BD%AE.html</guid>
+      <description>导读 最初接触ssh是在登录github远程仓库时，知道除了https还有ssh方法（ssh的建立安全隧道的作用）；然后再次接触到ssh是因为在看见switchomega插件的时候想去了解代理和翻墙的原理，知道了也可以用ssh进行（ssh的绕过防火墙的作用）。
+以上提到的都是ssh的作用，既然要学作用，干脆把ssh系统性的都学了一遍。
+SSH-是什么 Secure Shell，一种用于加密两台计算机之间通信并支持各种身份验证机制的网络协议。、
+实现途径：把明文的网络协议套用在它里面 架构：采取S/C（Server/client），即服务器/客户端模式 SSH-作用概览 用途 建立加密隧道。
+登录服务器 端口转发（port forwarding）。 概述 专为远程登录会话和两台电脑之间通过安全的链接进行数据交换的网络协议。
+ssh客户端(ssh) ssh服务端(sshd) +----------+ +---------+ | | | | | | | | | | | | | | | | +---+---+--+ +-+---+---+ | | | | | | | | | +----------------------------+ | | | | ssh加密了的TCP通信 | +------------------------------------+ SSH连接 有效防止IP欺骗和DNS欺骗 所做准备 OpenSSH：（服务端）
+提供加密通话的计算机程序。（SSH只是一个协议，而OpenSSH是其开源实现）
+作为服务端（sshd）需要安装OpenSSH
+客户端（ssh）：
+Linux系统：
+直接使用SSH命令
+Windows
+Putty/Putty Tray Bitvise（免费） Xshell（被爆后门多） Cmder（集成 Git For Windows、Unix命令等，通过ssh agent来配置） 登录远程服务器作用 密码登录远程服务器 基本密码登录的客户端和服务端配置操作</description>
+    </item>
+    
+    <item>
+      <title>webshell导读</title>
+      <link>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/webshell%E5%AF%BC%E8%AF%BB.html</link>
+      <pubDate>Sun, 18 Dec 2022 17:35:33 +0800</pubDate>
+      
+      <guid>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/webshell%E5%AF%BC%E8%AF%BB.html</guid>
+      <description>Tomcat架构 问题提出 一台电脑只有一个IP，都用8080端口，为什么能挂两个网站？ 请求消息中所包含的主机名被连接器给识别出来，并且放到了Request对象里面。
+引擎通过Request对象里面的目标主机名，将Request对象派发给相应的主机来处理，因此一台电脑能部署多个网站。
+如何使浏览器访问主机名时访问本机的IP地址？ 在C:\Windows\System32\drivers\etc下的hosts文件的末尾增添“IP地址 域名”的条目，就可以在本地进行该域名解析。
+即可以使对相同的ip地址和相同端口的访问，却可以实现访问不同的虚拟主机
+重点-server.xml文件 在config文件夹下
+说明：
+树形结构，XML语言 每个标签对应下图中的每个容器 核心架构 说明：
+一个虚拟主机对应tomcat下的一个文件夹
+上图中所有的方框都是容器
+连接器（Connector）负责通信，注册时需要指定监听端口和通信协议，通信协议的指定是为了传输信息的完整和准确性。
+连接器的功能：
+引擎（Engine）负责处理请求。
+总结 通过这些容器，电脑上的Servlet被进行了详细的分类管理。
+连接器给出的request（请求对象）里面，包含了他要访问的servlet的详细路径，具体地说就是主机名、应用名（路径）和servlet名（路径），因此各级容器收到了对象之后，就能够把它正确的派发给下一级容器，最后达到目标servlet对象。
+这个request对象的层层转发过程，本质上是函数的层层调用过程。
+调用完成之后，连接器将得到一个response对象，连接器将response对象转换为字节流返回给浏览器，这就是Tomcat的核心架构和工作原理。
+参考文章 Tomcat的目录结构
+https://www.bilibili.com/read/cv13861154
+JavaWeb开发必看！Tomcat架构及工作原理（8分钟）_哔哩哔哩_bilibili
+监听端口 HTTP协议 ：默认80端口
+HTTPS协议：默认443端口
+端口：
+（作用回顾）：像“门”，每个端口对应一个上层的应用程序，这个上层应用程序（进程）可以监听这个端口
+监听
+即这个应用程序监听这个端口来的数据
+查看监听端口命令
+netstat -ano | find /i &amp;#34;listen&amp;#34; 特殊IP地址回顾：
+0.0.0.0 表示本机的所有地址 127.0.0.1 表示本机的环回地址 实例（以python创建socket对象并绑定一个端口去监听一个IP地址）
+python书写
+找“12345”这个端口，并用pid查找监听某个端口的进程是谁
+关闭端口直接结束进程就可以了
+Socket模块（python） “套接字”。针对某个服务端和客户端来进行打开、读写、关闭
+参考文章 [python中的socket是什么意思？如何使用 - Jaoany - 博客园 (cnblogs.com)](https://www.cnblogs.com/fanglijiao/p/15060004.html#:~:text=python中的socket是什么意思？如何使用呢 Socket,一、概述 socket通常也称作&amp;quot;套接字&amp;quot;，用于描述IP地址和端口，是一个通信链的句柄，应用程序通常通过&amp;quot;套接字&amp;quot;向网络发出请求或者应答网络请求。)
+XML 独立于软件和硬件的信息传输工具
+可扩展标记语言，一种很像html的语言
+目的：传输数据。（而不是显示数据） XML不会做任何事情，仅仅只是包装一段纯粹的信息 自我描述性。XML没有预定义好的标签，所有的标签都是创作者自己定义的 xml与html关系 xml是对html的补充，并不会替代html</description>
+    </item>
+    
+    <item>
       <title>Git&amp;Github笔记</title>
       <link>https://aiguamumu.github.io/post/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/github%E7%AC%94%E8%AE%B0.html</link>
       <pubDate>Sat, 05 Nov 2022 14:55:49 +0800</pubDate>

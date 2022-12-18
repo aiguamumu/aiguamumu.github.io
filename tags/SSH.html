@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-    <title>Articles | Web_Security</title>
+    <title>SSH | Web_Security</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
     <meta name="description" content="月寒日暖，来煎人寿。">
     <meta name="generator" content="Hugo 0.104.3" />
@@ -29,19 +29,19 @@
 
     
     
-      <link href="/post/index.xml" rel="alternate" type="application/rss+xml" title="Web_Security" />
-      <link href="/post/index.xml" rel="feed" type="application/rss+xml" title="Web_Security" />
+      <link href="/tags/SSH/index.xml" rel="alternate" type="application/rss+xml" title="Web_Security" />
+      <link href="/tags/SSH/index.xml" rel="feed" type="application/rss+xml" title="Web_Security" />
       
     
     
-    <meta property="og:title" content="Articles" />
+    <meta property="og:title" content="SSH" />
 <meta property="og:description" content="月寒日暖，来煎人寿。" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://aiguamumu.github.io/post.html" /><meta property="og:site_name" content="Web_Security" />
+<meta property="og:url" content="https://aiguamumu.github.io/tags/SSH.html" /><meta property="og:site_name" content="Web_Security" />
 
-<meta itemprop="name" content="Articles">
+<meta itemprop="name" content="SSH">
 <meta itemprop="description" content="月寒日暖，来煎人寿。"><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Articles"/>
+<meta name="twitter:title" content="SSH"/>
 <meta name="twitter:description" content="月寒日暖，来煎人寿。"/>
 
 	
@@ -63,15 +63,6 @@
     </a>
     <div class="flex-l items-center">
       
-<h4></h4>
-<ul class="pl0 mr3">
-    
-    <li class="list f5 f4-ns fw4 dib pr3">
-        <a class="hover-white no-underline white-90" href="/myself_explore/post.html">myself_explore</a>
-    </li>
-    
-</ul>
-
 
       
         <ul class="pl0 mr3">
@@ -111,7 +102,7 @@
 
       <div class="tc-l pv4 pv6-l ph3 ph4-ns">
         <h1 class="f2 f-subheadline-l fw2 white-90 mb0 lh-title">
-          Articles
+          SSH
         </h1>
         
       </div>
@@ -121,15 +112,15 @@
 
     <main class="pb7" role="main">
       
-
-  <article class="pa3 pa4-ns nested-copy-line-height">
-    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray">
-      <p>The Articles as learning Web-Security.</p>
-
-    </section>
-    <aside class="flex-ns flex-wrap justify-around mt5">
+  <article class="cf pa3 pa4-m pa4-l">
+    <div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links mid-gray">
+      <p>标签为“SSH”的页面如下</p>
+    </div>
+  </article>
+  <div class="mw8 center">
+    <section class="flex-ns flex-wrap justify-around mt5">
       
-        <div class="relative w-100 w-30-l mb4 bg-white">
+        <div class="relative w-100  mb4 bg-white">
             <div class="mb3 pa4 mid-gray overflow-hidden">
     
       <div class="f6">
@@ -160,121 +151,8 @@ Putty/Putty Tray Bitvise（免费） Xshell（被爆后门多） Cmder（集成 
 
         </div>
       
-        <div class="relative w-100 w-30-l mb4 bg-white">
-            <div class="mb3 pa4 mid-gray overflow-hidden">
-    
-      <div class="f6">
-        十二月 18, 2022
-      </div>
-    
-    <h1 class="f3 near-black">
-      <a href="/post/SQL%E6%B3%A8%E5%85%A5/webshell%E5%AF%BC%E8%AF%BB.html" class="link black dim">
-        webshell导读
-      </a>
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      Tomcat架构 问题提出 一台电脑只有一个IP，都用8080端口，为什么能挂两个网站？ 请求消息中所包含的主机名被连接器给识别出来，并且放到了Request对象里面。
-引擎通过Request对象里面的目标主机名，将Request对象派发给相应的主机来处理，因此一台电脑能部署多个网站。
-如何使浏览器访问主机名时访问本机的IP地址？ 在C:\Windows\System32\drivers\etc下的hosts文件的末尾增添“IP地址 域名”的条目，就可以在本地进行该域名解析。
-即可以使对相同的ip地址和相同端口的访问，却可以实现访问不同的虚拟主机
-重点-server.xml文件 在config文件夹下
-说明：
-树形结构，XML语言 每个标签对应下图中的每个容器 核心架构 说明：
-一个虚拟主机对应tomcat下的一个文件夹
-上图中所有的方框都是容器
-连接器（Connector）负责通信，注册时需要指定监听端口和通信协议，通信协议的指定是为了传输信息的完整和准确性。
-连接器的功能：
-引擎（Engine）负责处理请求。
-总结 通过这些容器，电脑上的Servlet被进行了详细的分类管理。
-连接器给出的request（请求对象）里面，包含了他要访问的servlet的详细路径，具体地说就是主机名、应用名（路径）和servlet名（路径），因此各级容器收到了对象之后，就能够把它正确的派发给下一级容器，最后达到目标servlet对象。
-这个request对象的层层转发过程，本质上是函数的层层调用过程。
-调用完成之后，连接器将得到一个response对象，连接器将response对象转换为字节流返回给浏览器，这就是Tomcat的核心架构和工作原理。
-参考文章 Tomcat的目录结构
-https://www.bilibili.com/read/cv13861154
-JavaWeb开发必看！Tomcat架构及工作原理（8分钟）_哔哩哔哩_bilibili
-监听端口 HTTP协议 ：默认80端口
-HTTPS协议：默认443端口
-端口：
-（作用回顾）：像“门”，每个端口对应一个上层的应用程序，这个上层应用程序（进程）可以监听这个端口
-监听
-即这个应用程序监听这个端口来的数据
-查看监听端口命令
-netstat -ano | find /i &#34;listen&#34; 特殊IP地址回顾：
-0.0.0.0 表示本机的所有地址 127.0.0.1 表示本机的环回地址 实例（以python创建socket对象并绑定一个端口去监听一个IP地址）
-python书写
-找“12345”这个端口，并用pid查找监听某个端口的进程是谁
-关闭端口直接结束进程就可以了
-Socket模块（python） “套接字”。针对某个服务端和客户端来进行打开、读写、关闭
-参考文章 [python中的socket是什么意思？如何使用 - Jaoany - 博客园 (cnblogs.com)](https://www.cnblogs.com/fanglijiao/p/15060004.html#:~:text=python中的socket是什么意思？如何使用呢 Socket,一、概述 socket通常也称作&quot;套接字&quot;，用于描述IP地址和端口，是一个通信链的句柄，应用程序通常通过&quot;套接字&quot;向网络发出请求或者应答网络请求。)
-XML 独立于软件和硬件的信息传输工具
-可扩展标记语言，一种很像html的语言
-目的：传输数据。（而不是显示数据） XML不会做任何事情，仅仅只是包装一段纯粹的信息 自我描述性。XML没有预定义好的标签，所有的标签都是创作者自己定义的 xml与html关系 xml是对html的补充，并不会替代html
-    </div>
+    </section>
   </div>
-
-        </div>
-      
-        <div class="relative w-100 w-30-l mb4 bg-white">
-            <div class="mb3 pa4 mid-gray overflow-hidden">
-    
-      <div class="f6">
-        十一月 5, 2022
-      </div>
-    
-    <h1 class="f3 near-black">
-      <a href="/post/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/github%E7%AC%94%E8%AE%B0.html" class="link black dim">
-        Git&amp;Github笔记
-      </a>
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      将本地项目推送到Repo 在本项目的根目录下建立git仓库
-git init 将项目中的所有文件添加到管道
-git add . 将管道中的文件提交到仓库
-git commit -m “注释语句” 去github网站中创建一个repo
-复制clone or download下SSH的地址，前提是在本地已经建立了SSH密钥和公钥
-将本地仓库关联到github上
-git remote add origin git@github.com:xxx/xxx.git 要先pull一下，获取当前github上的repo的他人的更新。（如果是刚建的仓库可有可无）
-git pull origin master 上传代码push
-git push -u origin master 分支 分支功能存在于，当我们的开发过程中接到一个或两个新的（不同的）功能需求时，我们需要同时开发这几个分支，最后可以merge到主分支上。
-github仓库中有一个默认的master分支 当然可以直接在github网页的仓库中创建一个新的分支，但其实在本地通过git here创建分支后再push上去会更加的方便 查看目前的分支
-git branch 创建一个新的分支
-git branch 新的分支名字 切换分支
-git checkout 要切换到的分支名字 合并分支
-git branch 要合并的分支名字 #此时位置处于另一个被合并的分支下 #或者 git merge gh-pages --allow-unrelated-histories 
-    </div>
-  </div>
-
-        </div>
-      
-    </aside>
-    
-    <ul class="pagination pagination-default">
-      <li class="page-item">
-        <a href="/post.html" aria-label="First" class="page-link" role="button"><span aria-hidden="true">&laquo;&laquo;</span></a>
-      </li>
-      <li class="page-item">
-        <a href="/post.html" aria-label="Previous" class="page-link" role="button"><span aria-hidden="true">&laquo;</span></a>
-      </li>
-      <li class="page-item">
-        <a href="/post.html" aria-label="Page 1" class="page-link" role="button">1</a>
-      </li>
-      <li class="page-item active">
-        <a aria-current="page" aria-label="Page 2" class="page-link" role="button">2</a>
-      </li>
-      <li class="page-item">
-        <a href="/post/page/3.html" aria-label="Page 3" class="page-link" role="button">3</a>
-      </li>
-      <li class="page-item">
-        <a href="/post/page/4.html" aria-label="Page 4" class="page-link" role="button">4</a>
-      </li>
-      <li class="page-item">
-        <a href="/post/page/3.html" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
-      </li>
-      <li class="page-item">
-        <a href="/post/page/4.html" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
-      </li>
-    </ul>
-  </article>
 
     </main>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">

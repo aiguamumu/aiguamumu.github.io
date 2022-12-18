@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSH on Web_Security</title>
+    <link>https://aiguamumu.github.io/tags/SSH.html</link>
+    <description>Recent content in SSH on Web_Security</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 18 Dec 2022 17:35:33 +0800</lastBuildDate><atom:link href="https://aiguamumu.github.io/tags/SSH/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SSH认识和配置</title>
+      <link>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SSH%E8%AE%A4%E8%AF%86%E5%92%8C%E9%85%8D%E7%BD%AE.html</link>
+      <pubDate>Sun, 18 Dec 2022 17:35:33 +0800</pubDate>
+      
+      <guid>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SSH%E8%AE%A4%E8%AF%86%E5%92%8C%E9%85%8D%E7%BD%AE.html</guid>
+      <description>导读 最初接触ssh是在登录github远程仓库时，知道除了https还有ssh方法（ssh的建立安全隧道的作用）；然后再次接触到ssh是因为在看见switchomega插件的时候想去了解代理和翻墙的原理，知道了也可以用ssh进行（ssh的绕过防火墙的作用）。
+以上提到的都是ssh的作用，既然要学作用，干脆把ssh系统性的都学了一遍。
+SSH-是什么 Secure Shell，一种用于加密两台计算机之间通信并支持各种身份验证机制的网络协议。、
+实现途径：把明文的网络协议套用在它里面 架构：采取S/C（Server/client），即服务器/客户端模式 SSH-作用概览 用途 建立加密隧道。
+登录服务器 端口转发（port forwarding）。 概述 专为远程登录会话和两台电脑之间通过安全的链接进行数据交换的网络协议。
+ssh客户端(ssh) ssh服务端(sshd) +----------+ +---------+ | | | | | | | | | | | | | | | | +---+---+--+ +-+---+---+ | | | | | | | | | +----------------------------+ | | | | ssh加密了的TCP通信 | +------------------------------------+ SSH连接 有效防止IP欺骗和DNS欺骗 所做准备 OpenSSH：（服务端）
+提供加密通话的计算机程序。（SSH只是一个协议，而OpenSSH是其开源实现）
+作为服务端（sshd）需要安装OpenSSH
+客户端（ssh）：
+Linux系统：
+直接使用SSH命令
+Windows
+Putty/Putty Tray Bitvise（免费） Xshell（被爆后门多） Cmder（集成 Git For Windows、Unix命令等，通过ssh agent来配置） 登录远程服务器作用 密码登录远程服务器 基本密码登录的客户端和服务端配置操作</description>
+    </item>
+    
+  </channel>
+</rss>

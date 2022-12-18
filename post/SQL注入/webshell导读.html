@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>webshell导读 | Web_Security</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Tomcat架构 问题提出 一台电脑只有一个IP，都用8080端口，为什么能挂两个网站？ 请求消息中所包含的主机名被连接器给识别出来，并且放到了Request对象里面。
+引擎通过Request对象里面的目标主机名，将Request对象派发给相应的主机来处理，因此一台电脑能部署多个网站。
+如何使浏览器访问主机名时访问本机的IP地址？ 在C:\Windows\System32\drivers\etc下的hosts文件的末尾增添“IP地址 域名”的条目，就可以在本地进行该域名解析。
+即可以使对相同的ip地址和相同端口的访问，却可以实现访问不同的虚拟主机
+重点-server.xml文件 在config文件夹下
+说明：
+树形结构，XML语言 每个标签对应下图中的每个容器 核心架构 说明：
+一个虚拟主机对应tomcat下的一个文件夹
+上图中所有的方框都是容器
+连接器（Connector）负责通信，注册时需要指定监听端口和通信协议，通信协议的指定是为了传输信息的完整和准确性。
+连接器的功能：
+引擎（Engine）负责处理请求。
+总结 通过这些容器，电脑上的Servlet被进行了详细的分类管理。
+连接器给出的request（请求对象）里面，包含了他要访问的servlet的详细路径，具体地说就是主机名、应用名（路径）和servlet名（路径），因此各级容器收到了对象之后，就能够把它正确的派发给下一级容器，最后达到目标servlet对象。
+这个request对象的层层转发过程，本质上是函数的层层调用过程。
+调用完成之后，连接器将得到一个response对象，连接器将response对象转换为字节流返回给浏览器，这就是Tomcat的核心架构和工作原理。
+参考文章 Tomcat的目录结构
+https://www.bilibili.com/read/cv13861154
+JavaWeb开发必看！Tomcat架构及工作原理（8分钟）_哔哩哔哩_bilibili
+监听端口 HTTP协议 ：默认80端口
+HTTPS协议：默认443端口
+端口：
+（作用回顾）：像“门”，每个端口对应一个上层的应用程序，这个上层应用程序（进程）可以监听这个端口
+监听
+即这个应用程序监听这个端口来的数据
+查看监听端口命令
+netstat -ano | find /i &#34;listen&#34; 特殊IP地址回顾：
+0.0.0.0 表示本机的所有地址 127.0.0.1 表示本机的环回地址 实例（以python创建socket对象并绑定一个端口去监听一个IP地址）
+python书写
+找“12345”这个端口，并用pid查找监听某个端口的进程是谁
+关闭端口直接结束进程就可以了
+Socket模块（python） “套接字”。针对某个服务端和客户端来进行打开、读写、关闭
+参考文章 [python中的socket是什么意思？如何使用 - Jaoany - 博客园 (cnblogs.com)](https://www.cnblogs.com/fanglijiao/p/15060004.html#:~:text=python中的socket是什么意思？如何使用呢 Socket,一、概述 socket通常也称作&quot;套接字&quot;，用于描述IP地址和端口，是一个通信链的句柄，应用程序通常通过&quot;套接字&quot;向网络发出请求或者应答网络请求。)
+XML 独立于软件和硬件的信息传输工具
+可扩展标记语言，一种很像html的语言
+目的：传输数据。（而不是显示数据） XML不会做任何事情，仅仅只是包装一段纯粹的信息 自我描述性。XML没有预定义好的标签，所有的标签都是创作者自己定义的 xml与html关系 xml是对html的补充，并不会替代html">
+    <meta name="generator" content="Hugo 0.104.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="webshell导读" />
+<meta property="og:description" content="Tomcat架构 问题提出 一台电脑只有一个IP，都用8080端口，为什么能挂两个网站？ 请求消息中所包含的主机名被连接器给识别出来，并且放到了Request对象里面。
+引擎通过Request对象里面的目标主机名，将Request对象派发给相应的主机来处理，因此一台电脑能部署多个网站。
+如何使浏览器访问主机名时访问本机的IP地址？ 在C:\Windows\System32\drivers\etc下的hosts文件的末尾增添“IP地址 域名”的条目，就可以在本地进行该域名解析。
+即可以使对相同的ip地址和相同端口的访问，却可以实现访问不同的虚拟主机
+重点-server.xml文件 在config文件夹下
+说明：
+树形结构，XML语言 每个标签对应下图中的每个容器 核心架构 说明：
+一个虚拟主机对应tomcat下的一个文件夹
+上图中所有的方框都是容器
+连接器（Connector）负责通信，注册时需要指定监听端口和通信协议，通信协议的指定是为了传输信息的完整和准确性。
+连接器的功能：
+引擎（Engine）负责处理请求。
+总结 通过这些容器，电脑上的Servlet被进行了详细的分类管理。
+连接器给出的request（请求对象）里面，包含了他要访问的servlet的详细路径，具体地说就是主机名、应用名（路径）和servlet名（路径），因此各级容器收到了对象之后，就能够把它正确的派发给下一级容器，最后达到目标servlet对象。
+这个request对象的层层转发过程，本质上是函数的层层调用过程。
+调用完成之后，连接器将得到一个response对象，连接器将response对象转换为字节流返回给浏览器，这就是Tomcat的核心架构和工作原理。
+参考文章 Tomcat的目录结构
+https://www.bilibili.com/read/cv13861154
+JavaWeb开发必看！Tomcat架构及工作原理（8分钟）_哔哩哔哩_bilibili
+监听端口 HTTP协议 ：默认80端口
+HTTPS协议：默认443端口
+端口：
+（作用回顾）：像“门”，每个端口对应一个上层的应用程序，这个上层应用程序（进程）可以监听这个端口
+监听
+即这个应用程序监听这个端口来的数据
+查看监听端口命令
+netstat -ano | find /i &#34;listen&#34; 特殊IP地址回顾：
+0.0.0.0 表示本机的所有地址 127.0.0.1 表示本机的环回地址 实例（以python创建socket对象并绑定一个端口去监听一个IP地址）
+python书写
+找“12345”这个端口，并用pid查找监听某个端口的进程是谁
+关闭端口直接结束进程就可以了
+Socket模块（python） “套接字”。针对某个服务端和客户端来进行打开、读写、关闭
+参考文章 [python中的socket是什么意思？如何使用 - Jaoany - 博客园 (cnblogs.com)](https://www.cnblogs.com/fanglijiao/p/15060004.html#:~:text=python中的socket是什么意思？如何使用呢 Socket,一、概述 socket通常也称作&quot;套接字&quot;，用于描述IP地址和端口，是一个通信链的句柄，应用程序通常通过&quot;套接字&quot;向网络发出请求或者应答网络请求。)
+XML 独立于软件和硬件的信息传输工具
+可扩展标记语言，一种很像html的语言
+目的：传输数据。（而不是显示数据） XML不会做任何事情，仅仅只是包装一段纯粹的信息 自我描述性。XML没有预定义好的标签，所有的标签都是创作者自己定义的 xml与html关系 xml是对html的补充，并不会替代html" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/webshell%E5%AF%BC%E8%AF%BB.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-18T17:35:33+08:00" />
+<meta property="article:modified_time" content="2022-12-18T17:35:33+08:00" /><meta property="og:site_name" content="Web_Security" />
+
+<meta itemprop="name" content="webshell导读">
+<meta itemprop="description" content="Tomcat架构 问题提出 一台电脑只有一个IP，都用8080端口，为什么能挂两个网站？ 请求消息中所包含的主机名被连接器给识别出来，并且放到了Request对象里面。
+引擎通过Request对象里面的目标主机名，将Request对象派发给相应的主机来处理，因此一台电脑能部署多个网站。
+如何使浏览器访问主机名时访问本机的IP地址？ 在C:\Windows\System32\drivers\etc下的hosts文件的末尾增添“IP地址 域名”的条目，就可以在本地进行该域名解析。
+即可以使对相同的ip地址和相同端口的访问，却可以实现访问不同的虚拟主机
+重点-server.xml文件 在config文件夹下
+说明：
+树形结构，XML语言 每个标签对应下图中的每个容器 核心架构 说明：
+一个虚拟主机对应tomcat下的一个文件夹
+上图中所有的方框都是容器
+连接器（Connector）负责通信，注册时需要指定监听端口和通信协议，通信协议的指定是为了传输信息的完整和准确性。
+连接器的功能：
+引擎（Engine）负责处理请求。
+总结 通过这些容器，电脑上的Servlet被进行了详细的分类管理。
+连接器给出的request（请求对象）里面，包含了他要访问的servlet的详细路径，具体地说就是主机名、应用名（路径）和servlet名（路径），因此各级容器收到了对象之后，就能够把它正确的派发给下一级容器，最后达到目标servlet对象。
+这个request对象的层层转发过程，本质上是函数的层层调用过程。
+调用完成之后，连接器将得到一个response对象，连接器将response对象转换为字节流返回给浏览器，这就是Tomcat的核心架构和工作原理。
+参考文章 Tomcat的目录结构
+https://www.bilibili.com/read/cv13861154
+JavaWeb开发必看！Tomcat架构及工作原理（8分钟）_哔哩哔哩_bilibili
+监听端口 HTTP协议 ：默认80端口
+HTTPS协议：默认443端口
+端口：
+（作用回顾）：像“门”，每个端口对应一个上层的应用程序，这个上层应用程序（进程）可以监听这个端口
+监听
+即这个应用程序监听这个端口来的数据
+查看监听端口命令
+netstat -ano | find /i &#34;listen&#34; 特殊IP地址回顾：
+0.0.0.0 表示本机的所有地址 127.0.0.1 表示本机的环回地址 实例（以python创建socket对象并绑定一个端口去监听一个IP地址）
+python书写
+找“12345”这个端口，并用pid查找监听某个端口的进程是谁
+关闭端口直接结束进程就可以了
+Socket模块（python） “套接字”。针对某个服务端和客户端来进行打开、读写、关闭
+参考文章 [python中的socket是什么意思？如何使用 - Jaoany - 博客园 (cnblogs.com)](https://www.cnblogs.com/fanglijiao/p/15060004.html#:~:text=python中的socket是什么意思？如何使用呢 Socket,一、概述 socket通常也称作&quot;套接字&quot;，用于描述IP地址和端口，是一个通信链的句柄，应用程序通常通过&quot;套接字&quot;向网络发出请求或者应答网络请求。)
+XML 独立于软件和硬件的信息传输工具
+可扩展标记语言，一种很像html的语言
+目的：传输数据。（而不是显示数据） XML不会做任何事情，仅仅只是包装一段纯粹的信息 自我描述性。XML没有预定义好的标签，所有的标签都是创作者自己定义的 xml与html关系 xml是对html的补充，并不会替代html"><meta itemprop="datePublished" content="2022-12-18T17:35:33+08:00" />
+<meta itemprop="dateModified" content="2022-12-18T17:35:33+08:00" />
+<meta itemprop="wordCount" content="343">
+<meta itemprop="keywords" content="webshell," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="webshell导读"/>
+<meta name="twitter:description" content="Tomcat架构 问题提出 一台电脑只有一个IP，都用8080端口，为什么能挂两个网站？ 请求消息中所包含的主机名被连接器给识别出来，并且放到了Request对象里面。
+引擎通过Request对象里面的目标主机名，将Request对象派发给相应的主机来处理，因此一台电脑能部署多个网站。
+如何使浏览器访问主机名时访问本机的IP地址？ 在C:\Windows\System32\drivers\etc下的hosts文件的末尾增添“IP地址 域名”的条目，就可以在本地进行该域名解析。
+即可以使对相同的ip地址和相同端口的访问，却可以实现访问不同的虚拟主机
+重点-server.xml文件 在config文件夹下
+说明：
+树形结构，XML语言 每个标签对应下图中的每个容器 核心架构 说明：
+一个虚拟主机对应tomcat下的一个文件夹
+上图中所有的方框都是容器
+连接器（Connector）负责通信，注册时需要指定监听端口和通信协议，通信协议的指定是为了传输信息的完整和准确性。
+连接器的功能：
+引擎（Engine）负责处理请求。
+总结 通过这些容器，电脑上的Servlet被进行了详细的分类管理。
+连接器给出的request（请求对象）里面，包含了他要访问的servlet的详细路径，具体地说就是主机名、应用名（路径）和servlet名（路径），因此各级容器收到了对象之后，就能够把它正确的派发给下一级容器，最后达到目标servlet对象。
+这个request对象的层层转发过程，本质上是函数的层层调用过程。
+调用完成之后，连接器将得到一个response对象，连接器将response对象转换为字节流返回给浏览器，这就是Tomcat的核心架构和工作原理。
+参考文章 Tomcat的目录结构
+https://www.bilibili.com/read/cv13861154
+JavaWeb开发必看！Tomcat架构及工作原理（8分钟）_哔哩哔哩_bilibili
+监听端口 HTTP协议 ：默认80端口
+HTTPS协议：默认443端口
+端口：
+（作用回顾）：像“门”，每个端口对应一个上层的应用程序，这个上层应用程序（进程）可以监听这个端口
+监听
+即这个应用程序监听这个端口来的数据
+查看监听端口命令
+netstat -ano | find /i &#34;listen&#34; 特殊IP地址回顾：
+0.0.0.0 表示本机的所有地址 127.0.0.1 表示本机的环回地址 实例（以python创建socket对象并绑定一个端口去监听一个IP地址）
+python书写
+找“12345”这个端口，并用pid查找监听某个端口的进程是谁
+关闭端口直接结束进程就可以了
+Socket模块（python） “套接字”。针对某个服务端和客户端来进行打开、读写、关闭
+参考文章 [python中的socket是什么意思？如何使用 - Jaoany - 博客园 (cnblogs.com)](https://www.cnblogs.com/fanglijiao/p/15060004.html#:~:text=python中的socket是什么意思？如何使用呢 Socket,一、概述 socket通常也称作&quot;套接字&quot;，用于描述IP地址和端口，是一个通信链的句柄，应用程序通常通过&quot;套接字&quot;向网络发出请求或者应答网络请求。)
+XML 独立于软件和硬件的信息传输工具
+可扩展标记语言，一种很像html的语言
+目的：传输数据。（而不是显示数据） XML不会做任何事情，仅仅只是包装一段纯粹的信息 自我描述性。XML没有预定义好的标签，所有的标签都是创作者自己定义的 xml与html关系 xml是对html的补充，并不会替代html"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://aiguamumu.github.io/images/Landscape%20with%20rainbow.jpg');">
+    <div class="bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Web_Security
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post.html" title="Articles 页">
+              Articles
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact.html" title="Contact 页">
+              Contact
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">webshell导读</h1>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        ARTICLES
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://twitter.com/share?url=https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/webshell%E5%AF%BC%E8%AF%BB.html&amp;text=webshell%e5%af%bc%e8%af%bb" class="ananke-social-link twitter no-underline" aria-label="share on Twitter">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">webshell导读</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-12-18T17:35:33+08:00">十二月 18, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id="tomcat架构">Tomcat架构</h1>
+<h2 id="问题提出">问题提出</h2>
+<h3 id="一台电脑只有一个ip都用8080端口为什么能挂两个网站">一台电脑只有一个IP，都用8080端口，为什么能挂两个网站？</h3>
+<p>请求消息中所包含的主机名被连接器给识别出来，并且放到了Request对象里面。</p>
+<p>引擎通过Request对象里面的目标主机名，将Request对象派发给相应的主机来处理，因此一台电脑能部署多个网站。</p>
+<h3 id="如何使浏览器访问主机名时访问本机的ip地址">如何使浏览器访问主机名时访问本机的IP地址？</h3>
+<p>在C:\Windows\System32\drivers\etc下的hosts文件的末尾增添“IP地址 域名”的条目，就可以在本地进行该域名解析。</p>
+<p><strong>即可以使对相同的ip地址和相同端口的访问，却可以实现访问不同的虚拟主机</strong></p>
+<h2 id="重点-serverxml文件">重点-server.xml文件</h2>
+<blockquote>
+<p>在config文件夹下</p>
+</blockquote>
+<p><img src="images/image-20221115205127142.png" alt="image-20221115205127142"></p>
+<p>说明：</p>
+<ul>
+<li>树形结构，XML语言</li>
+<li>每个标签对应下图中的每个容器</li>
+</ul>
+<h2 id="核心架构">核心架构</h2>
+<p><img src="images/image-20221115204811219.png" alt="image-20221115204811219"></p>
+<p>说明：</p>
+<ul>
+<li>
+<p>一个虚拟主机对应tomcat下的一个文件夹</p>
+</li>
+<li>
+<p><strong>上图中所有的方框都是容器</strong></p>
+</li>
+<li>
+<p>连接器（Connector）负责通信，注册时需要指定监听端口和通信协议，通信协议的指定是为了传输信息的完整和准确性。</p>
+<p>连接器的功能：</p>
+<p><img src="images/image-20221115210059769.png" alt="image-20221115210059769"></p>
+</li>
+<li>
+<p>引擎（Engine）负责处理请求。</p>
+</li>
+</ul>
+<h2 id="总结">总结</h2>
+<p><strong>通过这些容器，电脑上的Servlet被进行了详细的分类管理。</strong></p>
+<p>连接器给出的request（请求对象）里面，包含了他要访问的servlet的详细路径，具体地说就是主机名、应用名（路径）和servlet名（路径），因此各级容器收到了对象之后，就能够把它正确的派发给下一级容器，最后达到目标servlet对象。</p>
+<p>这个<strong>request对象的层层转发过程，本质上是函数的层层调用过程</strong>。</p>
+<p>调用完成之后，连接器将得到一个response对象，连接器将response对象转换为字节流返回给浏览器，这就是Tomcat的核心架构和工作原理。</p>
+<h2 id="参考文章">参考文章</h2>
+<p>Tomcat的目录结构</p>
+<p><a href="https://www.bilibili.com/read/cv13861154">https://www.bilibili.com/read/cv13861154</a></p>
+<p><a href="https://www.bilibili.com/video/BV1J3411k7Xc/?vd_source=95bb0747454a6847ca940e34f9be508c">JavaWeb开发必看！Tomcat架构及工作原理（8分钟）_哔哩哔哩_bilibili</a></p>
+<h1 id="监听端口">监听端口</h1>
+<ul>
+<li>
+<p><strong>HTTP协议 ：默认80端口</strong></p>
+</li>
+<li>
+<p><strong>HTTPS协议：默认443端口</strong></p>
+</li>
+<li>
+<p>端口：</p>
+<p>（作用回顾）：像“门”，<strong>每个端口对应一个上层的应用程序，这个上层应用程序（进程）可以监听这个端口</strong></p>
+</li>
+<li>
+<p>监听</p>
+<p>即这个应用程序监听这个端口来的数据</p>
+</li>
+<li>
+<p>查看监听端口命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SHELL" data-lang="SHELL"><span style="display:flex;"><span>netstat -ano | find /i <span style="color:#e6db74">&#34;listen&#34;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>特殊IP地址回顾：</p>
+<ul>
+<li>0.0.0.0    表示本机的所有地址</li>
+<li>127.0.0.1    表示本机的环回地址</li>
+</ul>
+</li>
+<li>
+<p>实例（以python创建socket对象并绑定一个端口去监听一个IP地址）</p>
+<ul>
+<li>
+<p>python书写</p>
+<p><img src="images/image-20221115203951931.png" alt="image-20221115203951931"></p>
+</li>
+<li>
+<p>找“12345”这个端口，并用pid查找监听某个端口的进程是谁</p>
+<p><img src="images/image-20221115204053867.png" alt="image-20221115204053867"></p>
+</li>
+<li>
+<p>关闭端口直接结束进程就可以了</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="socket模块python">Socket模块（python）</h1>
+<blockquote>
+<p>“套接字”。针对某个服务端和客户端来进行打开、读写、关闭</p>
+</blockquote>
+<p><img src="images/image-20221115203542882.png" alt="image-20221115203542882"></p>
+<h2 id="参考文章-1">参考文章</h2>
+<p>[python中的socket是什么意思？如何使用 - Jaoany - 博客园 (cnblogs.com)](<a href="https://www.cnblogs.com/fanglijiao/p/15060004.html#:~:text=">https://www.cnblogs.com/fanglijiao/p/15060004.html#:~:text=</a>python中的socket是什么意思？如何使用呢 Socket,一、概述 socket通常也称作&quot;套接字&quot;，用于描述IP地址和端口，是一个通信链的句柄，应用程序通常通过&quot;套接字&quot;向网络发出请求或者应答网络请求。)</p>
+<h1 id="xml">XML</h1>
+<blockquote>
+<p>独立于软件和硬件的信息传输工具</p>
+<p>可扩展标记语言，一种很像html的语言</p>
+</blockquote>
+<ul>
+<li>目的：传输数据。（而不是显示数据）</li>
+<li>XML不会做任何事情，仅仅只是包装一段纯粹的信息</li>
+<li>自我描述性。XML没有预定义好的标签，所有的标签都是创作者自己定义的</li>
+</ul>
+<h2 id="xml与html关系">xml与html关系</h2>
+<blockquote>
+<p>xml是对html的补充，并不会替代html</p>
+</blockquote>
+<ul>
+<li>xml用于传输和存储数据</li>
+<li>html用于格式化和显示数据</li>
+</ul>
+<h2 id="基本语法">基本语法</h2>
+<ul>
+<li>
+<p>符合树结构，即有根节点</p>
+</li>
+<li>
+<p>首部必须要加XML声明：（版本和所使用编码的声明）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;note&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;to&gt;</span>Tove<span style="color:#f92672">&lt;/to&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;from&gt;</span>Jani<span style="color:#f92672">&lt;/from&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;heading&gt;</span>Reminder<span style="color:#f92672">&lt;/heading&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;body&gt;</span>Don&#39;t forget me this weekend!<span style="color:#f92672">&lt;/body&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/note&gt;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>标签必须闭合，标签对大小写敏感</p>
+</li>
+<li>
+<p>XML元素的使用优先级大于XML属性的使用优先级</p>
+<p>因为属性会有各种各样的限制，且其拓展性不高</p>
+</li>
+</ul>
+<h1 id="waf绕过">WAF绕过</h1>
+<p>原理思路：<a href="https://blog.csdn.net/weixin_50464560/article/details/120926097">(85条消息) WAF绕过思路整理(挺全)_J0hnson666的博客-CSDN博客_waf绕过</a></p>
+<p>注入的绕过方法总结：<a href="https://www.freebuf.com/articles/web/229982.html">WAF机制及绕过方法总结：注入篇 - FreeBuf网络安全行业门户</a></p>
+<h1 id="防火墙">防火墙</h1>
+<blockquote>
+<p>一个保护的软件，或者硬件＋软件</p>
+</blockquote>
+<ul>
+<li>
+<p><strong>基本工作原理：</strong></p>
+<p><strong>访问控制列表</strong>：规定谁（哪些IP、协议、端口、域名、关键字）可以通过防火墙，谁不能通过防火墙</p>
+<p><img src="images/image-20221107204713184.png" alt="image-20221107204713184"></p>
+</li>
+<li>
+<p>分类</p>
+<ul>
+<li>
+<p><strong>主机类防火墙（host-based firewall）</strong></p>
+<ul>
+<li>
+<p>形式：又名软件类防火墙（<strong>只有软件</strong>）</p>
+</li>
+<li>
+<p>作用范围：安装在某台主机上，只对<strong>保护单一的本台机器</strong>起作用</p>
+</li>
+<li>
+<p>怎么使用：有的墙windows自带，有的墙需要通过第三方软件安装</p>
+</li>
+<li>
+<p>例子：Zone Alarm</p>
+</li>
+</ul>
+</li>
+<li>
+<p>网络型防火墙（network-based firewall）</p>
+<ul>
+<li>形式：又名独立防火墙（Stand-alone firewall）<strong>由硬件+软件组成</strong></li>
+<li>作用范围：私有网络和公有网络之间，运行在网络层上。<strong>保护整个网络。</strong></li>
+<li>怎么使用：独立一个硬件设备，或者内置在路由器中，或者部署在服务器的云构架中</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="木马">木马</h1>
+<blockquote>
+<p>设计程序的人<strong>在可以下载的应用程序或者文件中，包含了可以控制计算机系统的应用程序</strong></p>
+</blockquote>
+<h1 id="后门">后门</h1>
+<blockquote>
+<p><strong>计算机中有65535个端口，“端口&quot;可以看做是”门&quot;。</strong></p>
+</blockquote>
+<ul>
+<li>
+<p>端口的理解：</p>
+<p>“门”就是这台计算机为外界敞开的大门，每个们的背后都是一个服务，<strong>有的提供服务（主人特地打开为了开门迎客），有的访问远程服务（主人为了外出访问而设立的）</strong></p>
+</li>
+<li>
+<p><strong>理论上不被使用的门都应该是关闭的，但由于各种原因，许多门都是开启的，黑客就可以从这些门中进入捣乱</strong>&ndash;&gt; 后门</p>
+</li>
+</ul>
+<h1 id="webshell">WebShell</h1>
+<blockquote>
+<p>一种可以在Web服务器上执行的（后台脚本或者命令）<strong>执行环境（脚本攻击工具）</strong></p>
+<p><strong>一种黑客经常使用的恶意脚本</strong></p>
+<p><strong>一个asp或者php木马后门</strong>（这里的门指一直开放的80端口）</p>
+<p><strong>黑客通过入侵网站上传webshell后获得服务器的执行操作权限</strong></p>
+</blockquote>
+<ul>
+<li>
+<p>Webshell编写语言：<code>asp</code>、<code>JSP</code>、<code>PHP</code>（都是写在 服务器端的语言）</p>
+</li>
+<li>
+<p>特点：</p>
+<ul>
+<li>
+<p><strong>可以越过防火墙</strong>：因为被控制的服务器与远程主机交换的数据都是<strong>通过80端口</strong>传播的，<strong>不会被防火墙拦截</strong>。在没有记录流量的情况下，webshell使用post包发送。</p>
+</li>
+<li>
+<p><strong>不会在日志中留下记录</strong>，仅仅只会在web日志中留下一些提交记录，管理员容易忽略</p>
+</li>
+<li>
+<p>恶意脚本<strong>嵌套在正常网页运行中</strong>，不容易被查杀</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>目的：控制网站服务器</strong>，包括执行系统命令、窃取用户数据、删除Web页面、修改主页。</p>
+</li>
+<li>
+<p>功能：</p>
+<ul>
+<li>
+<p>==<strong>持续远程访问</strong>==</p>
+<p>黑客可以很低调的攻击，<strong>知道此漏洞并自行修复此漏洞</strong>。这样确保了只有自己能够使用这个漏洞（通过密码验证或者其他技术）长期控制服务器，而其他人却不能利用这个漏洞。</p>
+</li>
+<li>
+<p>==<strong>权限提升</strong>==</p>
+<p>一般情况（服务器没有配置错误），webshell将在web服务器下的用户权限下运行。</p>
+<p>但<strong>黑客可以尝试利用系统上的本地漏洞来执行权限提升</strong>。</p>
+<p><strong>常见方式：</strong></p>
+<ul>
+<li>查找敏感配置文件</li>
+<li>通过内核漏洞提权</li>
+<li>利用低权限用户目录下可被Root权限用户调用的脚本提权</li>
+<li>任务计划</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>大体方法：</strong></p>
+<blockquote>
+<p>利用常见的漏洞</p>
+</blockquote>
+<ul>
+<li>SQL注入</li>
+<li>==远程文件包含（RFI）==</li>
+<li>==FTP==</li>
+<li>==跨站点脚本攻击（XSS）==</li>
+</ul>
+</li>
+<li>
+<p>具体方法：</p>
+<ul>
+<li>
+<p>==<strong>直接上传</strong>获得webshell==</p>
+<p>因过滤上传文件不严，导致用户可以直接上传webshell到网站任意可写目录中，从而拿到管理员的权限</p>
+</li>
+<li>
+<p>==<strong>添加修改上传类型</strong>==</p>
+</li>
+<li>
+<p>利用后台管理功能写入webshell</p>
+<p>利用后台对数据库的“备份数据库”和“恢复数据库”功能，若后台没有设置过滤，==则可以<strong>把任意文件后缀改为asp</strong>，==从而得到webshell</p>
+</li>
+<li>
+<p>php+mysql系统</p>
+<p>把webshell代码插入到mysql中，<strong>利用select语句</strong>查询php文件，导出shell。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>==webshell网站后门的清除方法==</p>
+<ul>
+<li>
+<p><strong>直接删除后门文件</strong></p>
+<p>适用于：</p>
+<ul>
+<li>
+<p><code>index.asp</code>、<code>index.php</code>这类为==自动生成SEO类型文件==，可直接删除，若要彻底清除后门，要生成此文件的源文件</p>
+</li>
+<li>
+<p>一句话后门</p>
+<p>文件内容/代码很少</p>
+</li>
+<li>
+<p>文件内容存在password或userpass关键字</p>
+</li>
+<li>
+<p>在上传组件目录或者目录文件时可以直接删除</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>只删除文件中的木马代码</strong></p>
+<blockquote>
+<p>流程：</p>
+<p>备份此文件&ndash;查找后门代码位置（一般通过查找关键字eval、execute、request、ExecuteGlobal定位）&ndash;删除后门的代码&ndash;确保网站没有报错</p>
+</blockquote>
+<p>适用于：</p>
+<ul>
+<li>网站自身被插入恶意代码</li>
+<li>网站配置文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>防御webshell攻击</p>
+<blockquote>
+<p>根本上解决动态网页脚本的安全性问题</p>
+<p>防注入、防爆库、防COOKIES欺骗、防跨站攻击</p>
+</blockquote>
+<ul>
+<li>建议用户通过ftp上传，尽量不安装其他上传程序</li>
+<li>对上传程序的调用进行身份验证，只允许信任的人上传</li>
+<li>管理员的用户名和密码要复杂，且定期更换</li>
+<li>对数据库名称和存放路径进行修改，数据库的名称有一定复杂性</li>
+<li>保持程序是最新版本</li>
+<li>不要在网页上加注后台管理程序登录的页面链接</li>
+<li>只在维护时加上后台管理程序的登录界面</li>
+<li>时常备份数据库等重要文件</li>
+<li>日常维护，注意空间内是否有来路不明 的asp文件</li>
+<li>尽量关闭网站搜索功能，利用外部搜索工具，防止爆出数据</li>
+<li>利用白名单上传文件，上传目录权限遵循最小权限原则</li>
+</ul>
+</li>
+</ul>
+<h1 id="http协议">HTTP协议</h1>
+<ul>
+<li>
+<p>一种超文本传输协议</p>
+</li>
+<li>
+<p>无状态跟踪协议（老年痴呆型）</p>
+<ul>
+<li>
+<p>当你访问了服务器后，关闭网页，再次访问服务器，服务器不会意识到是你在访问（记不住人）</p>
+<ul>
+<li>方法一：只能把用户名和密码存储在服务端的数据库中，方便下次用户输入用户名和密码的时候做比对</li>
+<li>方法二：把用户名和密码存储到浏览器里，然后<strong>让每次HTTP请求都自动带数据给服务器</strong>。这个技术我们称为<strong>cookie。（存储用户信息的凭证）</strong></li>
+<li>方法三：比cookie更安全的方法，会话Session，即把Session-ID加入到cookie中，而Session-ID对用户名和密码做了加密，并存储在服务器中。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="http-10和http11的区别">HTTP 1.0和HTTP1.1的区别</h2>
+<ul>
+<li>
+<p>HTTP1.0</p>
+<blockquote>
+<p>短连接，每次请求都要重新建立一次链接。基于TCP/IP协议，每次建立或者断开链接都有三次握手或者四次挥手的开销</p>
+</blockquote>
+</li>
+<li>
+<p>HTTP1.1</p>
+<blockquote>
+<p>长链接。又分为流水线方式和非流水线方式</p>
+</blockquote>
+<blockquote>
+<p>错误相应码增加：</p>
+<p>409：请求的资源与当前资源状态发生冲突</p>
+<p>410：服务器上某个资源被永久性删除</p>
+</blockquote>
+<blockquote>
+<p>缓存处理控制策略增多</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="https和它的区别">HTTPS和它的区别</h2>
+<ul>
+<li>
+<p>HTTPS的默认端口是443，http的默认端口是80</p>
+</li>
+<li>
+<p>HTTPS=HTTP+加密（明文传输加密成密文传输）+认证（CA证书）+完整性保护</p>
+</li>
+<li>
+<p>http属于应用层，https属于传输层（OSI模型中）</p>
+</li>
+<li>
+<p>关键：https协议多了一层安全套接字。</p>
+</li>
+</ul>
+<h2 id="代理协议sockshttp">代理协议（Socks/HTTP）</h2>
+<p>主要区别</p>
+<ul>
+<li>
+<p>安全性：</p>
+<p>socks不建立一条专门的加密隧道。（所以经常socks+ssh配合使用，比如插件SwitchOmega）</p>
+<p>http建立专门的加密隧道。（防止监听、且http会进行数据包安全性过滤）</p>
+</li>
+<li>
+<p>兼容性：</p>
+<p>socks兼容更多的应用和进程，来着不拒的端口监听。</p>
+<p>http的受众只能值遵循http传输协议的数据</p>
+</li>
+</ul>
+<h1 id="应用安全测试技术">应用安全测试技术</h1>
+<h3 id="参考文章-2">参考文章：</h3>
+<blockquote>
+<p><a href="https://yinwc.github.io/2019/09/19/IAST%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E6%8A%80%E6%9C%AF/#%E4%BB%80%E4%B9%88%E6%98%AFWeb%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E6%8A%80%E6%9C%AF">https://yinwc.github.io/2019/09/19/IAST%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E6%8A%80%E6%9C%AF/#%E4%BB%80%E4%B9%88%E6%98%AFWeb%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E6%8A%80%E6%9C%AF</a></p>
+</blockquote>
+<h3 id="dast">DAST</h3>
+<blockquote>
+<p>动态应用程序安全测试(Dynamic Application Security Testing)</p>
+</blockquote>
+<ul>
+<li>
+<p>应用工具（黑盒）</p>
+<ul>
+<li>AWVS</li>
+<li>Appscan</li>
+</ul>
+</li>
+<li>
+<p>原理</p>
+<blockquote>
+<p>爬虫Web框架&ndash;&gt; 分析&ndash;&gt; 尝试攻击&ndash;&gt;分析response</p>
+</blockquote>
+</li>
+<li>
+<p>优势</p>
+<ul>
+<li>使用者不需要会编程，无需源代码，使用范围广</li>
+<li>可扫出大部分漏洞</li>
+<li>可扫描发现第三方组件/框架的漏洞</li>
+</ul>
+</li>
+<li>
+<p>劣势</p>
+<ul>
+<li>爬取范围有限，比如验证码等界面无法扫描</li>
+<li>对象只能是web应用程序，不可以是APP</li>
+<li>无法定位漏洞的具体位置</li>
+</ul>
+</li>
+</ul>
+<h3 id="sast">SAST</h3>
+<blockquote>
+<p>静态应用程序测试技术(Static Application Security Testing)</p>
+</blockquote>
+<ul>
+<li>优势
+<ul>
+<li>通过对源代码的语义分析，能测出更多的漏洞</li>
+<li>对象可以是Web应用程序，也可以是APP</li>
+</ul>
+</li>
+<li>劣势
+<ul>
+<li>代码理解上不能整合，发现不了集成系统漏洞</li>
+<li>误报多</li>
+</ul>
+</li>
+</ul>
+<h3 id="iast">IAST</h3>
+<blockquote>
+<p>交互式应用程序安全测试(Interactive Application Security Testing)</p>
+</blockquote>
+<ul>
+<li>优势（以上两者的集大成）</li>
+<li>分类
+<ul>
+<li>代理模式</li>
+<li>插桩模式</li>
+</ul>
+</li>
+</ul>
+<h3 id="oast">OAST</h3>
+<blockquote>
+<p>外带检测</p>
+</blockquote>
+<h4 id="原理">原理</h4>
+<ul>
+<li>
+<p><strong>传统的带内</strong>应用安全测试（DAST\SAST\IAST）</p>
+<p><img src="images/image-20221129211552526.png" alt="image-20221129211552526"></p>
+</li>
+<li>
+<p><strong>带外</strong>应用安全测试</p>
+<blockquote>
+<p>使用外部服务器来帮我们查看不明显的漏洞（我们因为权限问题，不确定语句是否执行，不确定回显信息）</p>
+</blockquote>
+<p><img src="images/image-20221130163925993.png" alt="image-20221130163925993"></p>
+<p>详解：上面这个图可以大体的代表 collaborator 的大体工作流程，首先 burp 发送 payload 给目标程序，以上图为例，param 存在漏洞注入点，其 payload 为外部的服务器 url 地址，随后目标程序若进行解析或则引用调用等，则会去访问这个地址，而这个地址是我们的 collaborator 服务器，所以 collaborator 会记录其访问的请求信息以及响应信息和 dns 的信息。而当 burp 发送 payload 后，就会不断的去问 collaborator 服务器，你收到我发送的 payload 交互了么，这时 collaborator 就会将交互信息告诉 burp，burp 最后进行报告。</p>
+<p>collaborator中的两个重点：</p>
+<p>一是：burp 会提供一个 url 地址，这个地址是 burp 的一个二级域名，作为collaborator 的地址</p>
+<p>二是：轮询。（刷新）burp 发送 payload 后会不断的问 collaborator 是否收到我发生的 payload 交互信息，例如 10s 问一次，我们可以叫它轮询</p>
+</li>
+</ul>
+<h4 id="与传统相比">与传统相比</h4>
+<ul>
+<li>相比较DAST（只能发现能回显的漏洞），OAST还能发现无回显的、延迟触发的漏洞</li>
+<li>相比较SAST（误报高），OAST误报低，因为有互动说明检测到了漏洞</li>
+<li>相比较IAST（入侵行为可能对服务器产生新的问题），只有验证代码存在漏洞的位置才会被执行，且验证代码不具有攻击性</li>
+</ul>
+<h1 id="多线程异步">多线程异步</h1>
+<blockquote>
+<p>常常把多线程+异步结合在一起</p>
+</blockquote>
+<h2 id="参考文章-3">参考文章</h2>
+<p><a href="https://www.cnblogs.com/yaopengfei/p/9206924.html">https://www.cnblogs.com/yaopengfei/p/9206924.html</a></p>
+<h2 id="单多线程进程">单/多线程&amp;进程</h2>
+<p>进程：一个应用程序开始，进程开始。包括多个线程（“多个线程”≠“多线程”）</p>
+<p>单线程：程序中的一个执行流，每个线程都有自己的专有寄存器(栈指针、程序计数器等)</p>
+<p>多线程：多个关系不大的执行流同时执行，<strong>以空间换取时间</strong>。</p>
+<h2 id="同步异步">同步/异步</h2>
+<blockquote>
+<p>误区：是否同步/异步，与单/多线程无关</p>
+</blockquote>
+<p>同步：需要等待结果，才执行下面的操作</p>
+<p>异步：不需要等待结果，才执行下面的操作。比如<code>Post</code>请求</p>
+<h1 id="waf">WAF</h1>
+<blockquote>
+<p>web application firewall  web应用程序防火墙</p>
+</blockquote>
+<p>特点：</p>
+<ul>
+<li>在web服务器和防火墙之间插入WAF，只对流经的OSI应用层的数据进行分析</li>
+<li>会阻止明显包含SQL注入的部分</li>
+</ul>
+<ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/webshell.html" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">webshell</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://aiguamumu.github.io/" >
+    &copy;  Web_Security 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>SSH认识和配置 | Web_Security</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="导读 最初接触ssh是在登录github远程仓库时，知道除了https还有ssh方法（ssh的建立安全隧道的作用）；然后再次接触到ssh是因为在看见switchomega插件的时候想去了解代理和翻墙的原理，知道了也可以用ssh进行（ssh的绕过防火墙的作用）。
+以上提到的都是ssh的作用，既然要学作用，干脆把ssh系统性的都学了一遍。
+SSH-是什么 Secure Shell，一种用于加密两台计算机之间通信并支持各种身份验证机制的网络协议。、
+实现途径：把明文的网络协议套用在它里面 架构：采取S/C（Server/client），即服务器/客户端模式 SSH-作用概览 用途 建立加密隧道。
+登录服务器 端口转发（port forwarding）。 概述 专为远程登录会话和两台电脑之间通过安全的链接进行数据交换的网络协议。
+ssh客户端(ssh) ssh服务端(sshd) &#43;----------&#43; &#43;---------&#43; | | | | | | | | | | | | | | | | &#43;---&#43;---&#43;--&#43; &#43;-&#43;---&#43;---&#43; | | | | | | | | | &#43;----------------------------&#43; | | | | ssh加密了的TCP通信 | &#43;------------------------------------&#43; SSH连接 有效防止IP欺骗和DNS欺骗 所做准备 OpenSSH：（服务端）
+提供加密通话的计算机程序。（SSH只是一个协议，而OpenSSH是其开源实现）
+作为服务端（sshd）需要安装OpenSSH
+客户端（ssh）：
+Linux系统：
+直接使用SSH命令
+Windows
+Putty/Putty Tray Bitvise（免费） Xshell（被爆后门多） Cmder（集成 Git For Windows、Unix命令等，通过ssh agent来配置） 登录远程服务器作用 密码登录远程服务器 基本密码登录的客户端和服务端配置操作">
+    <meta name="generator" content="Hugo 0.104.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="SSH认识和配置" />
+<meta property="og:description" content="导读 最初接触ssh是在登录github远程仓库时，知道除了https还有ssh方法（ssh的建立安全隧道的作用）；然后再次接触到ssh是因为在看见switchomega插件的时候想去了解代理和翻墙的原理，知道了也可以用ssh进行（ssh的绕过防火墙的作用）。
+以上提到的都是ssh的作用，既然要学作用，干脆把ssh系统性的都学了一遍。
+SSH-是什么 Secure Shell，一种用于加密两台计算机之间通信并支持各种身份验证机制的网络协议。、
+实现途径：把明文的网络协议套用在它里面 架构：采取S/C（Server/client），即服务器/客户端模式 SSH-作用概览 用途 建立加密隧道。
+登录服务器 端口转发（port forwarding）。 概述 专为远程登录会话和两台电脑之间通过安全的链接进行数据交换的网络协议。
+ssh客户端(ssh) ssh服务端(sshd) &#43;----------&#43; &#43;---------&#43; | | | | | | | | | | | | | | | | &#43;---&#43;---&#43;--&#43; &#43;-&#43;---&#43;---&#43; | | | | | | | | | &#43;----------------------------&#43; | | | | ssh加密了的TCP通信 | &#43;------------------------------------&#43; SSH连接 有效防止IP欺骗和DNS欺骗 所做准备 OpenSSH：（服务端）
+提供加密通话的计算机程序。（SSH只是一个协议，而OpenSSH是其开源实现）
+作为服务端（sshd）需要安装OpenSSH
+客户端（ssh）：
+Linux系统：
+直接使用SSH命令
+Windows
+Putty/Putty Tray Bitvise（免费） Xshell（被爆后门多） Cmder（集成 Git For Windows、Unix命令等，通过ssh agent来配置） 登录远程服务器作用 密码登录远程服务器 基本密码登录的客户端和服务端配置操作" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SSH%E8%AE%A4%E8%AF%86%E5%92%8C%E9%85%8D%E7%BD%AE.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-18T17:35:33+08:00" />
+<meta property="article:modified_time" content="2022-12-18T17:35:33+08:00" /><meta property="og:site_name" content="Web_Security" />
+
+<meta itemprop="name" content="SSH认识和配置">
+<meta itemprop="description" content="导读 最初接触ssh是在登录github远程仓库时，知道除了https还有ssh方法（ssh的建立安全隧道的作用）；然后再次接触到ssh是因为在看见switchomega插件的时候想去了解代理和翻墙的原理，知道了也可以用ssh进行（ssh的绕过防火墙的作用）。
+以上提到的都是ssh的作用，既然要学作用，干脆把ssh系统性的都学了一遍。
+SSH-是什么 Secure Shell，一种用于加密两台计算机之间通信并支持各种身份验证机制的网络协议。、
+实现途径：把明文的网络协议套用在它里面 架构：采取S/C（Server/client），即服务器/客户端模式 SSH-作用概览 用途 建立加密隧道。
+登录服务器 端口转发（port forwarding）。 概述 专为远程登录会话和两台电脑之间通过安全的链接进行数据交换的网络协议。
+ssh客户端(ssh) ssh服务端(sshd) &#43;----------&#43; &#43;---------&#43; | | | | | | | | | | | | | | | | &#43;---&#43;---&#43;--&#43; &#43;-&#43;---&#43;---&#43; | | | | | | | | | &#43;----------------------------&#43; | | | | ssh加密了的TCP通信 | &#43;------------------------------------&#43; SSH连接 有效防止IP欺骗和DNS欺骗 所做准备 OpenSSH：（服务端）
+提供加密通话的计算机程序。（SSH只是一个协议，而OpenSSH是其开源实现）
+作为服务端（sshd）需要安装OpenSSH
+客户端（ssh）：
+Linux系统：
+直接使用SSH命令
+Windows
+Putty/Putty Tray Bitvise（免费） Xshell（被爆后门多） Cmder（集成 Git For Windows、Unix命令等，通过ssh agent来配置） 登录远程服务器作用 密码登录远程服务器 基本密码登录的客户端和服务端配置操作"><meta itemprop="datePublished" content="2022-12-18T17:35:33+08:00" />
+<meta itemprop="dateModified" content="2022-12-18T17:35:33+08:00" />
+<meta itemprop="wordCount" content="171">
+<meta itemprop="keywords" content="SSH," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SSH认识和配置"/>
+<meta name="twitter:description" content="导读 最初接触ssh是在登录github远程仓库时，知道除了https还有ssh方法（ssh的建立安全隧道的作用）；然后再次接触到ssh是因为在看见switchomega插件的时候想去了解代理和翻墙的原理，知道了也可以用ssh进行（ssh的绕过防火墙的作用）。
+以上提到的都是ssh的作用，既然要学作用，干脆把ssh系统性的都学了一遍。
+SSH-是什么 Secure Shell，一种用于加密两台计算机之间通信并支持各种身份验证机制的网络协议。、
+实现途径：把明文的网络协议套用在它里面 架构：采取S/C（Server/client），即服务器/客户端模式 SSH-作用概览 用途 建立加密隧道。
+登录服务器 端口转发（port forwarding）。 概述 专为远程登录会话和两台电脑之间通过安全的链接进行数据交换的网络协议。
+ssh客户端(ssh) ssh服务端(sshd) &#43;----------&#43; &#43;---------&#43; | | | | | | | | | | | | | | | | &#43;---&#43;---&#43;--&#43; &#43;-&#43;---&#43;---&#43; | | | | | | | | | &#43;----------------------------&#43; | | | | ssh加密了的TCP通信 | &#43;------------------------------------&#43; SSH连接 有效防止IP欺骗和DNS欺骗 所做准备 OpenSSH：（服务端）
+提供加密通话的计算机程序。（SSH只是一个协议，而OpenSSH是其开源实现）
+作为服务端（sshd）需要安装OpenSSH
+客户端（ssh）：
+Linux系统：
+直接使用SSH命令
+Windows
+Putty/Putty Tray Bitvise（免费） Xshell（被爆后门多） Cmder（集成 Git For Windows、Unix命令等，通过ssh agent来配置） 登录远程服务器作用 密码登录远程服务器 基本密码登录的客户端和服务端配置操作"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://aiguamumu.github.io/images/Landscape%20with%20rainbow.jpg');">
+    <div class="bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Web_Security
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post.html" title="Articles 页">
+              Articles
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact.html" title="Contact 页">
+              Contact
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">SSH认识和配置</h1>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        ARTICLES
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://twitter.com/share?url=https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SSH%E8%AE%A4%E8%AF%86%E5%92%8C%E9%85%8D%E7%BD%AE.html&amp;text=SSH%e8%ae%a4%e8%af%86%e5%92%8c%e9%85%8d%e7%bd%ae" class="ananke-social-link twitter no-underline" aria-label="share on Twitter">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">SSH认识和配置</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-12-18T17:35:33+08:00">十二月 18, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id="导读">导读</h1>
+<p>最初接触ssh是在登录github远程仓库时，知道除了https还有ssh方法（ssh的建立安全隧道的作用）；然后再次接触到ssh是因为在看见switchomega插件的时候想去了解代理和翻墙的原理，知道了也可以用ssh进行（ssh的绕过防火墙的作用）。</p>
+<p>以上提到的都是ssh的作用，既然要学作用，干脆把ssh系统性的都学了一遍。</p>
+<h1 id="ssh-是什么">SSH-是什么</h1>
+<blockquote>
+<p>Secure Shell，一种用于加密两台计算机之间通信并支持各种身份验证机制的<strong>网络协议</strong>。、</p>
+</blockquote>
+<ul>
+<li>实现途径：把明文的网络协议套用在它里面</li>
+<li>架构：采取S/C（Server/client），即服务器/客户端模式</li>
+</ul>
+<h1 id="ssh-作用概览">SSH-作用概览</h1>
+<h2 id="用途">用途</h2>
+<blockquote>
+<p>建立加密隧道。</p>
+</blockquote>
+<ul>
+<li>登录服务器</li>
+<li><strong>端口转发</strong>（port forwarding）。</li>
+</ul>
+<h2 id="概述">概述</h2>
+<blockquote>
+<p>专为远程登录会话和两台电脑之间通过安全的链接进行数据交换的网络协议。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span>      ssh客户端(ssh)                       ssh服务端(sshd)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">+----------+</span>                       <span style="color:#f92672">+---------+</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">|</span>          <span style="color:#f92672">|</span>                       <span style="color:#f92672">|</span>         <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">|</span>          <span style="color:#f92672">|</span>                       <span style="color:#f92672">|</span>         <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">|</span>          <span style="color:#f92672">|</span>                       <span style="color:#f92672">|</span>         <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">|</span>          <span style="color:#f92672">|</span>                       <span style="color:#f92672">|</span>         <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">+---+---+--+</span>                       <span style="color:#f92672">+-+---+---+</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">|</span>   <span style="color:#f92672">|</span>                            <span style="color:#f92672">|</span>   <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">|</span>   <span style="color:#f92672">|</span>                            <span style="color:#f92672">|</span>   <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">|</span>   <span style="color:#f92672">+----------------------------+</span>   <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">|</span>                                    <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">|</span>        ssh加密了的TCP通信            <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">+------------------------------------+</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">SSH连接</span>
+</span></span></code></pre></div><ul>
+<li>有效防止IP欺骗和DNS欺骗</li>
+</ul>
+<h3 id="所做准备">所做准备</h3>
+<ul>
+<li>
+<p>OpenSSH：（服务端）</p>
+<ul>
+<li>
+<p>提供加密通话的计算机程序。（SSH只是一个协议，而OpenSSH是其开源实现）</p>
+</li>
+<li>
+<p><strong>作为服务端（sshd）需要安装OpenSSH</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>客户端（ssh）：</p>
+<ul>
+<li>
+<p>Linux系统：</p>
+<p>直接使用<code>SSH</code>命令</p>
+</li>
+<li>
+<p>Windows</p>
+<ul>
+<li>Putty/Putty Tray</li>
+<li>Bitvise（免费）</li>
+<li>Xshell（被爆后门多）</li>
+<li>Cmder（集成 Git For Windows、Unix命令等，通过ssh agent来配置）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="登录远程服务器作用">登录远程服务器作用</h2>
+<h3 id="密码登录远程服务器">密码登录远程服务器</h3>
+<blockquote>
+<p>基本密码登录的客户端和服务端配置操作</p>
+</blockquote>
+<ul>
+<li>
+<p>客户端：<a href="https://wangdoc.com/ssh/client">SSH 客户端 - SSH 教程 - 网道 (wangdoc.com)</a></p>
+</li>
+<li>
+<p>服务端：<a href="https://wangdoc.com/ssh/server">SSH 服务器 - SSH 教程 - 网道 (wangdoc.com)</a></p>
+</li>
+</ul>
+<h3 id="秘钥ssh-key登录远程服务器">秘钥（SSH Key）登录远程服务器</h3>
+<ul>
+<li>
+<p>作用：<strong>方便的登录到ssh服务器，而无需发送密码到网络中</strong>，所以安全。（不走HTTPS的方式，所以不用每次都输入密码）</p>
+</li>
+<li>
+<p>原理：SSH利用SSH Key来进行之前提到的基于密钥的安全验证</p>
+<p>即当本地机器登录远程主机时，本地主机向远程主机发起一个登录请求，远程主机收到消息后，随机生成一个字符串进行公钥加密，并发给本地，本地对这个字符串进行私钥解密，再发给远程主机，远程主机对比是否相同，若相同则认证成功。</p>
+</li>
+<li>
+<p>步骤：</p>
+<ul>
+<li>在客户端生成公钥和私钥</li>
+<li>在服务端的配置文件中加入公钥</li>
+</ul>
+</li>
+<li>
+<p><strong>每台主机都要生成一个秘钥</strong></p>
+</li>
+</ul>
+<p><a href="https://wangdoc.com/ssh/key">SSH 密钥登录 - SSH 教程 - 网道 (wangdoc.com)</a></p>
+<h4 id="github配置ssh">github配置SSH</h4>
+<blockquote>
+<p>步骤</p>
+<blockquote>
+<ol>
+<li>使用秘钥生成工具生成rsa私钥（在<code>id_rsa</code>私钥、<code>id_rsa.pub</code>公钥、<code>known_hosts</code>文件里）和秘钥</li>
+<li>将rsa公钥添加到代码托管平台</li>
+<li>将rsa秘钥添加到ssh-agent中，为ssh client指定使用的秘钥文件</li>
+</ol>
+</blockquote>
+</blockquote>
+<pre tabindex="0"><code>Linux命令
+
+
+cd ~/..sh    #切换工作目录到“home/用户名/..sh”
+# “~”表示进入到当前用户的HOME目录，即&#34;home/用户名&#34;
+#以“.”开头，表示隐藏的文件或目录，用“ls”默认看不到
+
+
+
+ls      #打印当前目录清单(list的缩写)
+#如果已经配置了秘钥，则会出现三个文件
+
+ssh-keygen -t rsa -C     #如果本机客户端没有ssh key，则使用此命令生成
+
+cat id_rsa.pub     #利用cat命令，查看读取一个文本文件的内容
+#把读取到的秘钥信息粘贴在github-setting-秘钥-新建秘钥中
+
+
+ssh -T git@github.com   #验证是否安装成功
+</code></pre><h1 id="heading"></h1>
+<h2 id="端口转发作用">端口转发作用</h2>
+<ul>
+<li>**建立了一条安全的隧道，将原本不加密的数据都进行了加密。**比如端口转发访问Telnet、FTP 等明文服务，数据传输就都会加密。</li>
+<li>**绕过防火墙。**因为作为数据通信的加密跳板。<a href="#2">跳转</a></li>
+</ul>
+<h2 id="端口转发的方式ssh绑定">端口转发的方式（ssh绑定）</h2>
+<p><a href="https://wangdoc.com/ssh/port-forwarding">SSH 端口转发 - SSH 教程 - 网道 (wangdoc.com)</a></p>
+<ul>
+<li>local 本地转发</li>
+<li>remote 远程转发</li>
+<li>dynamic 动态绑定</li>
+</ul>
+<h3 id="ssh-翻墙作用-vpn">SSH-翻墙作用-VPN</h3>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<blockquote>
+<p>利用端口转发中的动态转发原理</p>
+<p>动态体现在：代理服务器的目标转发地址是不固定的，根据客户端的请求而定的。</p>
+</blockquote>
+<p><a href="https://blog.csdn.net/promising_Li/article/details/79259624">https://blog.csdn.net/promising_Li/article/details/79259624</a></p>
+<p>实例：</p>
+<ol>
+<li>
+<p>假设客户机上的SSH会监听本地的一个端口7001。</p>
+</li>
+<li>
+<p>小明在内网中，想要访问油管网站www.youtube.com:80。</p>
+</li>
+<li>
+<p>直接访问当然访问不了，所以在发送访问请求时，本机会把这个请求告知7001端口的SSH进程。</p>
+<p>通过socks协议实现。通过在浏览器或者其他应用程序上配置socks代理。（代理指向127.0.0.1，端口7001）</p>
+</li>
+<li>
+<p>7001进程上的SSH会建立SSH加密链接发送到墙外服务器的SSH上，由于是动态绑定的，所以代理服务器服务器会将www.youtube.com:80的请求发送给www.youtube.com上的80端口。</p>
+</li>
+<li>
+<p>代理服务器在收到回复后会原路返回客户机上的SSH，客户机上的SSH再返回需要访问外网的应用程序</p>
+</li>
+</ol>
+<ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/SSH.html" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">SSH</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://aiguamumu.github.io/" >
+    &copy;  Web_Security 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

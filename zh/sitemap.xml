@@ -2,13 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://aiguamumu.github.io/post/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/github%E7%AC%94%E8%AE%B0.html</loc>
-    <lastmod>2022-11-05T14:55:49+08:00</lastmod>
+    <loc>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/MySQL%E5%AE%9E%E6%93%8D.html</loc>
+    <lastmod>2022-12-18T17:35:33+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://aiguamumu.github.io/tags/SQL%E6%B3%A8%E5%85%A5.html</loc>
+    <lastmod>2022-12-18T17:35:33+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5.html</loc>
+    <lastmod>2022-12-18T17:35:33+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5-%E5%88%B7%E9%A2%98A.html</loc>
+    <lastmod>2022-12-18T17:35:33+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://aiguamumu.github.io/tags/SSH.html</loc>
+    <lastmod>2022-12-18T17:35:33+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/SSH%E8%AE%A4%E8%AF%86%E5%92%8C%E9%85%8D%E7%BD%AE.html</loc>
+    <lastmod>2022-12-18T17:35:33+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://aiguamumu.github.io/tags.html</loc>
-    <lastmod>2022-11-05T14:55:49+08:00</lastmod>
+    <lastmod>2022-12-18T17:35:33+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link
@@ -22,8 +47,18 @@
                 href="https://aiguamumu.github.io/tags.html"
                 />
   </url><url>
+    <loc>https://aiguamumu.github.io/tags/webshell.html</loc>
+    <lastmod>2022-12-18T17:35:33+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/webshell%E5%AF%BC%E8%AF%BB.html</loc>
+    <lastmod>2022-12-18T17:35:33+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
     <loc>https://aiguamumu.github.io/</loc>
-    <lastmod>2022-11-05T14:55:49+08:00</lastmod>
+    <lastmod>2022-12-18T17:35:33+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link
@@ -36,6 +71,11 @@
                 hreflang="zh"
                 href="https://aiguamumu.github.io/"
                 />
+  </url><url>
+    <loc>https://aiguamumu.github.io/post/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/github%E7%AC%94%E8%AE%B0.html</loc>
+    <lastmod>2022-11-05T14:55:49+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url><url>
     <loc>https://aiguamumu.github.io/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE.html</loc>
     <lastmod>2022-11-05T14:55:49+08:00</lastmod>

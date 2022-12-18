@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>webshell on Web_Security</title>
+    <link>https://aiguamumu.github.io/tags/webshell.html</link>
+    <description>Recent content in webshell on Web_Security</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 18 Dec 2022 17:35:33 +0800</lastBuildDate><atom:link href="https://aiguamumu.github.io/tags/webshell/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>webshell导读</title>
+      <link>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/webshell%E5%AF%BC%E8%AF%BB.html</link>
+      <pubDate>Sun, 18 Dec 2022 17:35:33 +0800</pubDate>
+      
+      <guid>https://aiguamumu.github.io/post/SQL%E6%B3%A8%E5%85%A5/webshell%E5%AF%BC%E8%AF%BB.html</guid>
+      <description>Tomcat架构 问题提出 一台电脑只有一个IP，都用8080端口，为什么能挂两个网站？ 请求消息中所包含的主机名被连接器给识别出来，并且放到了Request对象里面。
+引擎通过Request对象里面的目标主机名，将Request对象派发给相应的主机来处理，因此一台电脑能部署多个网站。
+如何使浏览器访问主机名时访问本机的IP地址？ 在C:\Windows\System32\drivers\etc下的hosts文件的末尾增添“IP地址 域名”的条目，就可以在本地进行该域名解析。
+即可以使对相同的ip地址和相同端口的访问，却可以实现访问不同的虚拟主机
+重点-server.xml文件 在config文件夹下
+说明：
+树形结构，XML语言 每个标签对应下图中的每个容器 核心架构 说明：
+一个虚拟主机对应tomcat下的一个文件夹
+上图中所有的方框都是容器
+连接器（Connector）负责通信，注册时需要指定监听端口和通信协议，通信协议的指定是为了传输信息的完整和准确性。
+连接器的功能：
+引擎（Engine）负责处理请求。
+总结 通过这些容器，电脑上的Servlet被进行了详细的分类管理。
+连接器给出的request（请求对象）里面，包含了他要访问的servlet的详细路径，具体地说就是主机名、应用名（路径）和servlet名（路径），因此各级容器收到了对象之后，就能够把它正确的派发给下一级容器，最后达到目标servlet对象。
+这个request对象的层层转发过程，本质上是函数的层层调用过程。
+调用完成之后，连接器将得到一个response对象，连接器将response对象转换为字节流返回给浏览器，这就是Tomcat的核心架构和工作原理。
+参考文章 Tomcat的目录结构
+https://www.bilibili.com/read/cv13861154
+JavaWeb开发必看！Tomcat架构及工作原理（8分钟）_哔哩哔哩_bilibili
+监听端口 HTTP协议 ：默认80端口
+HTTPS协议：默认443端口
+端口：
+（作用回顾）：像“门”，每个端口对应一个上层的应用程序，这个上层应用程序（进程）可以监听这个端口
+监听
+即这个应用程序监听这个端口来的数据
+查看监听端口命令
+netstat -ano | find /i &amp;#34;listen&amp;#34; 特殊IP地址回顾：
+0.0.0.0 表示本机的所有地址 127.0.0.1 表示本机的环回地址 实例（以python创建socket对象并绑定一个端口去监听一个IP地址）
+python书写
+找“12345”这个端口，并用pid查找监听某个端口的进程是谁
+关闭端口直接结束进程就可以了
+Socket模块（python） “套接字”。针对某个服务端和客户端来进行打开、读写、关闭
+参考文章 [python中的socket是什么意思？如何使用 - Jaoany - 博客园 (cnblogs.com)](https://www.cnblogs.com/fanglijiao/p/15060004.html#:~:text=python中的socket是什么意思？如何使用呢 Socket,一、概述 socket通常也称作&amp;quot;套接字&amp;quot;，用于描述IP地址和端口，是一个通信链的句柄，应用程序通常通过&amp;quot;套接字&amp;quot;向网络发出请求或者应答网络请求。)
+XML 独立于软件和硬件的信息传输工具
+可扩展标记语言，一种很像html的语言
+目的：传输数据。（而不是显示数据） XML不会做任何事情，仅仅只是包装一段纯粹的信息 自我描述性。XML没有预定义好的标签，所有的标签都是创作者自己定义的 xml与html关系 xml是对html的补充，并不会替代html</description>
+    </item>
+    
+  </channel>
+</rss>
